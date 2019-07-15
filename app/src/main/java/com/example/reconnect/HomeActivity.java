@@ -23,7 +23,7 @@ public class HomeActivity extends AppCompatActivity {
         //If saved instance state is null set the timeline fragment to be the initial instance
         if (null == savedInstanceState) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, TimelineFragment.newInstance())
+                    .replace(R.id.container, MapFragment.newInstance())
                     .commit();
         }
 
@@ -74,6 +74,16 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.ivSettings:
+                //Take to settings activity
+                //Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
+                //startActivity(i); // brings up the second activity
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

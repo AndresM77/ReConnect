@@ -30,4 +30,8 @@ dependencies {
     implementation 'com.parse.bolts:bolts-android:1.4.0'
     implementation 'com.parse:parse-android:1.17.3'
     implementation 'com.parse:parseui-widget-android:0.0.2'
+    //Glide implementation
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 }

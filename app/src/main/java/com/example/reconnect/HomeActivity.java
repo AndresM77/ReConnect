@@ -20,6 +20,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        //If saved instance state is null set the timeline fragment to be the initial instance
         if (null == savedInstanceState) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, TimelineFragment.newInstance())
@@ -37,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // define your fragments here
-        //final Fragment fragment1 = new TimelineFragment();
+        final Fragment fragment1 = new MapFragment();
         //final Fragment fragment2 = new ComposeFragment();
         //final Fragment fragment3 = new ProfileFragment();
 
@@ -48,15 +49,11 @@ public class HomeActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         Fragment fragment;
                         switch (item.getItemId()) {
-                            case R.id.action_favorites:
+                            case R.id.action_map:
                                 fragment = fragment1;
                                 break;
-                            case R.id.action_schedules:
-                                fragment = fragment2;
-                                break;
-                            case R.id.action_music:
                             default:
-                                fragment = fragment3;
+                                fragment = fragment1;
                                 break;
                         }
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
@@ -64,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
         // Set default selection
-        bottomNavigationView.setSelectedItemId(R.id.action_favorites);
+        bottomNavigationView.setSelectedItemId(R.id.action_map);
     }
 
     @Override
@@ -77,14 +74,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.ivProfileBtn:
-                Intent i = new Intent(HomeActivity.this, ProfileActivity.class);
-                startActivity(i); // brings up the second activity
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
 }

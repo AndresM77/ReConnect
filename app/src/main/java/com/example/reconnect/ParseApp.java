@@ -11,9 +11,9 @@ public class ParseApp extends Application {
         super.onCreate();
 
         final Parse.Configuration configuration = new Parse.Configuration.Builder(this)
-                .applicationId("andres-parseagram")
-                .clientKey("space-odyssey")
-                .server("https://andresm77-parseagram.herokuapp.com/parse")
+                .applicationId("reconnect_id")
+                .clientKey("dreamteam77")
+                .server("http://andresm77-reconnect.herokuapp.com/parse")
                 .build();
 
 

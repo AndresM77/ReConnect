@@ -94,7 +94,7 @@ public class MapFragment extends Fragment {
             @Override
             public void done(List<Connection> connections, ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Error with Querey");
+                    Log.e(TAG, "Error with Query");
                     e.printStackTrace();
                     return;
                 }

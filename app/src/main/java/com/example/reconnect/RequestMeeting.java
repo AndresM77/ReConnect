@@ -16,6 +16,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class RequestMeeting extends AppCompatActivity {
 
@@ -57,7 +58,7 @@ public class RequestMeeting extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // create Event for the requested meeting
-                ParseObject event = new Event();
+                final ParseObject event = new Event();
                 event.put("startTime", startTime.getText());
                 event.put("endTime", endTime.getText());
                 event.put("name", meetingName.getText());
@@ -67,10 +68,14 @@ public class RequestMeeting extends AppCompatActivity {
                 event.put("reconnect", true);
                 event.put("date", date.getText());
 
-                Intent i = new Intent(RequestMeeting.this, CalendarFragment.class);
-                i.putExtra("meetingId", event.getObjectId());
-
-                startActivity(i);
+                event.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Intent i = new Intent(RequestMeeting.this, CalendarFragment.class);
+                        i.putExtra("meetingId", event.getObjectId());
+                        startActivity(i);
+                    }
+                });
             }
         });
     }

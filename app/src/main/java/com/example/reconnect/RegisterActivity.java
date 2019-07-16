@@ -18,7 +18,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etUser;
     private EditText etPass;
-    private EditText etHandle;
     private Button btnSignUp;
 
     @Override
@@ -34,17 +33,16 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveUser(etEmail.getText().toString(), etUser.getText().toString(), etPass.getText().toString(), etHandle.getText().toString());
+                saveUser(etEmail.getText().toString(), etUser.getText().toString(), etPass.getText().toString());
             }
         });
     }
 
-    private void saveUser(String email, String user, String pass, String handle) {
+    private void saveUser(String email, String user, String pass) {
         ParseUser newUser = new ParseUser();
         newUser.put("email", email);
         newUser.put("username", user);
         newUser.put("password", pass);
-        newUser.put("handle", handle);
         try {
             newUser.signUp();
         } catch (ParseException e) {

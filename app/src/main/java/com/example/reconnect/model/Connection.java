@@ -48,6 +48,11 @@ public class Connection extends ParseObject {
             super(Connection.class);
         }
 
+        public Query getTop() {
+            setLimit(20);
+            return this;
+        }
+
         public Query getStarred() {
             include("user1");
             include("starred12");

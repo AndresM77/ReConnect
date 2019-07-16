@@ -28,7 +28,7 @@
         android:hint="Email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvUserText" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPassText" />
 
     <EditText
         android:id="@+id/tvPassText"
@@ -53,7 +53,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPassText" />
+        app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

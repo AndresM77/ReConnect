@@ -52,6 +52,14 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
             name = itemView.findViewById(R.id.contactName);
             latitude = itemView.findViewById(R.id.contactLatitude);
             longitude = itemView.findViewById(R.id.contactLongitude);
+
+            //onClick listener to request a meeting
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //implement request meeting here
+                }
+            });
         }
 
         public void bind(Contact contact) {

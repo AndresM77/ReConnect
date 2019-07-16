@@ -1,7 +1,6 @@
 package com.example.reconnect;
 
 import android.content.Context;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.parse.ParseUser;
+
 import java.util.List;
 
 public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
     private Context context;
-    private List<Contact> contacts;
+    private List<ParseUser> contacts;
 
-    public MapAdapter(Context context, List<Contact> contacts) {
+    public MapAdapter(Context context, List<ParseUser> contacts) {
         this.context = context;
         this.contacts = contacts;
     }
@@ -31,6 +32,8 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MapAdapter.ViewHolder holder, int position) {
+        ParseUser contact = contacts.get(position);
+        holder.bind(contact);
     }
 
     private TextView name;
@@ -39,7 +42,7 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return contacts.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -49,8 +52,19 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
             name = itemView.findViewById(R.id.contactName);
             latitude = itemView.findViewById(R.id.contactLatitude);
             longitude = itemView.findViewById(R.id.contactLongitude);
+
+            //onClick listener to request a meeting
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //implement request meeting here
+                }
+            });
         }
 
+        public void bind(ParseUser contact) {
+
+        }
 
     }
 }

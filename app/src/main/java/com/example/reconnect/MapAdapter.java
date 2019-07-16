@@ -16,9 +16,9 @@ import java.util.List;
 public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
     private Context context;
-    private List<Contact> contacts;
+    private List<ParseUser> contacts;
 
-    public MapAdapter(Context context, List<Contact> contacts) {
+    public MapAdapter(Context context, List<ParseUser> contacts) {
         this.context = context;
         this.contacts = contacts;
     }
@@ -32,7 +32,7 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MapAdapter.ViewHolder holder, int position) {
-        Contact contact = contacts.get(position);
+        ParseUser contact = contacts.get(position);
         holder.bind(contact);
     }
 
@@ -62,7 +62,8 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
             });
         }
 
-        public void bind(Contact contact) {
+        public void bind(ParseUser contact) {
+
         }
 
     }

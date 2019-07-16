@@ -1,6 +1,5 @@
 package com.example.reconnect;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,9 +10,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.reconnect.model.Connection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.List;
+
 public class HomeActivity extends AppCompatActivity {
+
+    public List<Connection> userContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

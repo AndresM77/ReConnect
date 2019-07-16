@@ -38,16 +38,16 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
         holder.bind(connection);
     }
 
-    private TextView name;
-    private TextView latitude;
-    private TextView longitude;
-
     @Override
     public int getItemCount() {
         return connections.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView name;
+        private TextView latitude;
+        private TextView longitude;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -62,8 +62,15 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                     // New intent to send User to RequestMeeting Activity after selecting
                     // a contact User name
                     Intent intent = new Intent(view.getContext(), RequestMeeting.class);
-                    intent.putExtra("currUserId", ParseUser.getCurrentUser().getObjectId());
-                    intent.putExtra("requestedUserId", name.getText());
+
+                    // TODO: finish my attempt to find the connection the User is selecting
+                    Connection selectedConnection = connections.get(view.getVerticalScrollbarPosition());
+
+                    if (ParseUser.getCurrentUser().getUsername() == selectedConnection.getUser1().getUsername())
+                        intent.putExtra("requesteeId", selectedConnection.getUser2().getObjectId());
+                    else {
+                        intent.putExtra("requesteeId", selectedConnection.getUser1().getObjectId());
+                    }
 
                     view.getContext().startActivity(intent);
                 }
@@ -73,14 +80,14 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
         // method that connects information to create item_contact for MapFragment's Recycler View
         public void bind(Connection connection) {
             if (ParseUser.getCurrentUser().equals(connection.getUser1())) {
-                name.setText(connection.getUser1().getUsername());
-                latitude.setText((int) connection.getUser1().getParseGeoPoint("location").getLatitude());
-                longitude.setText((int) connection.getUser1().getParseGeoPoint("location").getLongitude());
-            }
-            else {
                 name.setText(connection.getUser2().getUsername());
                 latitude.setText((int) connection.getUser2().getParseGeoPoint("location").getLatitude());
                 longitude.setText((int) connection.getUser2().getParseGeoPoint("location").getLongitude());
+            }
+            else {
+                name.setText(connection.getUser1().getUsername());
+                latitude.setText((int) connection.getUser1().getParseGeoPoint("location").getLatitude());
+                longitude.setText((int) connection.getUser1().getParseGeoPoint("location").getLongitude());
             }
         }
 

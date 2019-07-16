@@ -9,17 +9,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.reconnect.ConnectionsAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MapFragment extends Fragment {
@@ -31,7 +33,6 @@ public class MapFragment extends Fragment {
     private ConnectionsAdapter adapter;
     private List<Connection> mConnections;
     private SwipeRefreshLayout swipeContainer;
-
 
     public static MapFragment newInstance() {
         return new MapFragment();
@@ -51,36 +52,58 @@ public class MapFragment extends Fragment {
         rvConnections = view.findViewById(R.id.rvConnections);
         //Instantiating connections list
         mConnections = new ArrayList<>();
-        //Setting adapter on recycler view
+        //Set up adapter
         adapter = new ConnectionsAdapter(getContext(), mConnections);
+        //Set adapter on recycler view
+        rvConnections.setAdapter(adapter);
+        //Set up linear layout manager
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager((getContext()));
+        //Set layout manager on recycler view
+        rvConnections.setLayoutManager(linearLayoutManager);
+
+        // Lookup the swipe container view
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                swipeContainer.setRefreshing(false);
+                queryConnections();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        //query posts
+        queryConnections();
     }
 
-    public void queryPosts(boolean EndlessScrolling) {
+    public void queryConnections() {
         ParseQuery<Connection> postQuery = new ParseQuery<Connection>(Connection.class);
         postQuery.include(Connection.KEY_USER1);
         postQuery.setLimit(20);
+        postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
         postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
-        Date maxDate;
-        //Endless Pagination Functionality
-        if (EndlessScrolling) {
-            maxDate = mPosts.get(mPosts.size() - 1).getCreatedAt();
-            postQuery.whereLessThan(Post.KEY_CREATED_AT, maxDate);
-        }
 
-        postQuery.findInBackground(new FindCallback<Post>() {
+        postQuery.findInBackground(new FindCallback<Connection>() {
             @Override
-            public void done(List<Post> posts, ParseException e) {
+            public void done(List<Connection> connections, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error with Querey");
                     e.printStackTrace();
                     return;
                 }
-                mPosts.clear();
-                mPosts.addAll(posts);
+                mConnections.clear();
+                mConnections.addAll(mConnections);
                 adapter.notifyDataSetChanged();
-                for (int i = 0; i < posts.size(); i++) {
-                    Post post = posts.get(i);
-                    Log.d(TAG, "Post" + post.getDescription() + ", username: " + post.getUser().getUsername());
+                for (int i = 0; i < mConnections.size(); i++) {
+                    Connection connection = connections.get(i);
+                    Log.d(TAG, "User1: " + connection.getUser1().getUsername() + ", User2: " + connection.getUser2().getUsername());
                 }
             }
         });

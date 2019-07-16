@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_map"
-        android:enabled="true"
-        android:iconTint="@color/black"
-        android:title="Home"
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/map_icon"
+        android:title="Map"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_reconnect"
         android:enabled="true"
+        android:icon="@drawable/reconnect_icon"
         android:iconTint="@color/black"
         android:title="Reconnect"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
-        android:id="@+id/action_calendar"
-        android:enabled="true"
-        android:iconTint="@color/black"
-        android:title="Calendar"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/action_profile"
+        android:icon="@drawable/profile_icon"
+        android:title="Profile"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_messages"
         android:enabled="true"
+        android:icon="@drawable/messages_icon"
         android:iconTint="@color/black"
         android:title="Messages"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>

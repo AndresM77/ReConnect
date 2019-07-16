@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-class MapFragment extends Fragment {
+public class MapFragment extends Fragment {
 
     public static MapFragment newInstance() {
         return new MapFragment();

@@ -1,7 +1,6 @@
 package com.example.reconnect;
 
 import android.content.Context;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MapAdapter.ViewHolder holder, int position) {
+        Contact contact = contacts.get(position);
+        holder.bind(contact);
     }
 
     private TextView name;
@@ -39,7 +42,7 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return contacts.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -51,6 +54,8 @@ public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
             longitude = itemView.findViewById(R.id.contactLongitude);
         }
 
+        public void bind(Contact contact) {
+        }
 
     }
 }

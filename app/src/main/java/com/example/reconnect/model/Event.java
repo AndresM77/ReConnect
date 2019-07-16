@@ -15,6 +15,8 @@ public class Event extends ParseObject {
     public static final String KEY_ATTENDEE = "attendee";
     public static final String KEY_PENDING = "pending";
     public static final String KEY_SPECIAL = "reconnect";
+    public static final String KEY_DATE = "date";
+
 
     public Date getStartTime() {return getDate(KEY_START_TIME);}
 
@@ -45,4 +47,12 @@ public class Event extends ParseObject {
     public Boolean getSpecial() {return getBoolean(KEY_SPECIAL);}
 
     public void setSpecial (Boolean special) {put(KEY_SPECIAL, special);}
+
+    public String getKeyDate() {
+        return KEY_DATE;
+    }
+
+    public void setKeyDate(Date date) {
+        put(KEY_DATE, date);
+    }
 }

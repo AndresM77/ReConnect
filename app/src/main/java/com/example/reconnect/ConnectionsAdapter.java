@@ -1,6 +1,7 @@
 package com.example.reconnect;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.model.Connection;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -36,10 +38,6 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
         holder.bind(connection);
     }
 
-    private TextView name;
-    private TextView latitude;
-    private TextView longitude;
-
     @Override
     public int getItemCount() {
         return connections.size();
@@ -47,23 +45,50 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        private TextView name;
+        private TextView latitude;
+        private TextView longitude;
+
         public ViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.contactName);
             latitude = itemView.findViewById(R.id.contactLatitude);
             longitude = itemView.findViewById(R.id.contactLongitude);
 
-            //onClick listener to request a meeting
+            // onClick listener to request a meeting
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //implement request meeting here
+                    // New intent to send User to RequestMeeting Activity after selecting
+                    // a contact User name
+                    Intent intent = new Intent(view.getContext(), RequestMeeting.class);
+
+                    // TODO: finish my attempt to find the connection the User is selecting
+                    Connection selectedConnection = connections.get(view.getVerticalScrollbarPosition());
+
+                    if (ParseUser.getCurrentUser().getUsername() == selectedConnection.getUser1().getUsername())
+                        intent.putExtra("requesteeId", selectedConnection.getUser2().getObjectId());
+                    else {
+                        intent.putExtra("requesteeId", selectedConnection.getUser1().getObjectId());
+                    }
+
+                    view.getContext().startActivity(intent);
                 }
             });
         }
 
-        public void bind(Connection contaction) {
-
+        // method that connects information to create item_contact for MapFragment's Recycler View
+        public void bind(Connection connection) {
+            if (ParseUser.getCurrentUser().equals(connection.getUser1())) {
+                name.setText(connection.getUser2().getUsername());
+                latitude.setText((int) connection.getUser2().getParseGeoPoint("location").getLatitude());
+                longitude.setText((int) connection.getUser2().getParseGeoPoint("location").getLongitude());
+            }
+            else {
+                name.setText(connection.getUser1().getUsername());
+                latitude.setText((int) connection.getUser1().getParseGeoPoint("location").getLatitude());
+                longitude.setText((int) connection.getUser1().getParseGeoPoint("location").getLongitude());
+            }
         }
 
     }

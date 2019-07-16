@@ -10,6 +10,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.reconnect.fragments.CalendarFragment;
+import com.example.reconnect.fragments.MapFragment;
+import com.example.reconnect.fragments.MessagesFragment;
+import com.example.reconnect.fragments.ReconnectFragment;
 import com.example.reconnect.model.Connection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;

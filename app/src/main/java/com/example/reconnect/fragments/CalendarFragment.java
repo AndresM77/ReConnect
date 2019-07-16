@@ -1,4 +1,4 @@
-package com.example.reconnect;
+package com.example.reconnect.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

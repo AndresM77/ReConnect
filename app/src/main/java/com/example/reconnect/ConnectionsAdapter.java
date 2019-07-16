@@ -1,6 +1,7 @@
 package com.example.reconnect;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,15 +55,22 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             latitude = itemView.findViewById(R.id.contactLatitude);
             longitude = itemView.findViewById(R.id.contactLongitude);
 
-            //onClick listener to request a meeting
+            // onClick listener to request a meeting
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //implement request meeting here
+                    // New intent to send User to RequestMeeting Activity after selecting
+                    // a contact User name
+                    Intent intent = new Intent(view.getContext(), RequestMeeting.class);
+                    intent.putExtra("currUserId", ParseUser.getCurrentUser().getObjectId());
+                    intent.putExtra("requestedUserId", name.getText());
+
+                    view.getContext().startActivity(intent);
                 }
             });
         }
 
+        // method that connects information to create item_contact for MapFragment's Recycler View
         public void bind(Connection connection) {
             if (ParseUser.getCurrentUser().equals(connection.getUser1())) {
                 name.setText(connection.getUser1().getUsername());

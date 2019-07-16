@@ -4,11 +4,14 @@
     <item
         android:id="@+id/action_map"
         android:icon="@drawable/map_icon"
+        android:visible="true"
+        android:iconTint="@color/black"
         android:title="Map"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_reconnect"
         android:enabled="true"
+        android:visible="true"
         android:icon="@drawable/reconnect_icon"
         android:iconTint="@color/black"
         android:title="Reconnect"
@@ -16,11 +19,13 @@
     <item
         android:id="@+id/action_profile"
         android:icon="@drawable/profile_icon"
+        android:visible="true"
         android:title="Profile"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_messages"
         android:enabled="true"
+        android:visible="true"
         android:icon="@drawable/messages_icon"
         android:iconTint="@color/black"
         android:title="Messages"

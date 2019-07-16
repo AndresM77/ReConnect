@@ -71,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
                             case R.id.action_reconnect:
                                 fragment = fragment2;
                                 break;
-                            case R.id.action_calendar:
+                            case R.id.action_profile:
                                 fragment = fragment3;
                                 break;
                             case R.id.action_messages:

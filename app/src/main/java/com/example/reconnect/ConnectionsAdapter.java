@@ -9,18 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.parse.ParseUser;
+import com.example.reconnect.model.Connection;
 
 import java.util.List;
 
 public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.ViewHolder> {
 
     private Context context;
-    private List<ParseUser> contacts;
+    private List<Connection> connections;
 
-    public ConnectionsAdapter(Context context, List<ParseUser> contacts) {
+    public ConnectionsAdapter(Context context, List<Connection> connections) {
         this.context = context;
-        this.contacts = contacts;
+        this.connections = connections;
     }
 
     @NonNull
@@ -32,8 +32,8 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ConnectionsAdapter.ViewHolder holder, int position) {
-        ParseUser contact = contacts.get(position);
-        holder.bind(contact);
+        Connection connection = connections.get(position);
+        holder.bind(connection);
     }
 
     private TextView name;
@@ -42,7 +42,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
     @Override
     public int getItemCount() {
-        return contacts.size();
+        return connections.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -62,7 +62,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             });
         }
 
-        public void bind(ParseUser contact) {
+        public void bind(Connection contaction) {
 
         }
 

@@ -18,6 +18,7 @@ import com.example.reconnect.model.Connection;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +48,11 @@ public class MapFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
-        rvConnections = view.findViewById(R.id.rvConnections)
+        rvConnections = view.findViewById(R.id.rvConnections);
+        //Instantiating connections list
+        mConnections = new ArrayList<>();
+        //Setting adapter on recycler view
+        adapter = new ConnectionsAdapter(getContext(), mConnections);
     }
 
     public void queryPosts(boolean EndlessScrolling) {

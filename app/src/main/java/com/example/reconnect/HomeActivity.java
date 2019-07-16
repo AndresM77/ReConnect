@@ -12,11 +12,13 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.reconnect.model.Connection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseUser;
 
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
+    public ParseUser currentUser;
     public List<Connection> userContacts;
 
     @Override
@@ -40,11 +42,17 @@ public class HomeActivity extends AppCompatActivity {
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
+        
+        // Get the current user
+        currentUser = ParseUser.getCurrentUser();
+        // Query connections for the current user
+        queryContacts(currentUser);
 
         // define your fragments here
         final Fragment fragment1 = new MapFragment();
-        //final Fragment fragment2 = new ComposeFragment();
-        //final Fragment fragment3 = new ProfileFragment();
+        final Fragment fragment2 = new ReconnectFragment();
+        final Fragment fragment3 = new CalendarFragment();
+        final Fragment fragment4 = new MessagesFragment();
 
         // handle navigation selection
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -56,6 +64,15 @@ public class HomeActivity extends AppCompatActivity {
                             case R.id.action_map:
                                 fragment = fragment1;
                                 break;
+                            case R.id.action_reconnect:
+                                fragment = fragment2;
+                                break;
+                            case R.id.action_calendar:
+                                fragment = fragment3;
+                                break;
+                            case R.id.action_messages:
+                                fragment = fragment4;
+                                break;
                             default:
                                 fragment = fragment1;
                                 break;
@@ -66,6 +83,9 @@ public class HomeActivity extends AppCompatActivity {
                 });
         // Set default selection
         bottomNavigationView.setSelectedItemId(R.id.action_map);
+    }
+
+    private void queryContacts(ParseUser currentUser) {
     }
 
     @Override

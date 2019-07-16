@@ -1,10 +1,12 @@
 package com.example.reconnect.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.reconnect.ConnectionsAdapter;
+import com.example.reconnect.MapActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.parse.FindCallback;
@@ -33,6 +36,8 @@ public class MapFragment extends Fragment {
     private ConnectionsAdapter adapter;
     private List<Connection> mConnections;
     private SwipeRefreshLayout swipeContainer;
+    //Initializing view objects
+    private Button switchBtn;
 
     public static MapFragment newInstance() {
         return new MapFragment();
@@ -60,6 +65,16 @@ public class MapFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager((getContext()));
         //Set layout manager on recycler view
         rvConnections.setLayoutManager(linearLayoutManager);
+        //Initializing view objects
+        switchBtn = view.findViewById(R.id.btnSwitch);
+
+        switchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), MapActivity.class);
+                startActivity(i);
+            }
+        });
 
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);

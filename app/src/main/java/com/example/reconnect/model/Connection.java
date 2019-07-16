@@ -2,6 +2,7 @@ package com.example.reconnect.model;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.Date;
@@ -38,5 +39,24 @@ public class Connection extends ParseObject {
     @Override
     public Date getCreatedAt() {
         return super.getCreatedAt();
+    }
+
+    //Querying our Connection class
+    public static class Query extends ParseQuery<Connection> {
+
+        public Query() {
+            super(Connection.class);
+        }
+
+        public Query getStarred() {
+            include("user1");
+            include("starred12");
+            return this;
+        }
+
+        public Query withUser() {
+            include("user1");
+            return this;
+        }
     }
 }

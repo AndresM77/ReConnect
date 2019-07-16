@@ -68,6 +68,9 @@ public class RequestMeeting extends AppCompatActivity {
                 event.put("date", date.getText());
 
                 Intent i = new Intent(RequestMeeting.this, CalendarFragment.class);
+                i.putExtra("meetingId", event.getObjectId());
+
+                startActivity(i);
             }
         });
     }

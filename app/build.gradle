@@ -41,4 +41,7 @@ dependencies {
     // Bottom navigation view implementation
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
+    // Implementation for recycler view
+    implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
+    implementation "com.android.support:percent:${supportLibVersion}"
 }

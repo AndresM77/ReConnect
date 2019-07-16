@@ -13,25 +13,25 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
-public class MapAdapter extends RecyclerView.Adapter<MapAdapter.ViewHolder> {
+public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.ViewHolder> {
 
     private Context context;
     private List<ParseUser> contacts;
 
-    public MapAdapter(Context context, List<ParseUser> contacts) {
+    public ConnectionsAdapter(Context context, List<ParseUser> contacts) {
         this.context = context;
         this.contacts = contacts;
     }
 
     @NonNull
     @Override
-    public MapAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ConnectionsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MapAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ConnectionsAdapter.ViewHolder holder, int position) {
         ParseUser contact = contacts.get(position);
         holder.bind(contact);
     }

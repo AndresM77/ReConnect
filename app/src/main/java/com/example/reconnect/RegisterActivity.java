@@ -30,7 +30,6 @@ public class RegisterActivity extends AppCompatActivity {
         etUser = findViewById(R.id.tvUserText);
         etPass = findViewById(R.id.tvPassText);
         btnSignUp = findViewById(R.id.btnCreate);
-        etHandle = findViewById(R.id.tvHandle);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override

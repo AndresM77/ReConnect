@@ -31,18 +31,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tvUserText" />
 
     <EditText
-        android:id="@+id/tvHandle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="30dp"
-        android:hint="Handle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
-
-    <EditText
         android:id="@+id/tvPassText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -52,7 +40,7 @@
         android:hint="Password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHandle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvUserText" />
 
     <Button
         android:id="@+id/btnCreate"

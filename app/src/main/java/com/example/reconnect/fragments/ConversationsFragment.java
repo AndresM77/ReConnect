@@ -17,14 +17,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.reconnect.ConversationsAdapter;
 import com.example.reconnect.MessageContactsActivity;
-import com.example.reconnect.MessagesActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Conversation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,25 +102,7 @@ public class ConversationsFragment extends Fragment {
         startActivityForResult(i, REQUEST_CODE);
     }
 
-    public void createConversation(final ParseUser conversee) {
-        Conversation conversation = new Conversation();
-        conversation.setConverser(ParseUser.getCurrentUser());
-        conversation.setConversee(conversee);
-        conversation.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e!=null) {
-                    Log.d(TAG, "Error while saving");
-                    e.printStackTrace();
-                    return;
-                }
-                Log.d(TAG, "Success");
-                Intent i = new Intent(getContext(), MessagesActivity.class);
-                i.putExtra("recipient", conversee);
-                startActivity(i);
-            }
-        });
-    }
+
 
     public void queryConversations() {
         ParseQuery<Conversation> postQuery = new ParseQuery<>(Conversation.class);

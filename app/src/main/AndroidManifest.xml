@@ -21,6 +21,7 @@
         <activity android:name=".MapActivity"></activity>
         <activity android:name=".SettingsActivity"></activity>
         <activity android:name=".MessageContactsActivity"></activity>
+        <activity android:name=".MessagesActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

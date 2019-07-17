@@ -2,6 +2,7 @@ package com.example.reconnect;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,13 +17,18 @@ import com.example.reconnect.fragments.CalendarFragment;
 import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.fragments.MapFragment;
 import com.example.reconnect.fragments.ReconnectFragment;
+import com.example.reconnect.model.Conversation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import static com.example.reconnect.fragments.ConversationsFragment.REQUEST_CODE;
 
 public class HomeActivity extends AppCompatActivity {
 
+    //Initializing fragment tag
+    public final static String TAG = "HomeActivity";
     public ParseUser currentUser;
 
     @Override
@@ -96,11 +102,30 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE) {
+        if (resultCode == REQUEST_CODE) {
             ParseUser recipient = data.getParcelableExtra("recipient");
-            ConversationsFragment fragment = new ConversationsFragment();
-            fragment.createConversation(recipient);
+            createConversation(recipient);
         }
+    }
+
+    public void createConversation(final ParseUser conversee) {
+        Conversation conversation = new Conversation();
+        conversation.setConverser(ParseUser.getCurrentUser());
+        conversation.setConversee(conversee);
+        conversation.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e!=null) {
+                    Log.d(TAG, "Error while saving");
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d(TAG, "Success");
+                Intent i = new Intent(HomeActivity.this, MessagesActivity.class);
+                i.putExtra("recipient", conversee);
+                startActivity(i);
+            }
+        });
     }
 
     @Override

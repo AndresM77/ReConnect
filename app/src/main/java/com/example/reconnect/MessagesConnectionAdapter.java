@@ -77,6 +77,8 @@ public class MessagesConnectionAdapter extends RecyclerView.Adapter<MessagesConn
             else {
                 try {
                     name.setText(connection.getUser2().fetchIfNeeded().getUsername());
+                    name.setTag(connection);
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

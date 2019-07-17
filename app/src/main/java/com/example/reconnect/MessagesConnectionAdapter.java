@@ -1,7 +1,6 @@
 package com.example.reconnect;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.model.Connection;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -18,16 +19,19 @@ public class MessagesConnectionAdapter extends RecyclerView.Adapter<MessagesConn
 
     private Context context;
     private List<Connection> connections;
+    private MessageContactsActivity.ContactClickListener listener;
 
-    public MessagesConnectionAdapter(Context context, List<Connection> connections) {
+    //pass down listener
+    public MessagesConnectionAdapter(Context context, List<Connection> connections, MessageContactsActivity.ContactClickListener listener) {
         this.context = context;
         this.connections = connections;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public MessagesConnectionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_message_contact, parent, false);
         return new ViewHolder(view);
     }
 
@@ -45,25 +49,16 @@ public class MessagesConnectionAdapter extends RecyclerView.Adapter<MessagesConn
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
-        private TextView latitude;
-        private TextView longitude;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.contactName);
-            latitude = itemView.findViewById(R.id.contactLatitude);
-            longitude = itemView.findViewById(R.id.contactLongitude);
-
 
             // onClick listener to request a meeting
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // New intent to send User to RequestMeeting Activity after selecting
-                    // a contact User name
-                    Intent intent = new Intent(view.getContext(), RequestMeeting.class);
-
-
+                    listener.onClick((Connection) name.getTag());
                 }
             });
 
@@ -71,7 +66,21 @@ public class MessagesConnectionAdapter extends RecyclerView.Adapter<MessagesConn
 
         /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(Connection connection) {
-
+            if (ParseUser.getCurrentUser().equals(connection.getUser1())) {
+                try {
+                    name.setText(connection.getUser2().fetchIfNeeded().getUsername());
+                    name.setTag(connection);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    name.setText(connection.getUser2().fetchIfNeeded().getUsername());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }

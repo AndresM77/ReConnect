@@ -1,5 +1,6 @@
 package com.example.reconnect;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -17,6 +18,8 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.reconnect.fragments.ConversationsFragment.REQUEST_CODE;
+
 public class MessageContactsActivity extends AppCompatActivity {
 
     //Initializing fragment tag
@@ -26,6 +29,7 @@ public class MessageContactsActivity extends AppCompatActivity {
     private MessagesConnectionAdapter adapter;
     private List<Connection> mConnections;
     private SwipeRefreshLayout swipeContainer;
+    private ContactClickListener listener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,8 +39,16 @@ public class MessageContactsActivity extends AppCompatActivity {
         rvConnections = findViewById(R.id.rvConnections);
         //Instantiating connections list
         mConnections = new ArrayList<>();
+        //Initialize
+        listener = new ContactClickListener() {
+            @Override
+            public void onClick(Connection connection) {
+                returnActivity(connection);
+            }
+        };
+
         //Set up adapter
-        adapter = new MessagesConnectionAdapter(this, mConnections);
+        adapter = new MessagesConnectionAdapter(this, mConnections, listener);
         //Set adapter on recycler view
         rvConnections.setAdapter(adapter);
         //Set up linear layout manager
@@ -46,6 +58,7 @@ public class MessageContactsActivity extends AppCompatActivity {
 
         // Lookup the swipe container view
         swipeContainer = findViewById(R.id.swipeContainer);
+
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -65,6 +78,16 @@ public class MessageContactsActivity extends AppCompatActivity {
         //query posts
         queryConnections();
     }
+
+    private void returnActivity(Connection connection) {
+        // Send intent back to home activity after selecting
+        // a contact User name
+        Intent intent = new Intent(this, RequestMeeting.class);
+        intent.putExtra("recipient", connection);
+        setResult(REQUEST_CODE, intent);
+        finish();
+    }
+
 
     public void queryConnections() {
         ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
@@ -88,5 +111,9 @@ public class MessageContactsActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    public interface ContactClickListener {
+        void onClick(Connection connection);
     }
 }

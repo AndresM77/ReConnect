@@ -19,6 +19,8 @@ import com.example.reconnect.fragments.ReconnectFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
 
+import static com.example.reconnect.fragments.ConversationsFragment.REQUEST_CODE;
+
 public class HomeActivity extends AppCompatActivity {
 
     public ParseUser currentUser;
@@ -94,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 20) {
+        if (requestCode == REQUEST_CODE) {
             ParseUser recipient = data.getParcelableExtra("recipient");
             ConversationsFragment fragment = new ConversationsFragment();
             fragment.createConversation(recipient);

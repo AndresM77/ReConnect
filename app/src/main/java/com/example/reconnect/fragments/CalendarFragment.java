@@ -35,7 +35,7 @@ public class CalendarFragment extends Fragment {
     public final static String TAG = "CalendarFragment";
     //Initializing variables necessary for recycler view
     private RecyclerView rvEvents;
-    private ConnectionsAdapter adapter;
+    private EventAdapter adapter;
     private List<Event> mEvents;
     private SwipeRefreshLayout swipeContainer;
     //Initializing view objects

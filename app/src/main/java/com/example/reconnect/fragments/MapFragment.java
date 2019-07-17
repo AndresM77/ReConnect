@@ -113,12 +113,12 @@ public class MapFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-                mConnections.clear();
-                mConnections.addAll(mConnections);
+//                mConnections.clear();
+                mConnections.addAll(connections);
                 adapter.notifyDataSetChanged();
                 for (int i = 0; i < mConnections.size(); i++) {
                     Connection connection = connections.get(i);
-                    Log.d(TAG, "User1: " + connection.getUser1().getUsername() + ", User2: " + connection.getUser2().getUsername());
+                    //Log.d(TAG, "User1: " + connection.getUser1().getUsername() + ", User2: " + connection.getUser2().getUsername());
                 }
             }
         });

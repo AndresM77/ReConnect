@@ -105,6 +105,7 @@ public class MapFragment extends Fragment {
 
         postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
         postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
+        // TODO - Add a check for KEY_USER2 and currentUser
 
         postQuery.findInBackground(new FindCallback<Connection>() {
             @Override

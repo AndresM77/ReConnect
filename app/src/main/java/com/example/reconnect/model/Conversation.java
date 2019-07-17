@@ -10,6 +10,7 @@ public class Conversation extends ParseObject {
     public static final String KEY_CONVERSER = "converser";
     public static final String KEY_CONVERSEE = "conversee";
     public static final String KEY_LAST_MESSAGE = "lastMessage";
+    public static final String KEY_CREATED_AT = "createdAt";
 
     public ParseUser getConverser() {return getParseUser(KEY_CONVERSER);}
 

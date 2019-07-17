@@ -95,7 +95,7 @@ public class CalendarFragment extends Fragment {
         postQuery.include(Event.KEY_CREATOR);
         postQuery.setLimit(20);
         postQuery.whereEqualTo(Event.KEY_CREATOR, ParseUser.getCurrentUser());
-        postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
+        postQuery.addDescendingOrder(Event.KEY_CREATED_AT);
 
         postQuery.findInBackground(new FindCallback<Event>() {
             @Override

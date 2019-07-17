@@ -17,6 +17,7 @@ public class Event extends ParseObject {
     public static final String KEY_PENDING = "pending";
     public static final String KEY_SPECIAL = "reconnect";
     public static final String KEY_DATE = "date";
+    public static final String KEY_CREATED_AT = "createdAt";
 
 
     public Date getStartTime() {return getDate(KEY_START_TIME);}

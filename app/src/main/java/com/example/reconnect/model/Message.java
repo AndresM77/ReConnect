@@ -2,6 +2,7 @@ package com.example.reconnect.model;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.Date;
@@ -41,5 +42,23 @@ public class Message extends ParseObject {
     @Override
     public Date getCreatedAt() {
         return super.getCreatedAt();
+    }
+
+    //Querying our Message class
+    public static class Query extends ParseQuery<Message> {
+
+        public Query() {
+            super(Message.class);
+        }
+
+        public Message.Query getTop() {
+            setLimit(20);
+            return this;
+        }
+
+        public Message.Query withUser() {
+            include("sender");
+            return this;
+        }
     }
 }

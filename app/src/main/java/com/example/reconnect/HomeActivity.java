@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.reconnect.fragments.CalendarFragment;
+import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.fragments.MapFragment;
 import com.example.reconnect.fragments.ReconnectFragment;
 import com.example.reconnect.model.Connection;
@@ -56,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
         final Fragment fragment1 = new MapFragment();
         final Fragment fragment2 = new ReconnectFragment();
         final Fragment fragment3 = new CalendarFragment();
-        final Fragment fragment4 = new MessagesActivity();
+        final Fragment fragment4 = new ConversationsFragment();
 
         // handle navigation selection
         bottomNavigationView.setOnNavigationItemSelectedListener(

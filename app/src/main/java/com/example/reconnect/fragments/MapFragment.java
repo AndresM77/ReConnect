@@ -22,6 +22,7 @@ import com.example.reconnect.model.Connection;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +104,7 @@ public class MapFragment extends Fragment {
         postQuery.setLimit(20);
 
         postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
+        postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
 
         postQuery.findInBackground(new FindCallback<Connection>() {
             @Override
@@ -112,6 +114,7 @@ public class MapFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
+                mConnections.clear();
                 mConnections.addAll(connections);
                 adapter.notifyDataSetChanged();
             }

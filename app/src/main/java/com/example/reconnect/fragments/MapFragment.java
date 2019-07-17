@@ -76,7 +76,7 @@ public class MapFragment extends Fragment {
         });
 
         // Lookup the swipe container view
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        swipeContainer = view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -98,12 +98,9 @@ public class MapFragment extends Fragment {
     }
 
     public void queryConnections() {
-        ParseQuery<Connection> postQuery = new ParseQuery<Connection>(Connection.class);
+        ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
         postQuery.include(Connection.KEY_USER1);
-        //postQuery.include(Connection.KEY_USER2);
         postQuery.setLimit(20);
-        //postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
-        //postQuery.whereEqualTo(Connection.KEY_USER2, ParseUser.getCurrentUser());
 
         postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
 
@@ -115,13 +112,8 @@ public class MapFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-                //mConnections.clear();
                 mConnections.addAll(connections);
                 adapter.notifyDataSetChanged();
-                for (int i = 0; i < mConnections.size(); i++) {
-                    Connection connection = connections.get(i);
-                    //Log.d(TAG, "User1: " + connection.getUser1().getUsername() + ", User2: " + connection.getUser2().getUsername());
-                }
             }
         });
     }

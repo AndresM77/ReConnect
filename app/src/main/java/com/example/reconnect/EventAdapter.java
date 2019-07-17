@@ -1,6 +1,7 @@
 package com.example.reconnect;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.model.Event;
-import com.parse.ParseObject;
-
-import org.w3c.dom.Text;
+import com.parse.ParseException;
 
 import java.util.List;
 
@@ -60,10 +59,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         }
 
         public void bind(Event event) {
-            attendee.setText(event.getAttendee().getUsername());
+            try {
+                attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
+            } catch (ParseException e) {
+                Log.e("EventAdapter", "Unable to get the username of the attendee");
+                e.printStackTrace();
+            }
             industry.setText(event.getAttendee().get("industry").toString());
             date.setText(event.get("date").toString());
-            String timeSpan = event.get("startTime").toString() + " - " + event.get("endDate").toString();
+            String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
             time.setText(timeSpan);
         }
     }

@@ -1,6 +1,7 @@
 package com.example.reconnect;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -20,19 +21,27 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     private Context context;
     private List<Event> events;
 
+    public EventAdapter(Context context, List<Event> events) {
+        this.context = context;
+        this.events = events;
+    }
+
     @NonNull
     @Override
     public EventAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(context).inflate(R.layout.item_event, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull EventAdapter.ViewHolder holder, int position) {
+        Event event = events.get(position);
+        holder.bind(event);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return events.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -51,7 +60,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         }
 
         public void bind(Event event) {
-            //TODO
+            attendee.setText(event.getAttendee().getUsername());
+            industry.setText(event.getAttendee().get("industry").toString());
+            date.setText(event.get("date").toString());
+            String timeSpan = event.get("startTime").toString() + " - " + event.get("endDate").toString();
+            time.setText(timeSpan);
         }
     }
 }

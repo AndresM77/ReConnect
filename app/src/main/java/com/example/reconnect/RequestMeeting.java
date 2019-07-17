@@ -39,7 +39,7 @@ public class RequestMeeting extends AppCompatActivity {
         submitRequest = findViewById(R.id.submitRequest);
 
         // grab the objectId of the requested User
-        String requestedUserId = getIntent().getStringExtra("requesteeId");
+        final String requestedUserId = getIntent().getStringExtra("requesteeId");
 
         // find the requested User in our Parse database
         ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
@@ -61,11 +61,20 @@ public class RequestMeeting extends AppCompatActivity {
                 event.put("startTime", startTime.getText());
                 event.put("endTime", endTime.getText());
                 event.put("name", meetingName.getText());
-                event.put("creator", ParseUser.getCurrentUser().getUsername());
-                event.put("attendee", requestee.getText());
+                event.put("creator", ParseUser.getCurrentUser().getObjectId());
                 event.put("pending", true);
                 event.put("reconnect", true);
                 event.put("date", date.getText());
+
+                ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
+                try {
+                    ParseUser requestedUser = userParseQuery.get(requestedUserId);
+                    event.put("attendee", requestedUser);
+                }
+                catch(ParseException e) {
+                    Log.e("RequestMeeting Activity", "Unable to get the name of the requested User for the Event!");
+                    e.printStackTrace();
+                }
 
                 event.saveInBackground(new SaveCallback() {
                     @Override

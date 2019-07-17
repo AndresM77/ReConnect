@@ -108,7 +108,8 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                 longitudeC = connection.getUser1().getParseGeoPoint("location").getLongitude();
             }
 
-            //TODO fix this logic
+            // TODO fix this logic
+            // Currently implemented logic from https://andrew.hedges.name/experiments/haversine/
             Double dlon = longitudeC - longitude;
             Double dlat = latitudeC - latitude;
             Double a = Math.pow((Math.sin(dlat/2)), 2) + Math.cos(latitude) * Math.cos(latitudeC) * Math.pow((Math.sin(dlon/2)), 2);

@@ -20,7 +20,7 @@ import java.sql.Date;
 
 public class RequestMeeting extends AppCompatActivity {
 
-    TextView requestee;
+    TextView request;
     EditText meetingName;
     EditText date;
     EditText startTime;
@@ -32,7 +32,7 @@ public class RequestMeeting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_meeting);
 
-        requestee = findViewById(R.id.requesteeName);
+        request = findViewById(R.id.requestMeetingPrompt);
         meetingName = findViewById(R.id.meetingName);
         date = findViewById(R.id.requestDate);
         startTime = findViewById(R.id.startTime);
@@ -46,7 +46,7 @@ public class RequestMeeting extends AppCompatActivity {
         ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
         try {
             ParseUser requestedUser = userParseQuery.get(requestedUserId);
-            requestee.setText(requestedUser.getUsername());
+            request.setText("Request a meeting with " + requestedUser.getUsername() + ".");
         }
         catch(ParseException e) {
             Log.e("RequestMeeting Activity", "Unable to get the name of the requested User!");

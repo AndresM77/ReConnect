@@ -13,62 +13,48 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:text="Request a meeting below."
+        android:hint="Request meeting prompt here."
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/requesteeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Requestee"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/requestMeetingPrompt" />
-
     <EditText
         android:id="@+id/requestDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Select Meeting Date"
         android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/requesteeName" />
+        app:layout_constraintTop_toBottomOf="@+id/meetingName" />
 
     <Button
         android:id="@+id/submitRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:text="Done"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meetingName" />
+        app:layout_constraintTop_toBottomOf="@+id/endTime" />
 
     <EditText
         android:id="@+id/startTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="Start Time"
+        android:hint="Meeting Start Time"
         android:inputType="time"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/requestDate" />
 
@@ -76,13 +62,12 @@
         android:id="@+id/endTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="End Time"
+        android:hint="Meeting End Time"
         android:inputType="time"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startTime" />
 
@@ -90,11 +75,10 @@
         android:id="@+id/meetingName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Name of the Meeting"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:hint="Meeting Title (Optional)"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/endTime" />
+        app:layout_constraintTop_toBottomOf="@+id/requestMeetingPrompt" />
 </androidx.constraintlayout.widget.ConstraintLayout>

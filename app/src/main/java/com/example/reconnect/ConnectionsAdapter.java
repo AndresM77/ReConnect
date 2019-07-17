@@ -47,7 +47,6 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private LinearLayout llBody;
         private TextView name;
         private TextView latitude;
         private TextView longitude;
@@ -57,7 +56,6 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             name = itemView.findViewById(R.id.contactName);
             latitude = itemView.findViewById(R.id.contactLatitude);
             longitude = itemView.findViewById(R.id.contactLongitude);
-            llBody = itemView.findViewById(R.id.llBody);
 
 
             // onClick listener to request a meeting
@@ -68,7 +66,6 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                     // a contact User name
                     Intent intent = new Intent(view.getContext(), RequestMeeting.class);
 
-                    // TODO: finish my attempt to find the connection the User is selecting
                     Connection selectedConnection = connections.get(view.getVerticalScrollbarPosition());
 
                     if (ParseUser.getCurrentUser().getUsername().equals(selectedConnection.getUser1().getUsername()))
@@ -83,7 +80,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
         }
 
-        // method that connects information to create item_contact for MapFragment's Recycler View
+        /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(Connection connection) {
             if (ParseUser.getCurrentUser().equals(connection.getUser1())) {
                 try {

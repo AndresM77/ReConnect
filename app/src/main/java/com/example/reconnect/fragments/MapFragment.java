@@ -30,7 +30,7 @@ import java.util.List;
 public class MapFragment extends Fragment {
 
     //Initializing fragment tag
-    public final static String TAG = "TimelineFragment";
+    public final static String TAG = "MapFragment";
     //Initializing variables necessary for recycler view
     private RecyclerView rvConnections;
     private ConnectionsAdapter adapter;
@@ -114,7 +114,7 @@ public class MapFragment extends Fragment {
                     return;
                 }
                 mConnections.clear();
-                mConnections.addAll(mConnections);
+                mConnections.addAll(connections);
                 adapter.notifyDataSetChanged();
                 for (int i = 0; i < mConnections.size(); i++) {
                     Connection connection = connections.get(i);

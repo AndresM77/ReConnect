@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        private LinearLayout llBody;
         private TextView name;
         private TextView latitude;
         private TextView longitude;
@@ -54,6 +56,8 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             name = itemView.findViewById(R.id.contactName);
             latitude = itemView.findViewById(R.id.contactLatitude);
             longitude = itemView.findViewById(R.id.contactLongitude);
+            llBody = itemView.findViewById(R.id.llBody);
+
 
             // onClick listener to request a meeting
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +79,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                     view.getContext().startActivity(intent);
                 }
             });
+
         }
 
         // method that connects information to create item_contact for MapFragment's Recycler View

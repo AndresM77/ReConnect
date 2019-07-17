@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,12 +33,6 @@ public class CalendarFragment extends Fragment {
     private EventAdapter adapter;
     private List<Event> mEvents;
     private SwipeRefreshLayout swipeContainer;
-    //Initializing view objects
-    private Button switchBtn;
-
-    public static MapFragment newInstance() {
-        return new MapFragment();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +58,7 @@ public class CalendarFragment extends Fragment {
         rvEvents.setLayoutManager(linearLayoutManager);
 
         // Lookup the swipe container view
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        swipeContainer = view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -87,7 +80,7 @@ public class CalendarFragment extends Fragment {
     }
 
     public void queryEvents() {
-        ParseQuery<Event> postQuery = new ParseQuery<Event>(Event.class);
+        ParseQuery<Event> postQuery = new ParseQuery<>(Event.class);
         postQuery.include(Event.KEY_CREATOR);
         postQuery.setLimit(20);
         postQuery.whereEqualTo(Event.KEY_CREATOR, ParseUser.getCurrentUser());
@@ -101,13 +94,8 @@ public class CalendarFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-//              mEvents.clear();
                 mEvents.addAll(events);
                 adapter.notifyDataSetChanged();
-                for (int i = 0; i < mEvents.size(); i++) {
-                    Event event = mEvents.get(i);
-                    Log.d(TAG, "Creator: " + event.getCreator().getUsername());
-                }
             }
         });
     }

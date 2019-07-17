@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.reconnect.fragments.CalendarFragment;
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
 import com.parse.ParseQuery;

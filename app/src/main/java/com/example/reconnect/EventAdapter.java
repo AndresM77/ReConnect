@@ -12,9 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

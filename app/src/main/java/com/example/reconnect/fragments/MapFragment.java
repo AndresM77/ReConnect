@@ -118,7 +118,7 @@ public class MapFragment extends Fragment {
                 adapter.notifyDataSetChanged();
                 for (int i = 0; i < mConnections.size(); i++) {
                     Connection connection = connections.get(i);
-                    Log.d(TAG, "User1: " + connection.getUser1().getUsername() + ", User2: " + connection.getUser2().getUsername());
+                    //Log.d(TAG, "User1: " + connection.getUser1().getUsername() + ", User2: " + connection.getUser2().getUsername());
                 }
             }
         });

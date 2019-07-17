@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.reconnect.ConnectionsAdapter;
+import com.example.reconnect.EventAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
 import com.parse.FindCallback;
@@ -31,7 +31,7 @@ public class CalendarFragment extends Fragment {
     public final static String TAG = "CalendarFragment";
     //Initializing variables necessary for recycler view
     private RecyclerView rvEvents;
-    private ConnectionsAdapter adapter;
+    private EventAdapter adapter;
     private List<Event> mEvents;
     private SwipeRefreshLayout swipeContainer;
     //Initializing view objects

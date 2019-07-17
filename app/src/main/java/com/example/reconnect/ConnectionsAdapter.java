@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.model.Connection;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -85,14 +86,22 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
         // method that connects information to create item_contact for MapFragment's Recycler View
         public void bind(Connection connection) {
             if (ParseUser.getCurrentUser().equals(connection.getUser1())) {
-                name.setText(connection.getUser2().getUsername());
-                latitude.setText((int) connection.getUser2().getParseGeoPoint("location").getLatitude());
-                longitude.setText((int) connection.getUser2().getParseGeoPoint("location").getLongitude());
+                try {
+                    name.setText(connection.getUser2().fetchIfNeeded().getUsername());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                latitude.setText(Double.toString(connection.getUser2().getParseGeoPoint("location").getLatitude()));
+                longitude.setText(Double.toString(connection.getUser2().getParseGeoPoint("location").getLongitude()));
             }
             else {
-                name.setText(connection.getUser1().getUsername());
-                latitude.setText((int) connection.getUser1().getParseGeoPoint("location").getLatitude());
-                longitude.setText((int) connection.getUser1().getParseGeoPoint("location").getLongitude());
+                try {
+                    name.setText(connection.getUser2().fetchIfNeeded().getUsername());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                latitude.setText(Double.toString(connection.getUser1().getParseGeoPoint("location").getLatitude()));
+                longitude.setText(Double.toString(connection.getUser1().getParseGeoPoint("location").getLongitude()));
             }
         }
 

@@ -20,15 +20,15 @@ public class Event extends ParseObject {
     public static final String KEY_CREATED_AT = "createdAt";
 
 
-    public Date getStartTime() {return getDate(KEY_START_TIME);}
+    public String getStartTime() {return getString(KEY_START_TIME);}
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         put(KEY_START_TIME, startTime);
     }
 
-    public Date getEndTime() {return getDate(KEY_END_TIME);}
+    public String getEndTime() {return getString(KEY_END_TIME);}
 
-    public void setEndTime(Date endTime) {put(KEY_END_TIME, endTime);}
+    public void setEndTime(String endTime) {put(KEY_END_TIME, endTime);}
 
     public String getName() {return getString(KEY_NAME);}
 

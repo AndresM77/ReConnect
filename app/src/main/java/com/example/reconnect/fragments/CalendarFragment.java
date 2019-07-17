@@ -101,7 +101,7 @@ public class CalendarFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-//                mEvents.clear();
+//              mEvents.clear();
                 mEvents.addAll(events);
                 adapter.notifyDataSetChanged();
                 for (int i = 0; i < mEvents.size(); i++) {

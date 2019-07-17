@@ -10,8 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -69,7 +71,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             String meetingWith = meetingTitle + " with";
             meetingName.setText(meetingWith);
             try {
-                attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
+                if (Event.KEY_ATTENDEE.equals(ParseUser.getCurrentUser())) {
+                    attendee.setText(event.getCreator().fetchIfNeeded().getUsername());
+                } else if (Event.KEY_CREATOR.equals(ParseUser.getCurrentUser())) {
+                    attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
+                }
             } catch (ParseException e) {
                 Log.e("EventAdapter", "Unable to get the username of the attendee");
                 e.printStackTrace();
@@ -81,7 +87,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             String displayDate = month + "/" + day + "/" + year;
             date.setText(displayDate);
-            industry.setText(event.getAttendee().get("industry").toString());
+            try {
+                industry.setText(event.getAttendee().fetchIfNeeded().get("industry").toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
             time.setText(timeSpan);
         }

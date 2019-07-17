@@ -17,6 +17,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.sql.Date;
+
 public class RequestMeeting extends AppCompatActivity {
 
     TextView requestee;
@@ -61,10 +63,10 @@ public class RequestMeeting extends AppCompatActivity {
                 event.put("startTime", startTime.getText().toString());
                 event.put("endTime", endTime.getText().toString());
                 event.put("name", meetingName.getText().toString());
-                event.put("creator", ParseUser.getCurrentUser().getObjectId());
+                event.put("creator", ParseUser.getCurrentUser());
                 event.put("pending", true);
                 event.put("reconnect", true);
-                event.put("date", date.getText().toString());
+                event.put("date", Date.valueOf(date.getText().toString()));
 
                 ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
                 try {

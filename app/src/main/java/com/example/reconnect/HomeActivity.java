@@ -31,8 +31,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //check if the meetingId sent by the intent is true...if not null do things
-
         //If saved instance state is null set the timeline fragment to be the initial instance
         if (null == savedInstanceState) {
             getSupportFragmentManager().beginTransaction()
@@ -41,6 +39,12 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        //check if the meetingId sent by the intent is true...if not null do things
+        if (getIntent().getParcelableExtra("meetingId") != null) {
+            fragmentManager.beginTransaction().replace(R.id.container, new CalendarFragment()).commit();
+        }
+
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 

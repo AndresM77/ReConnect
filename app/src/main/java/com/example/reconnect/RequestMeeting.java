@@ -13,9 +13,9 @@ import android.widget.TextView;
 import com.example.reconnect.fragments.CalendarFragment;
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class RequestMeeting extends AppCompatActivity {
 
@@ -39,7 +39,7 @@ public class RequestMeeting extends AppCompatActivity {
         submitRequest = findViewById(R.id.submitRequest);
 
         // grab the objectId of the requested User
-        String requestedUserId = getIntent().getStringExtra("requesteeId");
+        final String requestedUserId = getIntent().getStringExtra("requesteeId");
 
         // find the requested User in our Parse database
         ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
@@ -57,20 +57,33 @@ public class RequestMeeting extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // create Event for the requested meeting
-                ParseObject event = new Event();
+                final Event event = new Event();
                 event.put("startTime", startTime.getText());
                 event.put("endTime", endTime.getText());
                 event.put("name", meetingName.getText());
-                event.put("creator", ParseUser.getCurrentUser().getUsername());
-                event.put("attendee", requestee.getText());
+                event.put("creator", ParseUser.getCurrentUser().getObjectId());
                 event.put("pending", true);
                 event.put("reconnect", true);
                 event.put("date", date.getText());
 
-                Intent i = new Intent(RequestMeeting.this, CalendarFragment.class);
-                i.putExtra("meetingId", event.getObjectId());
+                ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
+                try {
+                    ParseUser requestedUser = userParseQuery.get(requestedUserId);
+                    event.put("attendee", requestedUser);
+                }
+                catch(ParseException e) {
+                    Log.e("RequestMeeting Activity", "Unable to get the name of the requested User for the Event!");
+                    e.printStackTrace();
+                }
 
-                startActivity(i);
+                event.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Intent i = new Intent(RequestMeeting.this, CalendarFragment.class);
+                        i.putExtra("meetingId", event.getObjectId());
+                        startActivity(i);
+                    }
+                });
             }
         });
     }

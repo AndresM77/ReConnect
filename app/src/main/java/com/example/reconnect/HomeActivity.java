@@ -1,5 +1,6 @@
 package com.example.reconnect;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,8 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.reconnect.fragments.CalendarFragment;
+import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.fragments.MapFragment;
-import com.example.reconnect.fragments.MessagesFragment;
 import com.example.reconnect.fragments.ReconnectFragment;
 import com.example.reconnect.model.Connection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -56,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
         final Fragment fragment1 = new MapFragment();
         final Fragment fragment2 = new ReconnectFragment();
         final Fragment fragment3 = new CalendarFragment();
-        final Fragment fragment4 = new MessagesFragment();
+        final Fragment fragment4 = new ConversationsFragment();
 
         // handle navigation selection
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -106,8 +107,8 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.ivSettings:
                 //Take to settings activity
-                //Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
-                //startActivity(i); // brings up the second activity
+                Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
+                startActivity(i); // brings up the second activity
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

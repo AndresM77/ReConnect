@@ -1,6 +1,5 @@
 package com.example.reconnect.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.reconnect.ConnectionsAdapter;
-import com.example.reconnect.EventAdapter;
-import com.example.reconnect.MapActivity;
 import com.example.reconnect.R;
-import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Event;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -60,7 +56,7 @@ public class CalendarFragment extends Fragment {
         //Instantiating connections list
         mEvents = new ArrayList<>();
         //Set up adapter
-        adapter = new EventAdapter(getContext(), mEvents);
+        //adapter = new EventAdapter(getContext(), mEvents);
         //Set adapter on recycler view
         rvEvents.setAdapter(adapter);
         //Set up linear layout manager
@@ -95,7 +91,7 @@ public class CalendarFragment extends Fragment {
         postQuery.include(Event.KEY_CREATOR);
         postQuery.setLimit(20);
         postQuery.whereEqualTo(Event.KEY_CREATOR, ParseUser.getCurrentUser());
-        postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
+        postQuery.addDescendingOrder(Event.KEY_CREATED_AT);
 
         postQuery.findInBackground(new FindCallback<Event>() {
             @Override

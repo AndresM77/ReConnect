@@ -36,7 +36,7 @@ public class MessageContactsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages_contacts);
         //Setup view objects
-        rvConnections = findViewById(R.id.rvConnections);
+        rvConnections = findViewById(R.id.rvMessages);
         //Instantiating connections list
         mConnections = new ArrayList<>();
         //Initialize

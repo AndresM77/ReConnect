@@ -10,18 +10,19 @@
     >
 
     <TextView
+        android:id="@+id/contactName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:hint="Contact Name" />
+
+    <TextView
         android:id="@+id/contactLongitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:hint="Longitude" />
 
-    <TextView
-        android:id="@+id/contactName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:hint="Contact Name" />
 
     <TextView
         android:id="@+id/contactLatitude"

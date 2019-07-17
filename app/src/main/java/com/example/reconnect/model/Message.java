@@ -10,7 +10,7 @@ import java.util.Date;
 @ParseClassName("Message")
 public class Message extends ParseObject {
     public static final String KEY_MESSAGE = "message";
-    public static final String KEY_ID = "id";
+    public static final String KEY_CONVERSATION = "conversation";
     public static final String KEY_SENDER = "sender";
     public static final String KEY_RECIPIENT ="recipient";
     public static final String KEY_CREATED_AT = "createdAt";
@@ -21,11 +21,11 @@ public class Message extends ParseObject {
 
     public void setMessage(String message) {put(KEY_MESSAGE, message);}
 
-    public Integer getId() {
-        return getInt(KEY_ID);
+    public Integer getConversation() {
+        return getInt(KEY_CONVERSATION);
     }
 
-    public void setID(int id) {put(KEY_ID, id);}
+    public void setConversation(int conversation) {put(KEY_CONVERSATION, conversation);}
 
     public ParseUser getSender() {
         return getParseUser(KEY_SENDER);

@@ -113,7 +113,7 @@ public class MapFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-//                mConnections.clear();
+                mConnections.clear();
                 mConnections.addAll(connections);
                 adapter.notifyDataSetChanged();
                 for (int i = 0; i < mConnections.size(); i++) {

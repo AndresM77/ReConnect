@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -15,11 +16,8 @@ import com.example.reconnect.fragments.CalendarFragment;
 import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.fragments.MapFragment;
 import com.example.reconnect.fragments.ReconnectFragment;
-import com.example.reconnect.model.Connection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
-
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -55,8 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         
         // Get the current user
         currentUser = ParseUser.getCurrentUser();
-        // Query connections for the current user
-        queryContacts(currentUser);
+
 
         // define your fragments here
         final Fragment fragment1 = new MapFragment();
@@ -95,7 +92,13 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.action_map);
     }
 
-    private void queryContacts(ParseUser currentUser) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 20) {
+            ParseUser recipient = data.getParcelableExtra("recipient");
+            ConversationsFragment fragment = new ConversationsFragment();
+            fragment.createConversation(recipient);
+        }
     }
 
     @Override

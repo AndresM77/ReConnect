@@ -1,10 +1,12 @@
 package com.example.reconnect.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,12 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.reconnect.ConversationsAdapter;
+import com.example.reconnect.MessageContactsActivity;
+import com.example.reconnect.MessagesActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Conversation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +33,14 @@ public class ConversationsFragment extends Fragment {
 
     //Initializing fragment tag
     public final static String TAG = "ConversationsFragment";
+    public final static int REQUEST_CODE = 20;
     //Initializing variables necessary for recycler view
     private RecyclerView rvConversations;
     private ConversationsAdapter adapter;
     private List<Conversation> mConversations;
     private SwipeRefreshLayout swipeContainer;
+    //Initializing extraneous view objects
+    private Button btnCreateConversation;
 
     public static ConversationsFragment newInstance() {
         return new ConversationsFragment();
@@ -50,6 +58,7 @@ public class ConversationsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
         rvConversations = view.findViewById(R.id.rvConversations);
+        btnCreateConversation = view.findViewById(R.id.btnCreate);
         //Instantiating connections list
         mConversations = new ArrayList<>();
         //Set up adapter
@@ -60,6 +69,13 @@ public class ConversationsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager((getContext()));
         //Set layout manager on recycler view
         rvConversations.setLayoutManager(linearLayoutManager);
+
+        btnCreateConversation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectRecipient();
+            }
+        });
 
         // Lookup the swipe container view
         swipeContainer = view.findViewById(R.id.swipeContainer);
@@ -81,6 +97,31 @@ public class ConversationsFragment extends Fragment {
                 android.R.color.holo_red_light);
         //query posts
         queryConversations();
+    }
+
+    public void selectRecipient(){
+        Intent i = new Intent(getContext(), MessageContactsActivity.class);
+        startActivityForResult(i, REQUEST_CODE);
+    }
+
+    public void createConversation(final ParseUser conversee) {
+        Conversation conversation = new Conversation();
+        conversation.setConverser(ParseUser.getCurrentUser());
+        conversation.setConversee(conversee);
+        conversation.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e!=null) {
+                    Log.d(TAG, "Error while saving");
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d(TAG, "Success");
+                Intent i = new Intent(getContext(), MessagesActivity.class);
+                i.putExtra("recipient", conversee);
+                startActivity(i);
+            }
+        });
     }
 
     public void queryConversations() {

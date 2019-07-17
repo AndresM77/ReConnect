@@ -1,5 +1,6 @@
 package com.example.reconnect;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -106,8 +107,8 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.ivSettings:
                 //Take to settings activity
-                //Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
-                //startActivity(i); // brings up the second activity
+                Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
+                startActivity(i); // brings up the second activity
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

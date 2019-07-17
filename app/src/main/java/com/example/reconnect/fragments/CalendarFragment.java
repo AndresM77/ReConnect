@@ -15,8 +15,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.reconnect.EventAdapter;
 import com.example.reconnect.R;
+import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Event;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -83,7 +85,14 @@ public class CalendarFragment extends Fragment {
         ParseQuery<Event> postQuery = new ParseQuery<>(Event.class);
         postQuery.include(Event.KEY_CREATOR);
         postQuery.setLimit(20);
-        postQuery.whereEqualTo(Event.KEY_CREATOR, ParseUser.getCurrentUser());
+
+        // Work to create event on both user profiles (the creator and the attendee)
+        if (Event.KEY_CREATOR.equals(ParseUser.getCurrentUser())) {
+            postQuery.whereEqualTo(Event.KEY_CREATOR, ParseUser.getCurrentUser());
+        } else if (Event.KEY_ATTENDEE.equals(ParseUser.getCurrentUser())) {
+            postQuery.whereEqualTo(Event.KEY_ATTENDEE, ParseUser.getCurrentUser());
+        }
+
         postQuery.addDescendingOrder(Event.KEY_CREATED_AT);
 
         postQuery.findInBackground(new FindCallback<Event>() {

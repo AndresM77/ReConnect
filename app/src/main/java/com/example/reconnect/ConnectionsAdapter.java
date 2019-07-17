@@ -93,7 +93,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             }
             else {
                 try {
-                    name.setText(connection.getUser2().fetchIfNeeded().getUsername());
+                    name.setText(connection.getUser1().fetchIfNeeded().getUsername());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

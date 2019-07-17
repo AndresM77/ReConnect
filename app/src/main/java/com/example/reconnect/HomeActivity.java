@@ -31,6 +31,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        //check if the meetingId sent by the intent is true...if not null do things
+
         //If saved instance state is null set the timeline fragment to be the initial instance
         if (null == savedInstanceState) {
             getSupportFragmentManager().beginTransaction()

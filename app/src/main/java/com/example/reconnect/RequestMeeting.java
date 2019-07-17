@@ -58,13 +58,13 @@ public class RequestMeeting extends AppCompatActivity {
             public void onClick(View view) {
                 // create Event for the requested meeting
                 final Event event = new Event();
-                event.put("startTime", startTime.getText());
-                event.put("endTime", endTime.getText());
-                event.put("name", meetingName.getText());
+                event.put("startTime", startTime.getText().toString());
+                event.put("endTime", endTime.getText().toString());
+                event.put("name", meetingName.getText().toString());
                 event.put("creator", ParseUser.getCurrentUser().getObjectId());
                 event.put("pending", true);
                 event.put("reconnect", true);
-                event.put("date", date.getText());
+                event.put("date", date.getText().toString());
 
                 ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
                 try {
@@ -79,7 +79,12 @@ public class RequestMeeting extends AppCompatActivity {
                 event.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        Intent i = new Intent(RequestMeeting.this, CalendarFragment.class);
+                        if (e != null) {
+                            Log.d("requestMeeting", "Error while saving");
+                            e.printStackTrace();
+                            return;
+                        }
+                        Intent i = new Intent(RequestMeeting.this, HomeActivity.class);
                         i.putExtra("meetingId", event.getObjectId());
                         startActivity(i);
                     }

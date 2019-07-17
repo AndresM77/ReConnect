@@ -56,7 +56,7 @@ public class CalendarFragment extends Fragment {
         //Instantiating connections list
         mEvents = new ArrayList<>();
         //Set up adapter
-        //adapter = new EventAdapter(getContext(), mEvents);
+        adapter = new EventAdapter(getContext(), mEvents);
         //Set adapter on recycler view
         rvEvents.setAdapter(adapter);
         //Set up linear layout manager
@@ -101,7 +101,7 @@ public class CalendarFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-                mEvents.clear();
+//                mEvents.clear();
                 mEvents.addAll(events);
                 adapter.notifyDataSetChanged();
                 for (int i = 0; i < mEvents.size(); i++) {

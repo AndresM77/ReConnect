@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.example.reconnect.fragments.CalendarFragment;
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -58,7 +57,7 @@ public class RequestMeeting extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // create Event for the requested meeting
-                final ParseObject event = new Event();
+                final Event event = new Event();
                 event.put("startTime", startTime.getText());
                 event.put("endTime", endTime.getText());
                 event.put("name", meetingName.getText());

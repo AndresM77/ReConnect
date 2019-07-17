@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         //check if the meetingId sent by the intent is true...if not null do things
-        if (getIntent().getParcelableExtra("meetingId") != null) {
+        if (getIntent().getStringExtra("meetingId") != null) {
             fragmentManager.beginTransaction().replace(R.id.container, new CalendarFragment()).commit();
         }
 

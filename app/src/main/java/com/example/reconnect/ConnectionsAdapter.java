@@ -71,7 +71,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                     // TODO: finish my attempt to find the connection the User is selecting
                     Connection selectedConnection = connections.get(view.getVerticalScrollbarPosition());
 
-                    if (ParseUser.getCurrentUser().getUsername() == selectedConnection.getUser1().getUsername())
+                    if (ParseUser.getCurrentUser().getUsername().equals(selectedConnection.getUser1().getUsername()))
                         intent.putExtra("requesteeId", selectedConnection.getUser2().getObjectId());
                     else {
                         intent.putExtra("requesteeId", selectedConnection.getUser1().getObjectId());

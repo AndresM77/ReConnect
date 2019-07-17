@@ -63,7 +63,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         }
 
         public void bind(Event event) {
-            String meetingWith = event.getName() + " with";
+            String meetingTitle;
+            if (event.getName().equals("")) { meetingTitle = "Meeting"; }
+            else { meetingTitle = event.getName(); }
+            String meetingWith = meetingTitle + " with";
             meetingName.setText(meetingWith);
             try {
                 attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());

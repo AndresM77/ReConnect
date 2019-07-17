@@ -2,6 +2,7 @@ package com.example.reconnect.model;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.Date;
@@ -54,5 +55,23 @@ public class Event extends ParseObject {
 
     public void setKeyDate(Date date) {
         put(KEY_DATE, date);
+    }
+
+    //Querying our Event class
+    public static class Query extends ParseQuery<Event> {
+
+        public Query() {
+            super(Event.class);
+        }
+
+        public Event.Query getTop() {
+            setLimit(20);
+            return this;
+        }
+
+        public Event.Query withUser() {
+            include("creator");
+            return this;
+        }
     }
 }

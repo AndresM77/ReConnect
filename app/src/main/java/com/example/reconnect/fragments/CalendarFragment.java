@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +35,7 @@ public class CalendarFragment extends Fragment {
     private RecyclerView rvEvents;
     private EventAdapter adapter;
     private List<Event> mEvents;
+    private TextView tvCurrentUsername;
     private SwipeRefreshLayout swipeContainer;
 
     @Override
@@ -48,6 +50,8 @@ public class CalendarFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
         rvEvents = view.findViewById(R.id.rvEvents);
+        //Display username of current user
+        tvCurrentUsername = view.findViewById(R.id.tvCurrentUsername);
         //Instantiating connections list
         mEvents = new ArrayList<>();
         //Set up adapter

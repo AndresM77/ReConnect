@@ -87,7 +87,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             String displayDate = month + "/" + day + "/" + year;
             date.setText(displayDate);
-            industry.setText(event.getAttendee().get("industry").toString());
+            try {
+                industry.setText(event.getAttendee().fetchIfNeeded().get("industry").toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
             time.setText(timeSpan);
         }

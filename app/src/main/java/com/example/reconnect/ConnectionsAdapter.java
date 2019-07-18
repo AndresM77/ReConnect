@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.model.Connection;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -48,14 +49,12 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
-        private TextView latitude;
-        private TextView longitude;
+        private TextView distanceAwayV;
 
         public ViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.contactName);
-            latitude = itemView.findViewById(R.id.contactLatitude);
-            longitude = itemView.findViewById(R.id.contactLongitude);
+            distanceAwayV = itemView.findViewById(R.id.distanceAway);
 
 
             // onClick listener to request a meeting
@@ -82,24 +81,41 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
         /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(Connection connection) {
-            if (ParseUser.getCurrentUser().equals(connection.getUser1())) {
+            Double latitudeC;
+            Double longitudeC;
+            Double latitude = ParseUser.getCurrentUser().getParseGeoPoint("location").getLatitude();
+            Double longitude = ParseUser.getCurrentUser().getParseGeoPoint("location").getLongitude();
+            final Double EARTH_RADIUS = 3961D;
+            if (ParseUser.getCurrentUser().getUsername().equals(connection.getUser1().getUsername())) {
                 try {
                     name.setText(connection.getUser2().fetchIfNeeded().getUsername());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                latitude.setText(Double.toString(connection.getUser2().getParseGeoPoint("location").getLatitude()));
-                longitude.setText(Double.toString(connection.getUser2().getParseGeoPoint("location").getLongitude()));
+
+                latitudeC = connection.getUser2().getParseGeoPoint("location").getLatitude();
+                longitudeC = connection.getUser2().getParseGeoPoint("location").getLongitude();
+
             }
             else {
                 try {
-                    name.setText(connection.getUser2().fetchIfNeeded().getUsername());
+                    name.setText(connection.getUser1().fetchIfNeeded().getUsername());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                latitude.setText(Double.toString(connection.getUser1().getParseGeoPoint("location").getLatitude()));
-                longitude.setText(Double.toString(connection.getUser1().getParseGeoPoint("location").getLongitude()));
+
+                latitudeC = connection.getUser1().getParseGeoPoint("location").getLatitude();
+                longitudeC = connection.getUser1().getParseGeoPoint("location").getLongitude();
             }
+
+            // TODO fix this logic
+            // Currently implemented logic from https://andrew.hedges.name/experiments/haversine/
+            Double dlon = longitudeC - longitude;
+            Double dlat = latitudeC - latitude;
+            Double a = Math.pow((Math.sin(dlat/2)), 2) + Math.cos(latitude) * Math.cos(latitudeC) * Math.pow((Math.sin(dlon/2)), 2);
+            Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            Double d = EARTH_RADIUS * c;
+            distanceAwayV.setText(d.toString() + " mi away");
         }
 
     }

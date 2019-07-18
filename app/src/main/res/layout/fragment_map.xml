@@ -7,13 +7,31 @@
         android:id="@+id/btnSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:backgroundTint="#FFFFFF"
+        android:text="Go to Map" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
+        android:id="@+id/tvWelcomeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome to ReLink!"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvFindText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Find someone you know..."
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvConnections"

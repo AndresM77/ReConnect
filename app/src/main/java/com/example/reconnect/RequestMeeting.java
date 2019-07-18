@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,11 +21,11 @@ import java.sql.Date;
 
 public class RequestMeeting extends AppCompatActivity {
 
-    TextView requestee;
+    TextView request;
     EditText meetingName;
-    EditText date;
+    EditText meetingDate;
     EditText startTime;
-    EditText endTime;
+    EditText meetingDuration;
     Button submitRequest;
 
     @Override
@@ -32,11 +33,11 @@ public class RequestMeeting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_meeting);
 
-        requestee = findViewById(R.id.requesteeName);
+        request = findViewById(R.id.requestMeetingPrompt);
         meetingName = findViewById(R.id.meetingName);
-        date = findViewById(R.id.requestDate);
+        meetingDate = findViewById(R.id.meetingDate);
         startTime = findViewById(R.id.startTime);
-        endTime = findViewById(R.id.endTime);
+        meetingDuration = findViewById(R.id.meetingDuration);
         submitRequest = findViewById(R.id.submitRequest);
 
         // grab the objectId of the requested User
@@ -46,12 +47,14 @@ public class RequestMeeting extends AppCompatActivity {
         ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
         try {
             ParseUser requestedUser = userParseQuery.get(requestedUserId);
-            requestee.setText(requestedUser.getUsername());
+            request.setText("Request a meeting with " + requestedUser.getUsername() + ".");
         }
         catch(ParseException e) {
             Log.e("RequestMeeting Activity", "Unable to get the name of the requested User!");
             e.printStackTrace();
         }
+
+        //TODO insert date logic here
 
         // onClick listener for the submit action
         submitRequest.setOnClickListener(new View.OnClickListener() {
@@ -60,12 +63,13 @@ public class RequestMeeting extends AppCompatActivity {
                 // create Event for the requested meeting
                 final Event event = new Event();
                 event.put("startTime", startTime.getText().toString());
-                event.put("endTime", endTime.getText().toString());
+                //TODO fix endTime to account for chosen duration. 4:00 chosen temporarily for end time
+                event.put("endTime", "4:00");
                 event.put("name", meetingName.getText().toString());
                 event.put("creator", ParseUser.getCurrentUser());
                 event.put("pending", true);
                 event.put("reconnect", true);
-                event.put("date", Date.valueOf(date.getText().toString()));
+                event.put("date", meetingDate);
 
                 ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
                 try {

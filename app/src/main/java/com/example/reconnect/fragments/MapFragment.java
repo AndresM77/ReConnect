@@ -99,13 +99,20 @@ public class MapFragment extends Fragment {
     }
 
     public void queryConnections() {
+        boolean isEqual = false;
         ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
         postQuery.include(Connection.KEY_USER1);
         postQuery.setLimit(20);
 
         postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
-        postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
-        // TODO - Add a check for KEY_USER2 and currentUser
+
+        // Displays the connection on both user profiles (user 1 and user 2)
+        if (Connection.KEY_USER1.equals(ParseUser.getCurrentUser())) {
+            //isEqual = true;
+            postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
+        } else if (Connection.KEY_USER2.equals(ParseUser.getCurrentUser())) {
+            postQuery.whereEqualTo(Connection.KEY_USER2, ParseUser.getCurrentUser());
+        }
 
         postQuery.findInBackground(new FindCallback<Connection>() {
             @Override

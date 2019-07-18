@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ public class CalendarFragment extends Fragment {
     private RecyclerView rvEvents;
     private EventAdapter adapter;
     private List<Event> mEvents;
+    private TextView tvCurrentUsername;
     private SwipeRefreshLayout swipeContainer;
 
     @Override
@@ -46,6 +48,8 @@ public class CalendarFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
         rvEvents = view.findViewById(R.id.rvEvents);
+        //Display username of current user
+        tvCurrentUsername = view.findViewById(R.id.tvCurrentUsername);
         //Instantiating connections list
         mEvents = new ArrayList<>();
         //Set up adapter
@@ -83,7 +87,14 @@ public class CalendarFragment extends Fragment {
         ParseQuery<Event> postQuery = new ParseQuery<>(Event.class);
         postQuery.include(Event.KEY_CREATOR);
         postQuery.setLimit(20);
-        postQuery.whereEqualTo(Event.KEY_CREATOR, ParseUser.getCurrentUser());
+
+        // Work to create event on both user profiles (the creator and the attendee)
+        if (Event.KEY_CREATOR.equals(ParseUser.getCurrentUser())) {
+            postQuery.whereEqualTo(Event.KEY_CREATOR, ParseUser.getCurrentUser());
+        } else if (Event.KEY_ATTENDEE.equals(ParseUser.getCurrentUser())) {
+            postQuery.whereEqualTo(Event.KEY_ATTENDEE, ParseUser.getCurrentUser());
+        }
+
         postQuery.addDescendingOrder(Event.KEY_CREATED_AT);
 
         postQuery.findInBackground(new FindCallback<Event>() {

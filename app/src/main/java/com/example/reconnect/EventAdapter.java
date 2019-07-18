@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
@@ -45,6 +48,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        TextView meetingName;
         TextView attendee;
         TextView industry;
         TextView date;
@@ -52,6 +56,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            meetingName = itemView.findViewById(R.id.meetingWith);
             attendee = itemView.findViewById(R.id.attendee);
             industry = itemView.findViewById(R.id.industry);
             date = itemView.findViewById(R.id.meetingDate);
@@ -59,14 +64,33 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         }
 
         public void bind(Event event) {
+            String meetingTitle;
+            if (event.getName().equals("")) { meetingTitle = "Meeting"; }
+            else { meetingTitle = event.getName(); }
+            String meetingWith = meetingTitle + " with";
+            meetingName.setText(meetingWith);
             try {
-                attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
+                if (Event.KEY_ATTENDEE.equals(ParseUser.getCurrentUser())) {
+                    attendee.setText(event.getCreator().fetchIfNeeded().getUsername());
+                } else if (Event.KEY_CREATOR.equals(ParseUser.getCurrentUser())) {
+                    attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
+                }
             } catch (ParseException e) {
                 Log.e("EventAdapter", "Unable to get the username of the attendee");
                 e.printStackTrace();
             }
-            industry.setText(event.getAttendee().get("industry").toString());
-            date.setText(event.get("date").toString());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime((Date) event.get("date"));
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            String displayDate = month + "/" + day + "/" + year;
+            date.setText(displayDate);
+            try {
+                industry.setText(event.getAttendee().fetchIfNeeded().get("industry").toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
             time.setText(timeSpan);
         }

@@ -17,12 +17,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.reconnect.ConversationsAdapter;
 import com.example.reconnect.MessageContactsActivity;
+import com.example.reconnect.MessagesActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Conversation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +39,7 @@ public class ConversationsFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     //Initializing extraneous view objects
     private Button btnCreateConversation;
+    private ConversationClickListener listener;
 
     public static ConversationsFragment newInstance() {
         return new ConversationsFragment();
@@ -59,8 +60,15 @@ public class ConversationsFragment extends Fragment {
         btnCreateConversation = view.findViewById(R.id.btnCreate);
         //Instantiating connections list
         mConversations = new ArrayList<>();
+        //Set up listener
+        listener = new ConversationClickListener() {
+            @Override
+            public void onClick(Conversation conversation) {
+                goToConversation(conversation);
+            }
+        };
         //Set up adapter
-        adapter = new ConversationsAdapter(getContext(), mConversations);
+        adapter = new ConversationsAdapter(getContext(), mConversations, listener);
         //Set adapter on recycler view
         rvConversations.setAdapter(adapter);
         //Set up linear layout manager
@@ -97,6 +105,12 @@ public class ConversationsFragment extends Fragment {
         queryConversations();
     }
 
+    private void goToConversation(Conversation conversation) {
+        Intent i = new Intent(getContext(), MessagesActivity.class);
+        i.putExtra("conversation", conversation);
+        startActivity(i);
+    }
+
     public void selectRecipient(){
         Intent i = new Intent(getContext(), MessageContactsActivity.class);
         startActivityForResult(i, REQUEST_CODE);
@@ -110,7 +124,8 @@ public class ConversationsFragment extends Fragment {
         postQuery.setLimit(20);
 
         postQuery.addDescendingOrder(Conversation.KEY_CREATED_AT);
-        postQuery.whereEqualTo(Conversation.KEY_CONVERSER, ParseUser.getCurrentUser());
+
+        //postQuery.whereEqualTo(Conversation., ParseUser.getCurrentUser());
         // TODO - Add a check for KEY_USER2 and currentUser
 
         postQuery.findInBackground(new FindCallback<Conversation>() {
@@ -126,5 +141,9 @@ public class ConversationsFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    public interface ConversationClickListener {
+        void onClick(Conversation conversation);
     }
 }

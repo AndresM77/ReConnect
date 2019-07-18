@@ -10,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.model.Conversation;
+import com.example.reconnect.model.Message;
 
 import java.util.List;
 
@@ -18,10 +20,12 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
 
     private Context context;
     private List<Conversation> conversations;
+    private ConversationsFragment.ConversationClickListener listener;
 
-    public ConversationsAdapter(Context context, List<Conversation> conversations) {
+    public ConversationsAdapter(Context context, List<Conversation> conversations, ConversationsFragment.ConversationClickListener listener) {
         this.context = context;
         this.conversations = conversations;
+        this.listener = listener;
     }
 
     @NonNull
@@ -44,21 +48,34 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView attendee;
-        TextView industry;
-        TextView date;
-        TextView time;
+        private TextView name;
+        private TextView lastMessage;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
-            attendee = itemView.findViewById(R.id.attendee);
-            industry = itemView.findViewById(R.id.industry);
-            date = itemView.findViewById(R.id.meetingDate);
-            time = itemView.findViewById(R.id.meetingTime);
+            name = itemView.findViewById(R.id.tvName);
+            lastMessage = itemView.findViewById(R.id.tvMessage);
+
+            // onClick listener to request a meeting
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onClick((Conversation) name.getTag());
+                }
+            });
+
         }
 
+        /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(Conversation conversation) {
-
+            name.setTag(conversation);
+            name.setText(conversation.getConversee().getUsername());
+            if (conversation.getLastMessage() != null){
+                Message message = (Message) conversation.getLastMessage();
+                lastMessage.setText(message.getMessage());
+            } else {
+                lastMessage.setText("");
+            }
         }
     }
 }

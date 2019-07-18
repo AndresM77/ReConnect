@@ -24,6 +24,22 @@ public class Conversation extends ParseObject {
 
     public void setLastMessage(Message message) {put(KEY_LAST_MESSAGE, message);}
 
+    public ParseUser getCurrentUser() {
+        if (ParseUser.getCurrentUser().equals(getConversee())){
+            return getConversee();
+        } else {
+            return getConverser();
+        }
+    }
+
+    public ParseUser getOtherUser() {
+        if (ParseUser.getCurrentUser().equals(getConversee())){
+            return getConverser();
+        } else {
+            return getConversee();
+        }
+    }
+
     //Querying our Conversation class
     public static class Query extends ParseQuery<Conversation> {
 

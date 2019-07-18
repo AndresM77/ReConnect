@@ -6,19 +6,29 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.reconnect.model.User;
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.List;
+
 public class RegisterActivity extends AppCompatActivity {
 
+    //Initializing fragment tag
+    public final static String TAG = "RegisterActivity";
+    //Initializing View objects
     private EditText etEmail;
     private EditText etUser;
     private EditText etPass;
     private Button btnSignUp;
+    private List<User> mUsers;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +43,32 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveUser(etEmail.getText().toString(), etUser.getText().toString(), etPass.getText().toString());
+                queryUsers();
+                if (mUsers.size() > 0) {
+                    Toast.makeText(getApplicationContext(), "UserName exists", Toast.LENGTH_LONG).show();
+                } else {
+                    saveUser(etEmail.getText().toString(), etUser.getText().toString(), etPass.getText().toString());
+                }
+            }
+        });
+    }
+
+    public void queryUsers() {
+        ParseQuery<User> postQuery = new ParseQuery<>(User.class);
+        postQuery.whereEqualTo(User.KEY_USER, etUser.getText().toString());
+
+        // TODO - Add a check for KEY_USER2 and currentUser
+
+        postQuery.findInBackground(new FindCallback<User>() {
+            @Override
+            public void done(List<User> users, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with Query");
+                    e.printStackTrace();
+                    return;
+                }
+                mUsers.clear();
+                mUsers = users;
             }
         });
     }

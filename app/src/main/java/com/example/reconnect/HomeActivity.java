@@ -109,7 +109,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void createConversation(final ParseUser conversee) {
-        Conversation conversation = new Conversation();
+        final Conversation conversation = new Conversation();
         conversation.setConverser(ParseUser.getCurrentUser());
         conversation.setConversee(conversee);
         conversation.saveInBackground(new SaveCallback() {
@@ -122,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 Log.d(TAG, "Success");
                 Intent i = new Intent(HomeActivity.this, MessagesActivity.class);
-                i.putExtra("recipient", conversee);
+                i.putExtra("conversation", conversation);
                 startActivity(i);
             }
         });

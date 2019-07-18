@@ -21,11 +21,11 @@ public class Message extends ParseObject {
 
     public void setMessage(String message) {put(KEY_MESSAGE, message);}
 
-    public Integer getConversation() {
-        return getInt(KEY_CONVERSATION);
+    public ParseObject getConversation() {
+        return getParseObject(KEY_CONVERSATION);
     }
 
-    public void setConversation(int conversation) {put(KEY_CONVERSATION, conversation);}
+    public void setConversation(Conversation conversation) {put(KEY_CONVERSATION, conversation);}
 
     public ParseUser getSender() {
         return getParseUser(KEY_SENDER);

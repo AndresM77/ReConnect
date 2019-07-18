@@ -92,6 +92,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            if (event.getAttendee().equals(ParseUser.getCurrentUser())) {
+                attendee.setText(event.getCreator().toString());
+            } else if (event.getCreator().equals(ParseUser.getCurrentUser())) {
+                attendee.setText(event.getAttendee().toString());
+            }
             String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
             time.setText(timeSpan);
         }

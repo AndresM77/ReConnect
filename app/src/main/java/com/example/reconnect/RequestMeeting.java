@@ -1,16 +1,18 @@
 package com.example.reconnect;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -54,7 +56,15 @@ public class RequestMeeting extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //TODO insert date logic here
+        meetingDate.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "DatePicker");
+                //prevents the keyboard from popping up
+                return true;
+            }
+        });
 
         // onClick listener for the submit action
         submitRequest.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +79,7 @@ public class RequestMeeting extends AppCompatActivity {
                 event.put("creator", ParseUser.getCurrentUser());
                 event.put("pending", true);
                 event.put("reconnect", true);
-                event.put("date", meetingDate);
+                event.put("date", Date.valueOf(meetingDate.getText().toString()));
 
                 ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
                 try {

@@ -83,7 +83,7 @@ public class MessageContactsActivity extends AppCompatActivity {
         // Send intent back to home activity after selecting
         // a contact User name
         Intent intent = new Intent(this, RequestMeeting.class);
-        intent.putExtra("recipient", connection.getOtherUser());
+        intent.putExtra("connection", connection);
         setResult(REQUEST_CODE, intent);
         finish();
     }

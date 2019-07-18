@@ -37,7 +37,7 @@ public class Connection extends ParseObject {
     public void setStarred21(Boolean starred21) {put(KEY_STARRED_21, starred21);}
 
     public ParseUser getCurrentUser() {
-        if (ParseUser.getCurrentUser().equals(getUser1())){
+        if (ParseUser.getCurrentUser().getUsername().equals(getUser1().getUsername())){
             return getUser1();
         } else {
             return getUser2();
@@ -45,7 +45,7 @@ public class Connection extends ParseObject {
     }
 
     public ParseUser getOtherUser() {
-        if (ParseUser.getCurrentUser().equals(getUser1())){
+        if (ParseUser.getCurrentUser().getUsername().equals(getUser1().getUsername())){
             return getUser2();
         } else {
             return getUser1();

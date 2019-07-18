@@ -17,6 +17,7 @@ import com.example.reconnect.fragments.CalendarFragment;
 import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.fragments.MapFragment;
 import com.example.reconnect.fragments.ReconnectFragment;
+import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Conversation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseException;
@@ -103,15 +104,15 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == REQUEST_CODE) {
-            ParseUser recipient = data.getParcelableExtra("recipient");
-            createConversation(recipient);
+            Connection connection = data.getParcelableExtra("connection");
+            createConversation(connection);
         }
     }
 
-    public void createConversation(final ParseUser conversee) {
+    public void createConversation(final Connection connection) {
         final Conversation conversation = new Conversation();
         conversation.setConverser(ParseUser.getCurrentUser());
-        conversation.setConversee(conversee);
+        conversation.setConversee(connection.getOtherUser());
         conversation.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

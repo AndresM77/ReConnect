@@ -89,7 +89,7 @@ public class MessagesActivity extends AppCompatActivity {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 swipeContainer.setRefreshing(false);
-                queryMessages(conversation.getConversee());
+                queryMessages(conversation);
             }
         });
         // Configure the refreshing colors
@@ -98,7 +98,7 @@ public class MessagesActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         //query posts
-        queryMessages(conversation.getConversee());
+        queryMessages(conversation);
     }
 
     private void saveMessage() {
@@ -107,7 +107,7 @@ public class MessagesActivity extends AppCompatActivity {
         message.setMessage(etMessage.getText().toString());
         message.setRecipient(conversation.getConversee());
         message.setSender(ParseUser.getCurrentUser());
-        conversation.saveInBackground(new SaveCallback() {
+        message.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e!=null) {
@@ -117,16 +117,17 @@ public class MessagesActivity extends AppCompatActivity {
                 }
                 Log.d(TAG, "Success");
                 conversation.setLastMessage(message);
+                queryMessages(conversation);
             }
         });
     }
 
-    public void queryMessages(ParseUser recipient) {
+    public void queryMessages(Conversation conversation) {
         ParseQuery<Message> postQuery = new ParseQuery<Message>(Message.class);
         postQuery.include(Message.KEY_SENDER);
         postQuery.setLimit(20);
         postQuery.whereEqualTo(Message.KEY_SENDER, ParseUser.getCurrentUser());
-        postQuery.whereEqualTo(Message.KEY_RECIPIENT, recipient);
+        postQuery.whereEqualTo(Message.KEY_RECIPIENT, conversation.getConversee());
         postQuery.addDescendingOrder(Message.KEY_CREATED_AT);
 
         postQuery.findInBackground(new FindCallback<Message>() {

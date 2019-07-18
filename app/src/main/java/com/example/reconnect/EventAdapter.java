@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.model.Event;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -69,14 +70,20 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             else { meetingTitle = event.getName(); }
             String meetingWith = meetingTitle + " with";
             meetingName.setText(meetingWith);
+            String currentUserName;
+            String attendeeUserName;
             try {
-                if (Event.KEY_ATTENDEE.equals(ParseUser.getCurrentUser())) {
+                currentUserName = ParseUser.getCurrentUser().fetchIfNeeded().getUsername();
+                attendeeUserName = event.getAttendee().fetchIfNeeded().getUsername();
+
+                if (attendeeUserName.equals(currentUserName)) {
                     attendee.setText(event.getCreator().fetchIfNeeded().getUsername());
-                } else if (Event.KEY_CREATOR.equals(ParseUser.getCurrentUser())) {
+                } else if (!attendeeUserName.equals(currentUserName)) {
                     attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
                 }
-            } catch (ParseException e) {
-                Log.e("EventAdapter", "Unable to get the username of the attendee");
+            }
+            catch (ParseException e){
+                Log.e("EventAdapter", "Unable to retrieve attendee name");
                 e.printStackTrace();
             }
             Calendar calendar = Calendar.getInstance();
@@ -90,6 +97,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
                 industry.setText(event.getAttendee().fetchIfNeeded().get("industry").toString());
             } catch (ParseException e) {
                 e.printStackTrace();
+            }
+            if (event.getAttendee().equals(ParseUser.getCurrentUser())) {
+                attendee.setText(event.getCreator().toString());
+            } else if (event.getCreator().equals(ParseUser.getCurrentUser())) {
+                attendee.setText(event.getAttendee().toString());
             }
             String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
             time.setText(timeSpan);

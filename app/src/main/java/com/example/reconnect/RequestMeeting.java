@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.reconnect.Dialogs.DatePickerFragment;
+import com.example.reconnect.Dialogs.TimePickerFragment;
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -62,6 +63,15 @@ public class RequestMeeting extends AppCompatActivity {
                 DialogFragment datePicker = new DatePickerFragment();
                 datePicker.show(getSupportFragmentManager(), "DatePicker");
                 //prevents the keyboard from popping up
+                return true;
+            }
+        });
+
+        startTime.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                DialogFragment timePicker = new TimePickerFragment();
+                timePicker.show(getSupportFragmentManager(), "TimePicker");
                 return true;
             }
         });

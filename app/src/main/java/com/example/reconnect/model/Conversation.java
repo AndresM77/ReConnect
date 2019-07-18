@@ -10,6 +10,7 @@ public class Conversation extends ParseObject {
     public static final String KEY_CONVERSER = "converser";
     public static final String KEY_CONVERSEE = "conversee";
     public static final String KEY_LAST_MESSAGE = "lastMessage";
+    public static final String KEY_CREATED_AT = "createdAt";
 
     public ParseUser getConverser() {return getParseUser(KEY_CONVERSER);}
 
@@ -22,6 +23,22 @@ public class Conversation extends ParseObject {
     public ParseObject getLastMessage() {return getParseObject(KEY_LAST_MESSAGE);}
 
     public void setLastMessage(Message message) {put(KEY_LAST_MESSAGE, message);}
+
+    public ParseUser getCurrentUser() {
+        if (ParseUser.getCurrentUser().equals(getConversee())){
+            return getConversee();
+        } else {
+            return getConverser();
+        }
+    }
+
+    public ParseUser getOtherUser() {
+        if (ParseUser.getCurrentUser().equals(getConversee())){
+            return getConverser();
+        } else {
+            return getConversee();
+        }
+    }
 
     //Querying our Conversation class
     public static class Query extends ParseQuery<Conversation> {

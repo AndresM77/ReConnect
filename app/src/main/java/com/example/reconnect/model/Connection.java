@@ -36,6 +36,23 @@ public class Connection extends ParseObject {
 
     public void setStarred21(Boolean starred21) {put(KEY_STARRED_21, starred21);}
 
+    public ParseUser getCurrentUser() {
+        if (ParseUser.getCurrentUser().equals(getUser1())){
+            return getUser1();
+        } else {
+            return getUser2();
+        }
+    }
+
+    public ParseUser getOtherUser() {
+        if (ParseUser.getCurrentUser().equals(getUser1())){
+            return getUser2();
+        } else {
+            return getUser1();
+        }
+    }
+
+
     @Override
     public Date getCreatedAt() {
         return super.getCreatedAt();

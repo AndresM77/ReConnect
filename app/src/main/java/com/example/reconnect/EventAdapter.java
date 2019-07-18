@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
 import com.parse.ParseUser;

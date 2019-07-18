@@ -16,10 +16,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.reconnect.EventAdapter;
 import com.example.reconnect.R;
-import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Event;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;

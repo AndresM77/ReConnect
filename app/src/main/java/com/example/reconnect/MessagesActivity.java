@@ -34,7 +34,7 @@ public class MessagesActivity extends AppCompatActivity {
         final ParseUser recipient = getIntent().getParcelableExtra("recipient");
 
         //Setup view objects
-        rvMessages = findViewById(R.id.rvEvents);
+        rvMessages = findViewById(R.id.rvMessages);
         //Instantiating connections list
         mMessage = new ArrayList<>();
         //Set up adapter

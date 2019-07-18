@@ -102,7 +102,7 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     private void saveMessage() {
-        Message message = new Message();
+        final Message message = new Message();
         message.setConversation(conversation);
         message.setMessage(etMessage.getText().toString());
         message.setRecipient(conversation.getConversee());
@@ -116,6 +116,7 @@ public class MessagesActivity extends AppCompatActivity {
                     return;
                 }
                 Log.d(TAG, "Success");
+                conversation.setLastMessage(message);
             }
         });
     }

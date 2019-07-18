@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.model.Message;
+import com.parse.ParseException;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     @NonNull
     @Override
     public MessagesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_conversation, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_message, parent, false);
         return new ViewHolder(view);
     }
 
@@ -42,22 +44,24 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        private TextView tvUserName;
+        private TextView tvMessage;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            // onClick listener to request a meeting
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
+            tvUserName = itemView.findViewById(R.id.tvUserName);
+            tvMessage = itemView.findViewById(R.id.tvMessage);
         }
 
         // method that connects information to create item_contact for MapFragment's Recycler View
         public void bind(Message message) {
-
+            try {
+                tvUserName.setText(message.getSender().fetchIfNeeded().getUsername());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            tvMessage.setText(message.getMessage());
         }
 
     }

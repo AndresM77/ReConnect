@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.Message;
+import com.parse.ParseException;
 
 import java.util.List;
 
@@ -66,10 +67,14 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
 
         }
 
-        /* method that connects information to create item_contact for MapFragment's Recycler View */
+        /* method that connects information to create item_conversation for ConversationsFragment's Recycler View */
         public void bind(Conversation conversation) {
             name.setTag(conversation);
-            name.setText(conversation.getConversee().getUsername());
+            try {
+                name.setText(conversation.getConversee().fetchIfNeeded().getUsername());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             if (conversation.getLastMessage() != null){
                 Message message = (Message) conversation.getLastMessage();
                 lastMessage.setText(message.getMessage());

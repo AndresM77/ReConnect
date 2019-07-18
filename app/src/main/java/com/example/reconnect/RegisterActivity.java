@@ -6,19 +6,28 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.List;
+
 public class RegisterActivity extends AppCompatActivity {
 
+    //Initializing fragment tag
+    public final static String TAG = "RegisterActivity";
+    //Initializing View objects
     private EditText etEmail;
     private EditText etUser;
     private EditText etPass;
     private Button btnSignUp;
+    private List<ParseUser> mUsers;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +42,30 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveUser(etEmail.getText().toString(), etUser.getText().toString(), etPass.getText().toString());
+                queryUsers();
+            }
+        });
+    }
+
+    public void queryUsers() {
+        ParseQuery<ParseUser> postQuery = new ParseQuery<>(ParseUser.class);
+        postQuery.whereEqualTo("username",etUser.getText().toString());
+
+        postQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> users, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with Query");
+                    e.printStackTrace();
+                    return;
+                }
+                mUsers.clear();
+                mUsers = users;
+                if (mUsers.size() > 0) {
+                    Toast.makeText(getApplicationContext(), "UserName exists", Toast.LENGTH_LONG).show();
+                } else {
+                    saveUser(etEmail.getText().toString(), etUser.getText().toString(), etPass.getText().toString());
+                }
             }
         });
     }

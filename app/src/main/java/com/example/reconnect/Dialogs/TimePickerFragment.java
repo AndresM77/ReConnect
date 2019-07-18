@@ -13,9 +13,9 @@ import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
-    private RequestMeeting.DatePickerDoneListener mListener;
+    private RequestMeeting.TimePickerDoneListener mListener;
 
-    public TimePickerFragment(RequestMeeting.DatePickerDoneListener listener) {
+    public TimePickerFragment(RequestMeeting.TimePickerDoneListener listener) {
         mListener = listener;
     }
 

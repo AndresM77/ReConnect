@@ -7,13 +7,13 @@
     tools:context=".RequestMeeting">
 
     <EditText
-        android:id="@+id/meetingDuration"
+        android:id="@+id/mtgEndTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="Select meeting length."
+        android:hint="Select meeting end time."
         android:inputType="time"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meetingDuration" />
+        app:layout_constraintTop_toBottomOf="@+id/mtgEndTime" />
 
     <EditText
         android:id="@+id/meetingDate"

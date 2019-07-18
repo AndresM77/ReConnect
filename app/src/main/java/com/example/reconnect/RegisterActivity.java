@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.reconnect.model.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -28,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etUser;
     private EditText etPass;
     private Button btnSignUp;
-    private List<User> mUsers;
+    private List<ParseUser> mUsers;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,24 +43,17 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 queryUsers();
-                if (mUsers.size() > 0) {
-                    Toast.makeText(getApplicationContext(), "UserName exists", Toast.LENGTH_LONG).show();
-                } else {
-                    saveUser(etEmail.getText().toString(), etUser.getText().toString(), etPass.getText().toString());
-                }
             }
         });
     }
 
     public void queryUsers() {
-        ParseQuery<User> postQuery = new ParseQuery<>(User.class);
-        postQuery.whereEqualTo(User.KEY_USER, etUser.getText().toString());
+        ParseQuery<ParseUser> postQuery = new ParseQuery<>(ParseUser.class);
+        postQuery.whereEqualTo("username",etUser.getText().toString());
 
-        // TODO - Add a check for KEY_USER2 and currentUser
-
-        postQuery.findInBackground(new FindCallback<User>() {
+        postQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
-            public void done(List<User> users, ParseException e) {
+            public void done(List<ParseUser> users, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error with Query");
                     e.printStackTrace();
@@ -69,6 +61,11 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 mUsers.clear();
                 mUsers = users;
+                if (mUsers.size() > 0) {
+                    Toast.makeText(getApplicationContext(), "UserName exists", Toast.LENGTH_LONG).show();
+                } else {
+                    saveUser(etEmail.getText().toString(), etUser.getText().toString(), etPass.getText().toString());
+                }
             }
         });
     }

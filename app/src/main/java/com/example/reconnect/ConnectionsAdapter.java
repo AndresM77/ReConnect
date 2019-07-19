@@ -2,10 +2,10 @@ package com.example.reconnect;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -85,37 +85,73 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             Double longitudeC;
             Double latitude = ParseUser.getCurrentUser().getParseGeoPoint("location").getLatitude();
             Double longitude = ParseUser.getCurrentUser().getParseGeoPoint("location").getLongitude();
+            ParseUser contact = connection.getOtherUser();
+
+            ParseGeoPoint position1 = ParseUser.getCurrentUser().getParseGeoPoint("location");
             final Double EARTH_RADIUS = 3961D;
-            if (ParseUser.getCurrentUser().getUsername().equals(connection.getUser1().getUsername())) {
-                try {
-                    name.setText(connection.getUser2().fetchIfNeeded().getUsername());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
 
-                latitudeC = connection.getUser2().getParseGeoPoint("location").getLatitude();
-                longitudeC = connection.getUser2().getParseGeoPoint("location").getLongitude();
-
+            try {
+                name.setText(contact.fetchIfNeeded().getUsername());
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            else {
-                try {
-                    name.setText(connection.getUser1().fetchIfNeeded().getUsername());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
 
-                latitudeC = connection.getUser1().getParseGeoPoint("location").getLatitude();
-                longitudeC = connection.getUser1().getParseGeoPoint("location").getLongitude();
-            }
+            latitudeC = contact.getParseGeoPoint("location").getLatitude();
+            longitudeC = contact.getParseGeoPoint("location").getLongitude();
+
+            ParseGeoPoint position2 = contact.getParseGeoPoint("location");
 
             // TODO fix this logic
+
+            /*
             // Currently implemented logic from https://andrew.hedges.name/experiments/haversine/
             Double dlon = longitudeC - longitude;
             Double dlat = latitudeC - latitude;
             Double a = Math.pow((Math.sin(dlat/2)), 2) + Math.cos(latitude) * Math.cos(latitudeC) * Math.pow((Math.sin(dlon/2)), 2);
             Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             Double d = EARTH_RADIUS * c;
-            distanceAwayV.setText(d.toString() + " mi away");
+            */
+
+            Location loc = new Location("");
+
+            loc.setLatitude(position1.getLatitude());
+
+            loc.setLongitude(position1.getLongitude());
+
+            Location loc2 = new Location("");
+
+            loc2.setLatitude(position2.getLatitude());
+
+            loc2.setLongitude(position2.getLongitude());
+
+            Double distance = new Float(loc.distanceTo(loc2)).doubleValue();
+
+            Double metersToMiles = 1609.344;
+
+            distance /= metersToMiles;
+
+            Math.round(distance);
+
+            String out = distance + " miles away";
+
+            distanceAwayV.setText(out);
+
+        }
+
+        public float distFrom (float lat1, float lng1, float lat2, float lng2 )
+        {
+            double earthRadius = 3958.75;
+            double dLat = Math.toRadians(lat2-lat1);
+            double dLng = Math.toRadians(lng2-lng1);
+            double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                            Math.sin(dLng/2) * Math.sin(dLng/2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            double dist = earthRadius * c;
+
+            int meterConversion = 1609;
+
+            return new Float(dist * meterConversion).floatValue();
         }
 
     }

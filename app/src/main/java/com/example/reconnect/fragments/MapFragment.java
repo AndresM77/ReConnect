@@ -99,7 +99,6 @@ public class MapFragment extends Fragment {
     }
 
     public void queryConnections() {
-        boolean isEqual = false;
         ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
         postQuery.include(Connection.KEY_USER1);
         postQuery.setLimit(20);

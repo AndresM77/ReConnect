@@ -122,6 +122,15 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             MapDemoActivityPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
             map.setOnMapLongClickListener(this);
             map.setInfoWindowAdapter(new CustomWindowAdapter(getLayoutInflater()));
+            //On click logic for markers
+            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                public boolean onMarkerClick(Marker marker) {
+                    // Handle marker click here
+                    // Further info found here https://guides.codepath.org/android/Google-Maps-API-v2-Usage
+                    return true;
+                }
+            });
+
         } else {
             Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
@@ -286,9 +295,10 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Define color of marker icon
-                        BitmapDescriptor defaultMarker =
-                                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+                        // Define custom marker
+                        BitmapDescriptor customMarker =
+                                BitmapDescriptorFactory.fromResource(R.drawable.map_marker);
+
                         // Extract content from alert dialog
                         String title = ((EditText) alertDialog.findViewById(R.id.etTitle)).
                                 getText().toString();
@@ -299,7 +309,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                                 .position(point)
                                 .title(title)
                                 .snippet(snippet)
-                                .icon(defaultMarker));
+                                .icon(customMarker));
                         // Animate marker using drop effect
                         // --> Call the dropPinEffect method here
                         dropPinEffect(marker);

@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,11 +18,9 @@ import com.example.reconnect.model.DateTitle;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -43,7 +40,6 @@ public class EventAdapter extends RecyclerView.Adapter<ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == EVENT) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_event, parent, false);
-
             return new ViewHolderEvent(view);
         } else {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_date_title, parent, false);
@@ -176,6 +172,25 @@ public class EventAdapter extends RecyclerView.Adapter<ViewHolder> {
             dateTitle.setText(date.getmDisplayDate());
 
             //TODO add onItemClick listener for the button
+        }
+    }
+
+    public class ViewHolderInviteReceived extends ViewHolder {
+        TextView meetingName;
+        TextView attendee;
+        TextView industry;
+        TextView date;
+        TextView time;
+        ImageView accept;
+        ImageView reject;
+
+        public ViewHolderInviteReceived(View itemView) {
+            super(itemView);
+            meetingName = itemView.findViewById(R.id.meetingWith);
+            attendee = itemView.findViewById(R.id.attendee);
+            industry = itemView.findViewById(R.id.industry);
+            date = itemView.findViewById(R.id.meetingDate);
+            time = itemView.findViewById(R.id.meetingTime);
         }
     }
 }

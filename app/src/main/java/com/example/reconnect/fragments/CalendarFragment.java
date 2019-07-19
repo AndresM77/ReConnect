@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
-import com.example.reconnect.EventAdapter;
+import com.example.reconnect.Adapters.EventAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
 import com.parse.FindCallback;
@@ -34,7 +34,6 @@ import com.parse.ParseUser;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class CalendarFragment extends Fragment {

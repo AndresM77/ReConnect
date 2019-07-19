@@ -1,4 +1,4 @@
-package com.example.reconnect;
+package com.example.reconnect.Adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,9 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;

@@ -6,16 +6,16 @@ import androidx.fragment.app.DialogFragment;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
-import com.example.reconnect.RequestMeeting;
+import com.example.reconnect.Activities.RequestMeetingActivity;
 
 import java.util.Calendar;
 
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    private RequestMeeting.DatePickerDoneListener mDatePickerDoneListener;
+    private RequestMeetingActivity.DatePickerDoneListener mDatePickerDoneListener;
 
-    public DatePickerFragment(RequestMeeting.DatePickerDoneListener datePickerDoneListener) {
+    public DatePickerFragment(RequestMeetingActivity.DatePickerDoneListener datePickerDoneListener) {
         mDatePickerDoneListener = datePickerDoneListener;
     }
 

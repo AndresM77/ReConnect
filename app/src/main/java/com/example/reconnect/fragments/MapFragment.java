@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.reconnect.ConnectionsAdapter;
-import com.example.reconnect.MapActivity;
+import com.example.reconnect.Adapters.ConnectionsAdapter;
+import com.example.reconnect.Activities.MapActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.parse.FindCallback;

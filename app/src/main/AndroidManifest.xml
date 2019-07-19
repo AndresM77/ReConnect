@@ -12,17 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RequestMeeting"></activity>
+        <activity android:name=".Activities.RequestMeetingActivity"></activity>
         <activity
-            android:name=".HomeActivity"
+            android:name=".Activities.HomeActivity"
             android:label="Home Activity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".MapActivity"></activity>
-        <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".MessageContactsActivity"></activity>
-        <activity android:name=".MessagesActivity"></activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".Activities.RegisterActivity"></activity>
+        <activity android:name=".Activities.MapActivity"></activity>
+        <activity android:name=".Activities.SettingsActivity"></activity>
+        <activity android:name=".Activities.MessageContactsActivity"></activity>
+        <activity android:name=".Activities.MessagesActivity"></activity>
+        <activity android:name=".Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

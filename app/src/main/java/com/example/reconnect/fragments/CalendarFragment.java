@@ -34,6 +34,7 @@ import com.parse.ParseUser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CalendarFragment extends Fragment {
@@ -176,6 +177,8 @@ public class CalendarFragment extends Fragment {
     public void queryEvents() {
         ParseQuery<Event> postQuery = new ParseQuery<>(Event.class);
         postQuery.include(Event.KEY_CREATOR);
+        postQuery.addAscendingOrder(Event.KEY_DATE);
+        //TODO add: postQuery.whereLessThan("KEY_DATE", new Date(System.currentTimeMillis()));
         postQuery.setLimit(20);
 
         // Work to create event on both user profiles (the creator and the attendee)

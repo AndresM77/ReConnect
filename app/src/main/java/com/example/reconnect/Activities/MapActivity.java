@@ -5,7 +5,9 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -55,7 +57,7 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 //Tutorial for map found at https://guides.codepath.org/android/Google-Maps-API-v2-Usage#show-alertdialog-on-longclick
 
 @RuntimePermissions
-public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLongClickListener{
+public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLongClickListener {
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -225,7 +227,6 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
         MapDemoActivityPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
     }
 
-    @SuppressLint("MissingPermission")
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     public void startLocationUpdates() {
         mLocationRequest = new LocationRequest();
@@ -239,7 +240,19 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
 
         SettingsClient settingsClient = LocationServices.getSettingsClient(this);
         settingsClient.checkLocationSettings(locationSettingsRequest);
-        //noinspection MissingPermission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //noinspection MissingPermission
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    Activity#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+                return;
+            }
+        }
         getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
@@ -350,7 +363,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                 marker.setAnchor(0.5f, 1.0f + 14 * t);
 
                 if (t > 0.0) {
-                    // Post this event again 15ms from now.
+                    // Post this event again 15ms from now.b
                     handler.postDelayed(this, 15);
                 } else { // done elapsing, show window
                     marker.showInfoWindow();

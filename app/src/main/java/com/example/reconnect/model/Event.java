@@ -18,6 +18,7 @@ public class Event extends ParseObject {
     public static final String KEY_SPECIAL = "reconnect";
     public static final String KEY_DATE = "date";
     public static final String KEY_CREATED_AT = "createdAt";
+    public static final String KEY_ACCEPTED = "accepted";
 
 
     public String getStartTime() {return getString(KEY_START_TIME);}
@@ -56,6 +57,10 @@ public class Event extends ParseObject {
 
     public void setKeyDate(Date date) {
         put(KEY_DATE, date);
+    }
+
+    public static String getKeyAccepted() {
+        return KEY_ACCEPTED;
     }
 
     public ParseUser getCurrentUser() {

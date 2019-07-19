@@ -67,6 +67,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
     //Initializing view variables
     private Button switchBtn;
+    private boolean centered;
 
     private final static String KEY_LOCATION = "location";
 
@@ -80,6 +81,8 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        centered = false;
 
         switchBtn = findViewById(R.id.btnSwitch);
 
@@ -99,6 +102,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             // Since KEY_LOCATION was found in the Bundle, we can be sure that mCurrentLocation
             // is not null.
             mCurrentLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            onResume();
         }
 
         mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
@@ -132,7 +136,6 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                     return true;
                 }
             });
-
         } else {
             Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
@@ -157,6 +160,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                     public void onSuccess(Location location) {
                         if (location != null) {
                             onLocationChanged(location);
+                            //Send location stuff
                         }
                     }
                 })
@@ -215,7 +219,6 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
         super.onResume();
 
         // Display the connection status
-
         if (mCurrentLocation != null) {
             Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
             LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
@@ -275,6 +278,11 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+
+        if (!centered) {
+            onResume();
+            centered = true;
+        }
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {

@@ -310,10 +310,10 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                     public void onClick(DialogInterface dialog, int which) {
                         // Define custom marker
                         BitmapDescriptor customMarker =
-                                BitmapDescriptorFactory.fromResource(R.drawable.map_marker);
+                                BitmapDescriptorFactory.fromResource(R.drawable.map_user_marker);
 
                         // Extract content from alert dialog
-                        String title = ((EditText) alertDialog.findViewById(R.id.etTitle)).
+                          String title = ((EditText) alertDialog.findViewById(R.id.etTitle)).
                                 getText().toString();
                         String snippet = ((EditText) alertDialog.findViewById(R.id.etSnippet)).
                                 getText().toString();

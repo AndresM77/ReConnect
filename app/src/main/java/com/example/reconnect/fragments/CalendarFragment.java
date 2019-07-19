@@ -25,6 +25,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.example.reconnect.Adapters.EventAdapter;
 import com.example.reconnect.R;
+import com.example.reconnect.model.DateTitle;
 import com.example.reconnect.model.Event;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -91,6 +92,9 @@ public class CalendarFragment extends Fragment {
             ParseFile img = (ParseFile) user.get("profileImg");
             Glide.with(getContext()).load(img.getUrl()).into(ivProfilePic);
         }
+
+
+        Object title = new DateTitle("date");
 
         btnChangeProfile.setOnClickListener(new View.OnClickListener() {
             @Override

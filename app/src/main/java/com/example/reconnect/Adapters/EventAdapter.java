@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
@@ -17,13 +19,14 @@ import com.example.reconnect.model.DateTitle;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class EventAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private Context mContext;
     private List<Event> mEvents;
@@ -37,27 +40,46 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @NonNull
     @Override
-    public EventAdapter.ViewHolderEvent onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_event, parent, false);
-        return new ViewHolderEvent(view);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == EVENT) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_event, parent, false);
+
+            return new ViewHolderEvent(view);
+        } else {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_date_title, parent, false);
+            return new ViewHolderTitle(view);
+        }
+
     }
 
     @Override
     public int getItemViewType(int position) {
-        //TODO return TITLE if title return EVENT if event
-        return 0; //placeholder
+        ArrayList test = createViewOrderArray(mEvents);
+        if (test.get(position) instanceof Event){
+            return EVENT;
+        } else {
+            return TITLE;
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        //TODO put logic here to make view show up use getItemViewType
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        ArrayList<Object> test = createViewOrderArray(mEvents);
+        int typeInView = getItemViewType(position);
+        if (typeInView == EVENT) {
+            Event event = (Event)test.get(position);
+            ((ViewHolderEvent)holder).bind(event);
+        } else if (typeInView == TITLE){
+            DateTitle title = (DateTitle)test.get(position);
+            ((ViewHolderTitle)holder).bind(title);
+        }
     }
 
     /* creates an array that represents the order of title and event views we wish to display on the profile */
-    public HashMap<String, Object> createViewOrderArray(List<Event> events) {
-        HashMap<String, Object> toReturn = new HashMap<>();
+    public ArrayList<Object> createViewOrderArray(List<Event> events) {
+        ArrayList<Object> toReturn = new ArrayList<>();
         Date dateTracker = events.get(0).getDate("date");
-        toReturn.put("Title", new DateTitle(dateTracker.toString()));
+        toReturn.add(new DateTitle(dateTracker.toString()));
 
         for (int i = 0; i < events.size(); i++) {
             Event currEvent = events.get(i);
@@ -65,11 +87,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             if (!currEventDate.equals(dateTracker)) {
                 dateTracker = currEventDate;
-                toReturn.put("Title", new DateTitle(dateTracker.toString()));
+                toReturn.add(new DateTitle(dateTracker.toString()));
             }
-            else {
-                toReturn.put("Event", currEvent);
-            }
+            toReturn.add( currEvent);
         }
 
         return toReturn;
@@ -80,7 +100,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return mEvents.size();
     }
 
-    public class ViewHolderEvent extends RecyclerView.ViewHolder {
+    public class ViewHolderEvent extends ViewHolder {
 
         TextView meetingName;
         TextView attendee;
@@ -141,10 +161,10 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public class ViewHolderTitle extends RecyclerView.ViewHolder {
+    public class ViewHolderTitle extends ViewHolder {
 
         TextView dateTitle;
-        Button addEvent;
+        ImageView addEvent;
 
         public ViewHolderTitle(@NonNull View itemView) {
             super(itemView);

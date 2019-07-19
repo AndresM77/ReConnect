@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.reconnect.ConversationsAdapter;
-import com.example.reconnect.MessageContactsActivity;
-import com.example.reconnect.MessagesActivity;
+import com.example.reconnect.Adapters.ConversationsAdapter;
+import com.example.reconnect.Activities.MessageContactsActivity;
+import com.example.reconnect.Activities.MessagesActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Conversation;
 import com.parse.FindCallback;

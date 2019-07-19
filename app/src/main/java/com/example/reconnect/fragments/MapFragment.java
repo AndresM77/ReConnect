@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.reconnect.ConnectionsAdapter;
-import com.example.reconnect.MapActivity;
+import com.example.reconnect.Adapters.ConnectionsAdapter;
+import com.example.reconnect.Activities.MapActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.parse.FindCallback;
@@ -99,7 +99,6 @@ public class MapFragment extends Fragment {
     }
 
     public void queryConnections() {
-        boolean isEqual = false;
         ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
         postQuery.include(Connection.KEY_USER1);
         postQuery.setLimit(20);

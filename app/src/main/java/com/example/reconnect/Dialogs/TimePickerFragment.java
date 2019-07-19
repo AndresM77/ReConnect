@@ -3,16 +3,22 @@ package com.example.reconnect.Dialogs;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.TimePicker;
 
 import androidx.fragment.app.DialogFragment;
 
-import com.example.reconnect.R;
+import com.example.reconnect.Activities.RequestMeetingActivity;
 
 import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
+    private RequestMeetingActivity.TimePickerDoneListener mListener;
+
+    public TimePickerFragment(RequestMeetingActivity.TimePickerDoneListener listener) {
+        mListener = listener;
+    }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -37,7 +43,6 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
             am_pm = "PM";
         }
 
-        EditText meetingTime = getActivity().findViewById(R.id.startTime);
-        meetingTime.setText(i + ":" + i1 + " " + am_pm);
+        mListener.done(i + ":" + i1 + " " + am_pm);
     }
 }

@@ -25,7 +25,7 @@ public class Conversation extends ParseObject {
     public void setLastMessage(Message message) {put(KEY_LAST_MESSAGE, message);}
 
     public ParseUser getCurrentUser() {
-        if (ParseUser.getCurrentUser().equals(getConversee())){
+        if (ParseUser.getCurrentUser().getUsername().equals(getConversee().getUsername())){
             return getConversee();
         } else {
             return getConverser();
@@ -33,7 +33,7 @@ public class Conversation extends ParseObject {
     }
 
     public ParseUser getOtherUser() {
-        if (ParseUser.getCurrentUser().equals(getConversee())){
+        if (ParseUser.getCurrentUser().getUsername().equals(getConversee().getUsername())){
             return getConverser();
         } else {
             return getConversee();

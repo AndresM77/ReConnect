@@ -58,6 +58,22 @@ public class Event extends ParseObject {
         put(KEY_DATE, date);
     }
 
+    public ParseUser getCurrentUser() {
+        if (ParseUser.getCurrentUser().getUsername().equals(getCreator().getUsername())){
+            return getCreator();
+        } else {
+            return getAttendee();
+        }
+    }
+
+    public ParseUser getOtherUser() {
+        if (ParseUser.getCurrentUser().getUsername().equals(getCreator().getUsername())){
+            return getAttendee();
+        } else {
+            return getCreator();
+        }
+    }
+
     //Querying our Event class
     public static class Query extends ParseQuery<Event> {
 

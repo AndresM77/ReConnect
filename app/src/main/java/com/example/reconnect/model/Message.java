@@ -44,6 +44,22 @@ public class Message extends ParseObject {
         return super.getCreatedAt();
     }
 
+    public ParseUser getCurrentUser() {
+        if (ParseUser.getCurrentUser().getUsername().equals(getSender().getUsername())){
+            return getSender();
+        } else {
+            return getRecipient();
+        }
+    }
+
+    public ParseUser getOtherUser() {
+        if (ParseUser.getCurrentUser().getUsername().equals(getSender().getUsername())){
+            return getRecipient();
+        } else {
+            return getSender();
+        }
+    }
+
     //Querying our Message class
     public static class Query extends ParseQuery<Message> {
 

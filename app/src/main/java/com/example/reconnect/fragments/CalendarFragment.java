@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
-import com.example.reconnect.EventAdapter;
+import com.example.reconnect.Adapters.EventAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
 import com.parse.FindCallback;
@@ -187,6 +187,8 @@ public class CalendarFragment extends Fragment {
     public void queryEvents() {
         ParseQuery<Event> postQuery = new ParseQuery<>(Event.class);
         postQuery.include(Event.KEY_CREATOR);
+        postQuery.addAscendingOrder(Event.KEY_DATE);
+        //TODO add: postQuery.whereLessThan("KEY_DATE", new Date(System.currentTimeMillis()));
         postQuery.setLimit(20);
 
         // Work to create event on both user profiles (the creator and the attendee)

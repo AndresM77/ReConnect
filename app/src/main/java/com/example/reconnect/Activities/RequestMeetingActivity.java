@@ -1,8 +1,9 @@
-package com.example.reconnect;
+package com.example.reconnect.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
+import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -22,15 +24,16 @@ import com.parse.SaveCallback;
 
 import java.sql.Date;
 
-public class RequestMeeting extends AppCompatActivity {
+public class RequestMeetingActivity extends AppCompatActivity {
 
     TextView request;
     EditText meetingName;
     EditText meetingDate;
     EditText startTime;
-    EditText meetingDuration;
+    EditText endTime;
     Button submitRequest;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +43,7 @@ public class RequestMeeting extends AppCompatActivity {
         meetingName = findViewById(R.id.meetingName);
         meetingDate = findViewById(R.id.meetingDate);
         startTime = findViewById(R.id.startTime);
-        meetingDuration = findViewById(R.id.meetingDuration);
+        endTime = findViewById(R.id.mtgEndTime);
         submitRequest = findViewById(R.id.submitRequest);
 
         // grab the objectId of the requested User
@@ -60,7 +63,7 @@ public class RequestMeeting extends AppCompatActivity {
         meetingDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                DialogFragment datePicker = new DatePickerFragment();
+                DialogFragment datePicker = new DatePickerFragment(getDatePickerDoneListener(R.id.meetingDate));
                 datePicker.show(getSupportFragmentManager(), "DatePicker");
                 //prevents the keyboard from popping up
                 return true;
@@ -70,7 +73,16 @@ public class RequestMeeting extends AppCompatActivity {
         startTime.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                DialogFragment timePicker = new TimePickerFragment();
+                DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.startTime));
+                timePicker.show(getSupportFragmentManager(), "TimePicker");
+                return true;
+            }
+        });
+
+        endTime.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.mtgEndTime));
                 timePicker.show(getSupportFragmentManager(), "TimePicker");
                 return true;
             }
@@ -83,8 +95,7 @@ public class RequestMeeting extends AppCompatActivity {
                 // create Event for the requested meeting
                 final Event event = new Event();
                 event.put("startTime", startTime.getText().toString());
-                //TODO fix endTime to account for chosen duration. 4:00 chosen temporarily for end time
-                event.put("endTime", "4:00");
+                event.put("endTime", endTime.getText().toString());
                 event.put("name", meetingName.getText().toString());
                 event.put("creator", ParseUser.getCurrentUser());
                 event.put("pending", true);
@@ -109,12 +120,40 @@ public class RequestMeeting extends AppCompatActivity {
                             e.printStackTrace();
                             return;
                         }
-                        Intent i = new Intent(RequestMeeting.this, HomeActivity.class);
+                        Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
                         i.putExtra("meetingId", event.getObjectId());
                         startActivity(i);
                     }
                 });
             }
         });
+    }
+
+    private DatePickerDoneListener getDatePickerDoneListener(final int dialogId) {
+        return new DatePickerDoneListener() {
+            @Override
+            public void done(String dateText) {
+                EditText meetingDate = findViewById(dialogId);
+                meetingDate.setText(dateText);
+            }
+        };
+    }
+
+    private TimePickerDoneListener getPickerDoneListener(final int dialogId) {
+        return new TimePickerDoneListener() {
+            @Override
+            public void done(String timeText) {
+                EditText meetingTime = findViewById(dialogId);
+                meetingTime.setText(timeText);
+            }
+        };
+    }
+
+    public interface DatePickerDoneListener {
+        void done(String dateText);
+    }
+
+    public interface TimePickerDoneListener {
+        void done(String timeText);
     }
 }

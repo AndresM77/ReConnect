@@ -5,16 +5,19 @@ import android.app.Dialog;
 import androidx.fragment.app.DialogFragment;
 import android.os.Bundle;
 import android.widget.DatePicker;
-import android.widget.EditText;
 
-import com.example.reconnect.R;
+import com.example.reconnect.Activities.RequestMeetingActivity;
 
-import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+    private RequestMeetingActivity.DatePickerDoneListener mDatePickerDoneListener;
+
+    public DatePickerFragment(RequestMeetingActivity.DatePickerDoneListener datePickerDoneListener) {
+        mDatePickerDoneListener = datePickerDoneListener;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -29,10 +32,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        // Do something with the chosen date
-        EditText meetingDate = getActivity().findViewById(R.id.meetingDate);
 
         // Display the chosen date to app interface
-        meetingDate.setText(i + "-" + i1 + "-" + i2);
+        mDatePickerDoneListener.done(i + "-" + i1 + "-" + i2);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.reconnect;
+package com.example.reconnect.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.reconnect.Adapters.MessagesConnectionAdapter;
+import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -82,8 +84,8 @@ public class MessageContactsActivity extends AppCompatActivity {
     private void returnActivity(Connection connection) {
         // Send intent back to home activity after selecting
         // a contact User name
-        Intent intent = new Intent(this, RequestMeeting.class);
-        intent.putExtra("recipient", connection.getOtherUser());
+        Intent intent = new Intent(this, RequestMeetingActivity.class);
+        intent.putExtra("connection", connection);
         setResult(REQUEST_CODE, intent);
         finish();
     }

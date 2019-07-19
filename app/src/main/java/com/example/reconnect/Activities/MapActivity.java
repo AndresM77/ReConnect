@@ -48,6 +48,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -59,6 +63,7 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 @RuntimePermissions
 public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLongClickListener {
 
+    private final String TAG = "MapActivity";
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     private LocationRequest mLocationRequest;
@@ -279,10 +284,26 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                 Double.toString(location.getLongitude());
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 
+        updateUser();
+
         if (!centered) {
             onResume();
             centered = true;
         }
+    }
+
+    public void updateUser() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseGeoPoint pos = new ParseGeoPoint();
+        pos.setLatitude(mCurrentLocation.getLatitude());
+        pos.setLongitude(mCurrentLocation.getLongitude());
+        currentUser.put("location", pos);
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Log.d(TAG, "Updated user's location in server!");
+            }
+        });
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {

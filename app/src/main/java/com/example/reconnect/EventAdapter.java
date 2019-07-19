@@ -11,10 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.model.Event;
-import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +41,27 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull EventAdapter.ViewHolder holder, int position) {
         Event event = events.get(position);
         holder.bind(event);
+    }
+
+    /* creates an array that represents the order of title and event views we wish to display on the profile */
+    public ArrayList<Object> createViewOrderArray(List<Event> events) {
+        ArrayList<Object> toReturn = new ArrayList<>();
+        //TODO add title object to 0 index of toReturn
+        Date dateTracker = events.get(0).getDate("date");
+
+        for (int i = 0; i < events.size(); i++) {
+            Event currEvent = events.get(i);
+            Date currEventDate = currEvent.getDate("date");
+
+            if (!currEventDate.equals(dateTracker)) {
+                //TODO add title object to toReturn
+                dateTracker = currEventDate;
+            }
+
+            toReturn.add(currEvent);
+        }
+
+        return toReturn;
     }
 
     @Override

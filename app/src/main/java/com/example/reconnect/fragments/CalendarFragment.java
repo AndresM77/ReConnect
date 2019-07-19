@@ -202,5 +202,6 @@ public class CalendarFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+
     }
 }

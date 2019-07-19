@@ -1,4 +1,4 @@
-package com.example.reconnect;
+package com.example.reconnect.Adapters;
 
 
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.reconnect.R;
 import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.Message;

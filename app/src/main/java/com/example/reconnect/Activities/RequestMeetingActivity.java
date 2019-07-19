@@ -1,4 +1,4 @@
-package com.example.reconnect;
+package com.example.reconnect.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
+import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -23,7 +24,7 @@ import com.parse.SaveCallback;
 
 import java.sql.Date;
 
-public class RequestMeeting extends AppCompatActivity {
+public class RequestMeetingActivity extends AppCompatActivity {
 
     TextView request;
     EditText meetingName;
@@ -119,7 +120,7 @@ public class RequestMeeting extends AppCompatActivity {
                             e.printStackTrace();
                             return;
                         }
-                        Intent i = new Intent(RequestMeeting.this, HomeActivity.class);
+                        Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
                         i.putExtra("meetingId", event.getObjectId());
                         startActivity(i);
                     }

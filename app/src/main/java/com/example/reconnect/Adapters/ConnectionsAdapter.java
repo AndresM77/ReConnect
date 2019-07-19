@@ -1,4 +1,4 @@
-package com.example.reconnect;
+package com.example.reconnect.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.reconnect.R;
+import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.model.Connection;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -63,7 +65,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                 public void onClick(View view) {
                     // New intent to send User to RequestMeeting Activity after selecting
                     // a contact User name
-                    Intent intent = new Intent(view.getContext(), RequestMeeting.class);
+                    Intent intent = new Intent(view.getContext(), RequestMeetingActivity.class);
 
                     Connection selectedConnection = connections.get(view.getVerticalScrollbarPosition());
 

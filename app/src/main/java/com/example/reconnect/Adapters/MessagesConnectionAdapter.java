@@ -1,4 +1,4 @@
-package com.example.reconnect;
+package com.example.reconnect.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.reconnect.Activities.MessageContactsActivity;
+import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.parse.ParseException;
 import com.parse.ParseUser;

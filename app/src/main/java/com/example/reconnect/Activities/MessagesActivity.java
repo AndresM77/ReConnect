@@ -1,4 +1,4 @@
-package com.example.reconnect;
+package com.example.reconnect.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.reconnect.Adapters.MessagesAdapter;
+import com.example.reconnect.R;
 import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.Message;
 import com.parse.FindCallback;

@@ -3,7 +3,7 @@ package com.example.reconnect.MapPermissions;
 
 import androidx.core.app.ActivityCompat;
 
-import com.example.reconnect.MapActivity;
+import com.example.reconnect.Activities.MapActivity;
 
 import permissions.dispatcher.PermissionUtils;
 

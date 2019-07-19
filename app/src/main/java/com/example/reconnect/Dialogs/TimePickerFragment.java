@@ -7,15 +7,15 @@ import android.widget.TimePicker;
 
 import androidx.fragment.app.DialogFragment;
 
-import com.example.reconnect.RequestMeeting;
+import com.example.reconnect.Activities.RequestMeetingActivity;
 
 import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
-    private RequestMeeting.TimePickerDoneListener mListener;
+    private RequestMeetingActivity.TimePickerDoneListener mListener;
 
-    public TimePickerFragment(RequestMeeting.TimePickerDoneListener listener) {
+    public TimePickerFragment(RequestMeetingActivity.TimePickerDoneListener listener) {
         mListener = listener;
     }
 

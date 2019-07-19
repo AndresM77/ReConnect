@@ -1,4 +1,4 @@
-package com.example.reconnect;
+package com.example.reconnect.Activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.reconnect.MapPermissions.MapDemoActivityPermissionsDispatcher;
+import com.example.reconnect.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;

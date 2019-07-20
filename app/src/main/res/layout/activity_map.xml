@@ -8,6 +8,7 @@
         android:id="@+id/btnSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#9FB8AD"
         android:text="Back to Connections" />
 
     <fragment

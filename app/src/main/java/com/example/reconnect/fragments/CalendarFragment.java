@@ -101,8 +101,8 @@ public class CalendarFragment extends Fragment {
                     Toast.makeText(getContext(), "There is no photo!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Glide.with(getContext()).load(photoFile).into(ivProfilePic);
                 saveUser(photoFile);
+                Glide.with(getContext()).load(photoFile).into(ivProfilePic);
             }
         });
 

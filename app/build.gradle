@@ -58,4 +58,6 @@ dependencies {
     // Adding androidx dependencies for recognizing support libraries
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.annotation:annotation:1.0.2'
+    // Google maps android utility
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
 }

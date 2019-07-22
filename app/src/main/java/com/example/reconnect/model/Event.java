@@ -51,17 +51,17 @@ public class Event extends ParseObject {
 
     public void setSpecial (Boolean special) {put(KEY_SPECIAL, special);}
 
-    public String getKeyDate() {
+    public String getDate() {
         return KEY_DATE;
     }
 
-    public void setKeyDate(Date date) {
+    public void setDate(Date date) {
         put(KEY_DATE, date);
     }
-
-    public static String getKeyAccepted() {
-        return KEY_ACCEPTED;
+    public Boolean getAccepted() {
+        return getBoolean(KEY_ACCEPTED);
     }
+
 
     public ParseUser getCurrentUser() {
         if (ParseUser.getCurrentUser().getUsername().equals(getCreator().getUsername())){

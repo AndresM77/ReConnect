@@ -153,7 +153,16 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
     }
 
     private void loadMarkers(GoogleMap googleMap) {
-
+        /*
+        queryConnections();
+        for (int i = 0; i < mConnections.size(); i++) {
+            Marker marker = googleMap.addMarker(new MarkerOptions()
+                    .position()
+                    .title()
+                    .icon());
+            marker.setTag(mConnections.get(i));
+        }
+        */
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")

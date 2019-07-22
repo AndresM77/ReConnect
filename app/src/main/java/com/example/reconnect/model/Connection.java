@@ -1,6 +1,7 @@
 package com.example.reconnect.model;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -37,18 +38,28 @@ public class Connection extends ParseObject {
     public void setStarred21(Boolean starred21) {put(KEY_STARRED_21, starred21);}
 
     public ParseUser getCurrentUser() {
-        if (ParseUser.getCurrentUser().getUsername().equals(getUser1().getUsername())){
-            return getUser1();
-        } else {
-            return getUser2();
+        try {
+            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getUser1().fetchIfNeeded().getUsername())){
+                return getUser1();
+            } else {
+                return getUser2();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return  getUser1();
         }
     }
 
     public ParseUser getOtherUser() {
-        if (ParseUser.getCurrentUser().getUsername().equals(getUser1().getUsername())){
+        try {
+            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getUser1().fetchIfNeeded().getUsername())){
+                return getUser2();
+            } else {
+                return getUser1();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
             return getUser2();
-        } else {
-            return getUser1();
         }
     }
 

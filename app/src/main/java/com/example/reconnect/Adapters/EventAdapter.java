@@ -1,7 +1,6 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -219,11 +218,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 e.printStackTrace();
             }
 
-            /* if (event.getAttendee().equals(ParseUser.getCurrentUser())) {
-                attendee.setText(event.getCreator().toString());
-            } else if (event.getCreator().equals(ParseUser.getCurrentUser())) {
-                attendee.setText(event.getAttendee().toString());
-            } */
 
             // meeting time assignment
             String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();

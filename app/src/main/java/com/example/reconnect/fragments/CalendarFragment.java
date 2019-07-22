@@ -198,6 +198,7 @@ public class CalendarFragment extends Fragment {
             postQuery.whereEqualTo(Event.KEY_ATTENDEE, ParseUser.getCurrentUser());
         }
 
+        //delete
         postQuery.addDescendingOrder(Event.KEY_CREATED_AT);
 
         postQuery.findInBackground(new FindCallback<Event>() {

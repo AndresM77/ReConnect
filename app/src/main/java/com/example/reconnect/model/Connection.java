@@ -83,8 +83,8 @@ public class Connection extends ParseObject {
         queries.add(postQuery2);
 
         ParseQuery<Connection> mainQuery = ParseQuery.or(queries);
-        postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
-        postQuery.setLimit(20);
+        mainQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
+        mainQuery.setLimit(20);
 
         mainQuery.findInBackground(new FindCallback<Connection>() {
 

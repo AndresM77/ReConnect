@@ -50,8 +50,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -148,7 +150,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 public boolean onMarkerClick(Marker marker) {
                     // Handle marker click here
-                    ParseUser contact = (ParseUser) marker.getTag();
+                    Connection contact = (Connection) marker.getTag();
                     Intent i = new Intent(MapActivity.this, RequestMeetingActivity.class);
                     i.putExtra("contact", contact);
                     startActivity(i);
@@ -157,17 +159,21 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                 }
             });
             //Load markers of peoples positions on the map
-            loadMarkers(googleMap);
+            mQueryConnections(googleMap);
         } else {
             Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void loadMarkers(GoogleMap googleMap) {
-        mConnections.addAll(Connection.queryConnections());
 
         for (int i = 0; i < mConnections.size(); i++) {
-            ParseGeoPoint geo = (ParseGeoPoint) mConnections.get(i).getOtherUser().get("location");
+            ParseGeoPoint geo = null;
+            try {
+                geo = (ParseGeoPoint) mConnections.get(i).getOtherUser().fetchIfNeeded().get("location");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             String conName = "";
             try {
                 conName = mConnections.get(i).getOtherUser().fetchIfNeeded().getUsername();
@@ -176,8 +182,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             }
             LatLng pos = new LatLng(geo.getLatitude(), geo.getLongitude());
             // Define custom marker
-            BitmapDescriptor customMarker =
-                    BitmapDescriptorFactory.fromResource(R.drawable.map_user_marker);
+            BitmapDescriptor customMarker = BitmapDescriptorFactory.fromResource(R.drawable.map_user_marker);
             Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(pos)
                     .title(conName)
@@ -185,6 +190,36 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             marker.setTag(mConnections.get(i));
             Toast.makeText(getApplicationContext(), "Making markers", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void mQueryConnections(final GoogleMap googleMap) {
+        ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
+        postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
+
+        ParseQuery<Connection> postQuery2 = new ParseQuery<>(Connection.class);
+        postQuery2.whereEqualTo(Connection.KEY_USER2, ParseUser.getCurrentUser());
+
+        List<ParseQuery<Connection>> queries = new ArrayList<>();
+        queries.add(postQuery);
+        queries.add(postQuery2);
+
+        ParseQuery<Connection> mainQuery = ParseQuery.or(queries);
+        postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
+        postQuery.setLimit(20);
+
+        mainQuery.findInBackground(new FindCallback<Connection>() {
+            @Override
+            public void done(List<Connection> connections, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with Query");
+                    e.printStackTrace();
+                    return;
+                }
+                mConnections.clear();
+                mConnections.addAll(connections);
+                loadMarkers(googleMap);
+            }
+        });
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")

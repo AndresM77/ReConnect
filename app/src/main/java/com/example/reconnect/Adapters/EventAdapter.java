@@ -27,11 +27,11 @@ import java.util.List;
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private List<Event> mEvents;
+    private List<Object> mEvents;
     public final int TITLE = 1;
     public final int EVENT = 2;
 
-    public EventAdapter(Context context, List<Event> events) {
+    public EventAdapter(Context context, List<Object> events) {
         mContext = context;
         mEvents = events;
     }
@@ -51,45 +51,23 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ArrayList<Object> test = createViewOrderArray(mEvents);
         int typeInView = getItemViewType(position);
         if (typeInView == EVENT) {
-            Event event = (Event)test.get(position);
+            Event event = (Event)mEvents.get(position);
             ((ViewHolderEvent)holder).bind(event);
         } else if (typeInView == TITLE){
-            DateTitle title = (DateTitle)test.get(position);
+            DateTitle title = (DateTitle)mEvents.get(position);
             ((ViewHolderTitle)holder).bind(title);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        ArrayList test = createViewOrderArray(mEvents);
-        if (test.get(position) instanceof Event){
+        if (mEvents.get(position) instanceof Event){
             return EVENT;
         } else {
             return TITLE;
         }
-    }
-
-    /* creates an array that represents the order of title and event views we wish to display on the profile */
-    public ArrayList<Object> createViewOrderArray(List<Event> events) {
-        ArrayList<Object> toReturn = new ArrayList<>();
-        Date dateTracker = events.get(0).getDate("date");
-        toReturn.add(new DateTitle(dateTracker.toString()));
-
-        for (int i = 0; i < events.size(); i++) {
-            Event currEvent = events.get(i);
-            Date currEventDate = currEvent.getDate("date");
-
-            if (!currEventDate.equals(dateTracker)) {
-                dateTracker = currEventDate;
-                toReturn.add(new DateTitle(dateTracker.toString()));
-            }
-            toReturn.add( currEvent);
-        }
-
-        return toReturn;
     }
 
     @Override
@@ -132,7 +110,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             meetingName = itemView.findViewById(R.id.meetingNameInvite);
             attendee = itemView.findViewById(R.id.attendeeInvite);
             industry = itemView.findViewById(R.id.industryInvite);
-            date = itemView.findViewById(R.id.meetingNameInvite);
+            date = itemView.findViewById(R.id.dateInvite);
             time = itemView.findViewById(R.id.timeInvite);
             accept = itemView.findViewById(R.id.ivAccept);
             pending = itemView.findViewById(R.id.ivPending);
@@ -140,40 +118,64 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             eventLayout = itemView.findViewById(R.id.eventLayout);
         }
 
-        public void bind(Event event) {
+        public void bind(final Event event) {
 
             /* Elements we want to show depending on the status of the invite */
             boolean stillPending = event.getPending();
             boolean hasBeenAccepted = event.getAccepted();
-            boolean isAttendee = event.getAttendee().equals(ParseUser.getCurrentUser());
+            try {
+                Boolean isAttendee = event.getAttendee().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().getUsername());
 
-            // if waiting for response from invited person
-            if (stillPending) {
-                if (!isAttendee) {
-                    // hide the accept and deny images
-                    accept.setVisibility(View.GONE);
-                    deny.setVisibility(View.GONE);
+                if (stillPending) {
+                    if (!isAttendee) {
+                        // hide the accept and deny images
+                        accept.setVisibility(View.GONE);
+                        deny.setVisibility(View.GONE);
+                    }
+                    else {
+                        // hide the pending icon
+                        pending.setVisibility(View.GONE);
+
+                        // implementation of accept or reject event functionality
+                        accept.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                event.setPending(false);
+                                event.setAccepted(true);
+                                event.saveInBackground();
+                            }
+                        });
+
+                        deny.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                event.setPending(false);
+                                event.setAccepted(false);
+                                event.saveInBackground();
+                            }
+                        });
+                    }
                 }
+
                 else {
-                    // hide the pending icon
-                    pending.setVisibility(View.GONE);
+                    if (hasBeenAccepted) {
+                        // hide all status icons
+                        accept.setVisibility(View.GONE);
+                        deny.setVisibility(View.GONE);
+                        pending.setVisibility(View.GONE);
+                    }
+                    else {
+                        eventLayout.setVisibility(View.GONE);
+                        return;
+                    }
                 }
             }
 
-            else {
-                if (hasBeenAccepted) {
-                    // hide all status icons
-                    accept.setVisibility(View.GONE);
-                    deny.setVisibility(View.GONE);
-                    pending.setVisibility(View.GONE);
-                }
-                else {
-                    eventLayout.setVisibility(View.GONE);
-                    return;
-                }
+            catch (ParseException e) {
+                Log.e("Event Adapter", "Unable to tell if current user is attendee of event");
+                e.printStackTrace();
             }
 
-            //TODO implement onClick listeners where needed (in helper method, call these in above logic)
 
             /* Elements we always want to show */
 
@@ -187,13 +189,14 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             // attendee assignment
             String currentUserName;
             String attendeeUserName;
+            Boolean isAttendee;
             try {
                 currentUserName = ParseUser.getCurrentUser().fetchIfNeeded().getUsername();
                 attendeeUserName = event.getAttendee().fetchIfNeeded().getUsername();
-
-                if (attendeeUserName.equals(currentUserName)) {
+                isAttendee = attendeeUserName.equals(currentUserName);
+                if (isAttendee) {
                     attendee.setText(event.getCreator().fetchIfNeeded().getUsername());
-                } else if (!attendeeUserName.equals(currentUserName)) {
+                } else {
                     attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
                 }
             }
@@ -218,12 +221,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 e.printStackTrace();
             }
 
-
             // meeting time assignment
             String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
             time.setText(timeSpan);
-
-
         }
     }
 

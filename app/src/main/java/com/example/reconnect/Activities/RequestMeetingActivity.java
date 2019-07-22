@@ -99,6 +99,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 event.put("name", meetingName.getText().toString());
                 event.put("creator", ParseUser.getCurrentUser());
                 event.put("pending", true);
+                event.put("accepted", false);
                 event.put("reconnect", true);
                 event.put("date", Date.valueOf(meetingDate.getText().toString()));
 

@@ -142,7 +142,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             public void onClick(View view) {
                                 event.setPending(false);
                                 event.setAccepted(true);
-                                //add extra logic here
+                                event.saveInBackground();
                             }
                         });
 
@@ -151,7 +151,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             public void onClick(View view) {
                                 event.setPending(false);
                                 event.setAccepted(false);
-                                //add extra logic here
+                                event.saveInBackground();
                             }
                         });
                     }

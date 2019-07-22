@@ -22,6 +22,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.example.reconnect.Adapters.EventAdapter;
 import com.example.reconnect.R;
+import com.example.reconnect.model.DateTitle;
 import com.example.reconnect.model.Event;
 import com.parse.FindCallback;
 import com.parse.ParseException;

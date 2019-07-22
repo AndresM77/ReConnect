@@ -137,13 +137,23 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 public boolean onMarkerClick(Marker marker) {
                     // Handle marker click here
+                    ParseUser contact = (ParseUser) marker.getTag();
+                    Intent i = new Intent(MapActivity.this, RequestMeetingActivity.class);
+                    i.putExtra("contact", contact);
+                    startActivity(i);
                     // Further info found here https://guides.codepath.org/android/Google-Maps-API-v2-Usage
                     return true;
                 }
             });
+            //Load markers of peoples positions on the map
+            loadMarkers(googleMap);
         } else {
             Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void loadMarkers(GoogleMap googleMap) {
+
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")

@@ -24,9 +24,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.reconnect.Adapters.ConnectionsAdapter;
 import com.example.reconnect.Adapters.CustomWindowAdapter;
 import com.example.reconnect.MapPermissions.MapDemoActivityPermissionsDispatcher;
 import com.example.reconnect.R;
+import com.example.reconnect.model.Connection;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -53,6 +55,9 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -73,6 +78,8 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
     //Initializing view variables
     private Button switchBtn;
     private boolean centered;
+    private List<Connection> mConnections;
+    private ConnectionsAdapter adapter;
 
     private final static String KEY_LOCATION = "location";
 
@@ -90,6 +97,10 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
         centered = false;
 
         switchBtn = findViewById(R.id.btnSwitch);
+        //Instantiating connections list
+        mConnections = new ArrayList<>();
+        //Set up adapter
+        adapter = new ConnectionsAdapter(getApplicationContext(), mConnections);
 
         switchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,16 +164,27 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
     }
 
     private void loadMarkers(GoogleMap googleMap) {
-        /*
-        queryConnections();
+        mConnections.addAll(Connection.queryConnections());
+
         for (int i = 0; i < mConnections.size(); i++) {
+            ParseGeoPoint geo = (ParseGeoPoint) mConnections.get(i).getOtherUser().get("location");
+            String conName = "";
+            try {
+                conName = mConnections.get(i).getOtherUser().fetchIfNeeded().getUsername();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            LatLng pos = new LatLng(geo.getLatitude(), geo.getLongitude());
+            // Define custom marker
+            BitmapDescriptor customMarker =
+                    BitmapDescriptorFactory.fromResource(R.drawable.map_user_marker);
             Marker marker = googleMap.addMarker(new MarkerOptions()
-                    .position()
-                    .title()
-                    .icon());
+                    .position(pos)
+                    .title(conName)
+                    .icon(customMarker));
             marker.setTag(mConnections.get(i));
+            Toast.makeText(getApplicationContext(), "Making markers", Toast.LENGTH_LONG).show();
         }
-        */
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")

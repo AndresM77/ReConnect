@@ -1,12 +1,17 @@
 package com.example.reconnect.model;
 
+import android.util.Log;
+
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @ParseClassName("Connection")
 public class Connection extends ParseObject {
@@ -61,6 +66,41 @@ public class Connection extends ParseObject {
             e.printStackTrace();
             return getUser2();
         }
+    }
+
+    public static List<Connection> queryConnections() {
+
+        final List<Connection> mConnections = new ArrayList<>();
+
+        ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
+        postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
+
+        ParseQuery<Connection> postQuery2 = new ParseQuery<>(Connection.class);
+        postQuery2.whereEqualTo(Connection.KEY_USER2, ParseUser.getCurrentUser());
+
+        List<ParseQuery<Connection>> queries = new ArrayList<>();
+        queries.add(postQuery);
+        queries.add(postQuery2);
+
+        ParseQuery<Connection> mainQuery = ParseQuery.or(queries);
+        postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
+        postQuery.setLimit(20);
+
+        mainQuery.findInBackground(new FindCallback<Connection>() {
+
+            @Override
+            public void done(List<Connection> connections, ParseException e) {
+                if (e != null) {
+                    Log.e("Connection", "Error with Query");
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d("Connection", "got here");
+                mConnections.clear();
+                mConnections.addAll(connections);
+            }
+        });
+        return mConnections;
     }
 
 

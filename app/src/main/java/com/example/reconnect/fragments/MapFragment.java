@@ -2,7 +2,6 @@ package com.example.reconnect.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.reconnect.Adapters.ConnectionsAdapter;
 import com.example.reconnect.Activities.MapActivity;
+import com.example.reconnect.Adapters.ConnectionsAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +94,10 @@ public class MapFragment extends Fragment {
     }
 
     public void queryConnections() {
-        ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
+        mConnections.clear();
+        mConnections.addAll(Connection.queryConnections());
+        adapter.notifyDataSetChanged();
+        /*ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
         postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
 
         ParseQuery<Connection> postQuery2 = new ParseQuery<>(Connection.class);
@@ -125,6 +123,6 @@ public class MapFragment extends Fragment {
                 mConnections.addAll(connections);
                 adapter.notifyDataSetChanged();
             }
-        });
+        });*/
     }
 }

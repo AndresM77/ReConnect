@@ -185,6 +185,7 @@ public class CalendarFragment extends Fragment {
     public void queryEvents() {
         ParseQuery<Event> postQuery = new ParseQuery<>(Event.class);
         postQuery.include(Event.KEY_CREATOR);
+        postQuery.addDescendingOrder(Event.KEY_PENDING);
         postQuery.addAscendingOrder(Event.KEY_DATE);
         //TODO add: postQuery.whereLessThan("KEY_DATE", new Date(System.currentTimeMillis()));
         postQuery.setLimit(20);

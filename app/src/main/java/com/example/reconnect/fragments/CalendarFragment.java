@@ -36,6 +36,7 @@ import com.parse.ParseUser;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CalendarFragment extends Fragment {
@@ -45,7 +46,7 @@ public class CalendarFragment extends Fragment {
     //Initializing variables necessary for recycler view
     private RecyclerView rvEvents;
     private EventAdapter adapter;
-    private List<Event> mEvents;
+    private List<Object> mEvents;
     private TextView tvCurrentUsername;
     private SwipeRefreshLayout swipeContainer;
 
@@ -209,10 +210,34 @@ public class CalendarFragment extends Fragment {
                     return;
                 }
                 mEvents.clear();
-                mEvents.addAll(events);
+                mEvents.addAll(createViewOrderArray(events));
                 adapter.notifyDataSetChanged();
             }
         });
+
+    }
+
+
+    /* creates an array that represents the order of title and event views we wish to display on the profile */
+    public ArrayList<Object> createViewOrderArray(List<Event> events) {
+        ArrayList<Object> toReturn = new ArrayList<>();
+
+        if (events.size() > 0) {
+            Date dateTracker = events.get(0).getDate("date");
+            toReturn.add(new DateTitle(dateTracker.toString()));
+
+            for (int i = 0; i < events.size(); i++) {
+                Event currEvent = events.get(i);
+                Date currEventDate = currEvent.getDate("date");
+
+                if (!currEventDate.equals(dateTracker)) {
+                    dateTracker = currEventDate;
+                    toReturn.add(new DateTitle(dateTracker.toString()));
+                }
+                toReturn.add(currEvent);
+            }
+        }
+        return toReturn;
 
     }
 }

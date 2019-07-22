@@ -13,7 +13,6 @@ import com.example.reconnect.Activities.MessageContactsActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.parse.ParseException;
-import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class MessagesConnectionAdapter extends RecyclerView.Adapter<MessagesConn
     @NonNull
     @Override
     public MessagesConnectionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_message_contact, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false);
         return new ViewHolder(view);
     }
 
@@ -52,10 +51,10 @@ public class MessagesConnectionAdapter extends RecyclerView.Adapter<MessagesConn
 
         private TextView name;
 
+
         public ViewHolder(final View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.contactName);
-
             // onClick listener to request a meeting
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -68,23 +67,12 @@ public class MessagesConnectionAdapter extends RecyclerView.Adapter<MessagesConn
 
         /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(Connection connection) {
-            if (ParseUser.getCurrentUser().equals(connection.getUser1())) {
-                try {
-                    name.setText(connection.getUser2().fetchIfNeeded().getUsername());
-                    name.setTag(connection);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+            try {
+                name.setText(connection.getOtherUser().fetchIfNeeded().getUsername());
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            else {
-                try {
-                    name.setText(connection.getUser2().fetchIfNeeded().getUsername());
-                    name.setTag(connection);
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
+            name.setTag(connection);
         }
 
     }

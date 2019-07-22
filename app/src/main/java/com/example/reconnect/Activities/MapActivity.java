@@ -152,7 +152,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                     // Handle marker click here
                     Connection contact = (Connection) marker.getTag();
                     Intent i = new Intent(MapActivity.this, RequestMeetingActivity.class);
-                    i.putExtra("contact", contact);
+                    i.putExtra("requesteeId", contact.getOtherUser().getObjectId());
                     startActivity(i);
                     // Further info found here https://guides.codepath.org/android/Google-Maps-API-v2-Usage
                     return true;

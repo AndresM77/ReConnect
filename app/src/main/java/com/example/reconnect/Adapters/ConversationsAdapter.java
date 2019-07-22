@@ -5,16 +5,19 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.reconnect.R;
 import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.Message;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
     @NonNull
     @Override
     public ConversationsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_conversation, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_message_contact, parent, false);
         return new ViewHolder(view);
     }
 
@@ -51,11 +54,13 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
+        private ImageButton ibProfileButton;
         private TextView lastMessage;
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.tvName);
+            name = itemView.findViewById(R.id.tvUserName);
+            ibProfileButton = itemView.findViewById(R.id.ibProfileImg);
             lastMessage = itemView.findViewById(R.id.tvMessage);
 
             // onClick listener to request a meeting
@@ -70,12 +75,16 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
 
         /* method that connects information to create item_conversation for ConversationsFragment's Recycler View */
         public void bind(Conversation conversation) {
-            name.setTag(conversation);
+            ParseFile profileImg = (ParseFile) conversation.getOtherUser().get("profileImg");
+            if (profileImg != null) {
+                Glide.with(context).load(profileImg.getUrl()).into(ibProfileButton);
+            }
             try {
-                name.setText(conversation.getConversee().fetchIfNeeded().getUsername());
+                name.setText(conversation.getOtherUser().fetchIfNeeded().getUsername());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            name.setTag(conversation);
             if (conversation.getLastMessage() != null){
                 Message message = (Message) conversation.getLastMessage();
                 lastMessage.setText(message.getMessage());

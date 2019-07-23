@@ -112,7 +112,8 @@ public class ConversationsFragment extends Fragment {
 
     public void selectRecipient(){
         Intent i = new Intent(getContext(), MessageContactsActivity.class);
-        startActivityForResult(i, REQUEST_CODE);
+        startActivity(i);
+        //startActivityForResult(i, REQUEST_CODE);
     }
 
     private void query() {

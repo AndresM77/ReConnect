@@ -464,19 +464,20 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                 mConversations.clear();
                 mConversations.addAll(objects);
                 Conversation conversation;
+                Boolean change = true;
                 for (int f = 0; f < mConversations.size(); f++) {
                     try {
                         if (mConversations.get(f).getConversee().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())
                                 || mConversations.get(f).getConverser().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
                             conversation = mConversations.get(f);
                             goToConversation(conversation);
-                            finish();
+                            change = false;
                         }
                     } catch (ParseException ee) {
                         ee.printStackTrace();
                     }
-                    createConversation(contact);
                 }
+                if (change) {createConversation(contact);}
             }
         });
     }

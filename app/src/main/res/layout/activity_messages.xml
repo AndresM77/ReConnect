@@ -57,13 +57,13 @@
         android:hint="Type Message"
         android:inputType="textMultiLine"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+        app:layout_constraintBottom_toTopOf="@+id/btnMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btnSubmit"
+        android:id="@+id/btnMessage"
         android:layout_width="176dp"
         android:layout_height="49dp"
         android:layout_marginStart="8dp"

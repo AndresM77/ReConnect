@@ -67,7 +67,7 @@ public class MessagesActivity extends AppCompatActivity {
         rvMessages.setLayoutManager(linearLayoutManager);
         tvContactName = findViewById(R.id.tvContactName);
         etMessage = findViewById(R.id.etMessage);
-        btnSubmit = findViewById(R.id.btnSubmit);
+        btnSubmit = findViewById(R.id.btnMessage);
         btnReturn = findViewById(R.id.btnReturn);
         tvDistanceAway = findViewById(R.id.tvDistanceAway);
         tvIndustry = findViewById(R.id.tvIndustry);

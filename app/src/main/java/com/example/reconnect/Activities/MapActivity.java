@@ -71,6 +71,7 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 @RuntimePermissions
 public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLongClickListener {
 
+    private static final double ESTIMATION_CONSTANT = 0.999999;
     private final String TAG = "MapActivity";
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -192,7 +193,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            LatLng pos = new LatLng(geo.getLatitude(), geo.getLongitude());
+            LatLng pos = new LatLng(geo.getLatitude() * ESTIMATION_CONSTANT, geo.getLongitude() *ESTIMATION_CONSTANT);
             // Define custom marker
             BitmapDescriptor customMarker = BitmapDescriptorFactory.fromResource(R.drawable.map_user_marker);
             Marker marker = googleMap.addMarker(new MarkerOptions()

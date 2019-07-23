@@ -5,16 +5,19 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.reconnect.R;
 import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.Message;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 
 import java.util.List;
 
@@ -51,11 +54,13 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
+        private ImageView ibProfileButton;
         private TextView lastMessage;
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.tvName);
+            name = itemView.findViewById(R.id.tvUserName);
+            ibProfileButton = itemView.findViewById(R.id.ivProfileImg);
             lastMessage = itemView.findViewById(R.id.tvMessage);
 
             // onClick listener to request a meeting
@@ -70,14 +75,28 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
 
         /* method that connects information to create item_conversation for ConversationsFragment's Recycler View */
         public void bind(Conversation conversation) {
-            name.setTag(conversation);
+            ParseFile profileImg = null;
             try {
-                name.setText(conversation.getConversee().fetchIfNeeded().getUsername());
+                profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            if (profileImg != null) {
+                Glide.with(context).load(profileImg.getUrl()).into(ibProfileButton);
+            }
+            try {
+                name.setText(conversation.getOtherUser().fetchIfNeeded().getUsername());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            name.setTag(conversation);
             if (conversation.getLastMessage() != null){
-                Message message = (Message) conversation.getLastMessage();
+                Message message = null;
+                try {
+                    message = conversation.getLastMessage().fetchIfNeeded();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 lastMessage.setText(message.getMessage());
             } else {
                 lastMessage.setText("");

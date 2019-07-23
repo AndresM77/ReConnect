@@ -93,14 +93,20 @@ public class MessageContactsActivity extends AppCompatActivity {
 
     public void queryConnections() {
         ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
-        postQuery.include(Connection.KEY_USER1);
+        postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
+
+        ParseQuery<Connection> postQuery2 = new ParseQuery<>(Connection.class);
+        postQuery2.whereEqualTo(Connection.KEY_USER2, ParseUser.getCurrentUser());
+
+        List<ParseQuery<Connection>> queries = new ArrayList<>();
+        queries.add(postQuery);
+        queries.add(postQuery2);
+
+        ParseQuery<Connection> mainQuery = ParseQuery.or(queries);
+        postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
         postQuery.setLimit(20);
 
-        postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
-        postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
-        // TODO - Add a check for KEY_USER2 and currentUser
-
-        postQuery.findInBackground(new FindCallback<Connection>() {
+        mainQuery.findInBackground(new FindCallback<Connection>() {
             @Override
             public void done(List<Connection> connections, ParseException e) {
                 if (e != null) {

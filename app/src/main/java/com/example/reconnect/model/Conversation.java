@@ -1,6 +1,7 @@
 package com.example.reconnect.model;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -25,18 +26,28 @@ public class Conversation extends ParseObject {
     public void setLastMessage(Message message) {put(KEY_LAST_MESSAGE, message);}
 
     public ParseUser getCurrentUser() {
-        if (ParseUser.getCurrentUser().getUsername().equals(getConversee().getUsername())){
+        try {
+            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getConversee().fetchIfNeeded().getUsername())){
+                return getConversee();
+            } else {
+                return getConverser();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
             return getConversee();
-        } else {
-            return getConverser();
         }
     }
 
     public ParseUser getOtherUser() {
-        if (ParseUser.getCurrentUser().getUsername().equals(getConversee().getUsername())){
+        try {
+            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getConversee().fetchIfNeeded().getUsername())){
+                return getConverser();
+            } else {
+                return getConversee();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
             return getConverser();
-        } else {
-            return getConversee();
         }
     }
 

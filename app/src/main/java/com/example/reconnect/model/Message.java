@@ -15,9 +15,7 @@ public class Message extends ParseObject {
     public static final String KEY_RECIPIENT ="recipient";
     public static final String KEY_CREATED_AT = "createdAt";
 
-    public String getMessage() {
-        return getString(KEY_MESSAGE);
-    }
+    public String getMessage() { return getString(KEY_MESSAGE); }
 
     public void setMessage(String message) {put(KEY_MESSAGE, message);}
 

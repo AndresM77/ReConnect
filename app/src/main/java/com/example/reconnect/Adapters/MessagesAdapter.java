@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.R;
 import com.example.reconnect.model.Message;
-import com.parse.ParseException;
 
 import java.util.List;
 
@@ -45,23 +44,17 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvUserName;
         private TextView tvMessage;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            tvUserName = itemView.findViewById(R.id.tvUserName);
             tvMessage = itemView.findViewById(R.id.tvMessage);
         }
 
         // method that connects information to create item_contact for MapFragment's Recycler View
         public void bind(Message message) {
-            try {
-                tvUserName.setText(message.getSender().fetchIfNeeded().getUsername());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+
             tvMessage.setText(message.getMessage());
         }
 

@@ -12,15 +12,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.reconnect.Adapters.MessagesConnectionAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
+import com.example.reconnect.model.Conversation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.reconnect.fragments.ConversationsFragment.REQUEST_CODE;
 
 public class MessageContactsActivity extends AppCompatActivity {
 
@@ -30,6 +29,7 @@ public class MessageContactsActivity extends AppCompatActivity {
     private RecyclerView rvConnections;
     private MessagesConnectionAdapter adapter;
     private List<Connection> mConnections;
+    private List<Conversation> mConversations;
     private SwipeRefreshLayout swipeContainer;
     private ContactClickListener listener;
 
@@ -41,11 +41,13 @@ public class MessageContactsActivity extends AppCompatActivity {
         rvConnections = findViewById(R.id.rvMessages);
         //Instantiating connections list
         mConnections = new ArrayList<>();
+        mConversations = new ArrayList<>();
         //Initialize
         listener = new ContactClickListener() {
             @Override
             public void onClick(Connection connection) {
-                returnActivity(connection);
+                query(connection);
+                //returnActivity(connection);
             }
         };
 
@@ -69,7 +71,7 @@ public class MessageContactsActivity extends AppCompatActivity {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 swipeContainer.setRefreshing(false);
-                queryConnections();
+                queryC();
             }
         });
         // Configure the refreshing colors
@@ -78,47 +80,79 @@ public class MessageContactsActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         //query posts
-        queryConnections();
+        queryC();
     }
 
-    private void returnActivity(Connection connection) {
-        // Send intent back to home activity after selecting
-        // a contact User name
-        Intent intent = new Intent(this, RequestMeetingActivity.class);
-        intent.putExtra("connection", connection);
-        setResult(REQUEST_CODE, intent);
-        finish();
-    }
-
-
-    public void queryConnections() {
-        ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
-        postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
-
-        ParseQuery<Connection> postQuery2 = new ParseQuery<>(Connection.class);
-        postQuery2.whereEqualTo(Connection.KEY_USER2, ParseUser.getCurrentUser());
-
-        List<ParseQuery<Connection>> queries = new ArrayList<>();
-        queries.add(postQuery);
-        queries.add(postQuery2);
-
-        ParseQuery<Connection> mainQuery = ParseQuery.or(queries);
-        postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
-        postQuery.setLimit(20);
-
-        mainQuery.findInBackground(new FindCallback<Connection>() {
+    private void queryC() {
+        Connection.queryConnections(new FindCallback<Connection>() {
             @Override
-            public void done(List<Connection> connections, ParseException e) {
+            public void done(List<Connection> objects, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error with Query");
                     e.printStackTrace();
                     return;
                 }
                 mConnections.clear();
-                mConnections.addAll(connections);
+                mConnections.addAll(objects);
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private void query(final Connection contact) {
+        Conversation.queryConversations(new FindCallback<Conversation>() {
+            @Override
+            public void done(List<Conversation> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with Query");
+                    e.printStackTrace();
+                    return;
+                }
+                mConversations.clear();
+                mConversations.addAll(objects);
+                Conversation conversation;
+                Boolean change = true;
+                for (int f = 0; f < mConversations.size(); f++) {
+                    try {
+                        if (mConversations.get(f).getConversee().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())
+                                || mConversations.get(f).getConverser().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
+                            conversation = mConversations.get(f);
+                            goToConversation(conversation);
+                            change = false;
+                        }
+                    } catch (ParseException ee) {
+                        ee.printStackTrace();
+                    }
+                }
+                if (change) { createConversation(contact); }
+            }
+        });
+    }
+
+    public void createConversation(final Connection connection) {
+        final Conversation conversation = new Conversation();
+        conversation.setConverser(ParseUser.getCurrentUser());
+        conversation.setConversee(connection.getOtherUser());
+        conversation.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e!=null) {
+                    Log.d(TAG, "Error while saving");
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d(TAG, "Success");
+                Intent i = new Intent(MessageContactsActivity.this, MessagesActivity.class);
+                i.putExtra("conversation", conversation);
+                startActivity(i);
+            }
+        });
+    }
+
+    private void goToConversation(Conversation conversation) {
+        Intent i = new Intent(getApplicationContext(), MessagesActivity.class);
+        i.putExtra("conversation", conversation);
+        startActivity(i);
     }
 
     public interface ContactClickListener {

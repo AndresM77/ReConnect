@@ -32,6 +32,8 @@ import com.parse.ParseUser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,17 +82,18 @@ public class CalendarFragment extends Fragment {
         rvEvents.setLayoutManager(linearLayoutManager);
 
         //Set up button to change profile picture
-        btnChangeProfile = view.findViewById(R.id.btnChangeProfile);
+       // btnChangeProfile = view.findViewById(R.id.btnChangeProfile);
         //Set up profile picture to be changed
         ivProfilePic = view.findViewById(R.id.ivProfilePic);
 
         ParseUser user = ParseUser.getCurrentUser();
+        tvCurrentUsername.setText(user.getUsername() + "'s Calendar");
 
         if (user.get("profileImg") != null) {
             ParseFile img = (ParseFile) user.get("profileImg");
             Glide.with(getContext()).load(img.getUrl()).into(ivProfilePic);
         }
-        btnChangeProfile.setOnClickListener(new View.OnClickListener() {
+        /*btnChangeProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchCamera();
@@ -102,7 +105,7 @@ public class CalendarFragment extends Fragment {
                 saveUser(photoFile);
                 Glide.with(getContext()).load(photoFile).into(ivProfilePic);
             }
-        });
+        });*/
 
         // Lookup the swipe container view
         swipeContainer = view.findViewById(R.id.swipeContainer);
@@ -222,7 +225,8 @@ public class CalendarFragment extends Fragment {
 
         if (events.size() > 0) {
             Date dateTracker = events.get(0).getDate("date");
-            toReturn.add(new DateTitle(dateTracker.toString()));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, ''yy");
+            toReturn.add(new DateTitle(dateFormat.format(dateTracker).substring(0,11)));
 
             for (int i = 0; i < events.size(); i++) {
                 Event currEvent = events.get(i);
@@ -230,7 +234,7 @@ public class CalendarFragment extends Fragment {
 
                 if (!currEventDate.equals(dateTracker)) {
                     dateTracker = currEventDate;
-                    toReturn.add(new DateTitle(dateTracker.toString()));
+                    toReturn.add(new DateTitle(dateFormat.format(dateTracker.toString())));
                 }
                 toReturn.add(currEvent);
             }

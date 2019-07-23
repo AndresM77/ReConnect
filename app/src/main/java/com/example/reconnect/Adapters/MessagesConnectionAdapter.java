@@ -89,6 +89,8 @@ public class MessagesConnectionAdapter extends RecyclerView.Adapter<MessagesConn
             ParseUser contact = connection.getOtherUser();
             ParseGeoPoint position1 = ParseUser.getCurrentUser().getParseGeoPoint("location");
 
+            name.setTag(connection);
+
             try {
                 name.setText(contact.fetchIfNeeded().getUsername());
             } catch (ParseException e) {

@@ -1,7 +1,5 @@
 package com.example.reconnect.model;
 
-import android.util.Log;
-
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -68,9 +66,7 @@ public class Connection extends ParseObject {
         }
     }
 
-    public static List<Connection> queryConnections() {
-
-        final List<Connection> mConnections = new ArrayList<>();
+    public static void queryConnections(FindCallback<Connection> callback) {
 
         ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
         postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
@@ -86,21 +82,7 @@ public class Connection extends ParseObject {
         mainQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
         mainQuery.setLimit(20);
 
-        mainQuery.findInBackground(new FindCallback<Connection>() {
-
-            @Override
-            public void done(List<Connection> connections, ParseException e) {
-                if (e != null) {
-                    Log.e("Connection", "Error with Query");
-                    e.printStackTrace();
-                    return;
-                }
-                Log.d("Connection", "got here");
-                mConnections.clear();
-                mConnections.addAll(connections);
-            }
-        });
-        return mConnections;
+        mainQuery.findInBackground(callback);
     }
 
 

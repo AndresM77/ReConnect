@@ -53,7 +53,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -63,6 +62,7 @@ import java.util.List;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
+import static com.example.reconnect.model.Connection.queryConnections;
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 //Tutorial for map found at https://guides.codepath.org/android/Google-Maps-API-v2-Usage#show-alertdialog-on-longclick
@@ -137,7 +137,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
 
     }
 
-    protected void loadMap(GoogleMap googleMap) {
+    protected void loadMap(final GoogleMap googleMap) {
         map = googleMap;
         if (map != null) {
             // Map is ready
@@ -159,7 +159,22 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                 }
             });
             //Load markers of peoples positions on the map
-            mQueryConnections(googleMap);
+            //mQueryConnections(googleMap);
+            queryConnections(new FindCallback<Connection>() {
+
+                @Override
+                public void done(List<Connection> connections, ParseException e) {
+                    if (e != null) {
+                        Log.e("Connection", "Error with Query");
+                        e.printStackTrace();
+                        return;
+                    }
+                    Log.d("Connection", "got here");
+                    mConnections.clear();
+                    mConnections.addAll(connections);
+                    loadMarkers(googleMap);
+                }
+            });
         } else {
             Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
@@ -190,36 +205,6 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             marker.setTag(mConnections.get(i));
             Toast.makeText(getApplicationContext(), "Making markers", Toast.LENGTH_LONG).show();
         }
-    }
-
-    private void mQueryConnections(final GoogleMap googleMap) {
-        ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
-        postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
-
-        ParseQuery<Connection> postQuery2 = new ParseQuery<>(Connection.class);
-        postQuery2.whereEqualTo(Connection.KEY_USER2, ParseUser.getCurrentUser());
-
-        List<ParseQuery<Connection>> queries = new ArrayList<>();
-        queries.add(postQuery);
-        queries.add(postQuery2);
-
-        ParseQuery<Connection> mainQuery = ParseQuery.or(queries);
-        postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
-        postQuery.setLimit(20);
-
-        mainQuery.findInBackground(new FindCallback<Connection>() {
-            @Override
-            public void done(List<Connection> connections, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error with Query");
-                    e.printStackTrace();
-                    return;
-                }
-                mConnections.clear();
-                mConnections.addAll(connections);
-                loadMarkers(googleMap);
-            }
-        });
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")

@@ -14,8 +14,6 @@ import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +67,7 @@ public class MessageContactsActivity extends AppCompatActivity {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 swipeContainer.setRefreshing(false);
-                queryConnections();
+                query();
             }
         });
         // Configure the refreshing colors
@@ -78,7 +76,23 @@ public class MessageContactsActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         //query posts
-        queryConnections();
+        query();
+    }
+
+    private void query() {
+        Connection.queryConnections(new FindCallback<Connection>() {
+            @Override
+            public void done(List<Connection> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with Query");
+                    e.printStackTrace();
+                    return;
+                }
+                mConnections.clear();
+                mConnections.addAll(objects);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void returnActivity(Connection connection) {
@@ -88,37 +102,6 @@ public class MessageContactsActivity extends AppCompatActivity {
         intent.putExtra("connection", connection);
         setResult(REQUEST_CODE, intent);
         finish();
-    }
-
-
-    public void queryConnections() {
-        ParseQuery<Connection> postQuery = new ParseQuery<>(Connection.class);
-        postQuery.whereEqualTo(Connection.KEY_USER1, ParseUser.getCurrentUser());
-
-        ParseQuery<Connection> postQuery2 = new ParseQuery<>(Connection.class);
-        postQuery2.whereEqualTo(Connection.KEY_USER2, ParseUser.getCurrentUser());
-
-        List<ParseQuery<Connection>> queries = new ArrayList<>();
-        queries.add(postQuery);
-        queries.add(postQuery2);
-
-        ParseQuery<Connection> mainQuery = ParseQuery.or(queries);
-        postQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
-        postQuery.setLimit(20);
-
-        mainQuery.findInBackground(new FindCallback<Connection>() {
-            @Override
-            public void done(List<Connection> connections, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error with Query");
-                    e.printStackTrace();
-                    return;
-                }
-                mConnections.clear();
-                mConnections.addAll(connections);
-                adapter.notifyDataSetChanged();
-            }
-        });
     }
 
     public interface ContactClickListener {

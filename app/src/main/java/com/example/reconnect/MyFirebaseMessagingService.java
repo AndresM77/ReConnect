@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -16,6 +17,7 @@ import androidx.core.app.NotificationCompat;
 import com.example.reconnect.Activities.MapActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.parse.ParseUser;
 
 import java.util.Random;
 
@@ -50,12 +52,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         nManager.notify(notificationId, nBuilder.build());
     }
 
-    //TODO create setUpChannels method
-
-
     @Override
     public void onNewToken(String s) {
+        Log.d("FCM Service", "Token refreshed to " + s);
         super.onNewToken(s);
+        ParseUser.getCurrentUser().put("deviceId", s);
+        ParseUser.getCurrentUser().saveInBackground();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

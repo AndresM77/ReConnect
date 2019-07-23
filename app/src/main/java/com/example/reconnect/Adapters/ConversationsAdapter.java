@@ -36,7 +36,7 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
     @NonNull
     @Override
     public ConversationsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_message_contact, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_conversation, parent, false);
         return new ViewHolder(view);
     }
 
@@ -75,7 +75,12 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
 
         /* method that connects information to create item_conversation for ConversationsFragment's Recycler View */
         public void bind(Conversation conversation) {
-            ParseFile profileImg = (ParseFile) conversation.getOtherUser().get("profileImg");
+            ParseFile profileImg = null;
+            try {
+                profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             if (profileImg != null) {
                 Glide.with(context).load(profileImg.getUrl()).into(ibProfileButton);
             }
@@ -86,7 +91,12 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             }
             name.setTag(conversation);
             if (conversation.getLastMessage() != null){
-                Message message = (Message) conversation.getLastMessage();
+                Message message = null;
+                try {
+                    message = conversation.getLastMessage().fetchIfNeeded();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 lastMessage.setText(message.getMessage());
             } else {
                 lastMessage.setText("");

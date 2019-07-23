@@ -6,15 +6,18 @@ import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.reconnect.R;
+import com.bumptech.glide.Glide;
 import com.example.reconnect.Activities.RequestMeetingActivity;
+import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
@@ -52,11 +55,13 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
         private TextView name;
         private TextView distanceAwayV;
+        private ImageButton profileBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.contactName);
             distanceAwayV = itemView.findViewById(R.id.distanceAway);
+            profileBtn = itemView.findViewById(R.id.ibProfileImg);
 
 
             // onClick listener to request a meeting
@@ -83,8 +88,18 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
         /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(Connection connection) {
-            ParseUser contact = connection.getOtherUser();
 
+            ParseFile profileImg = null;
+            try {
+                profileImg = (ParseFile) connection.getOtherUser().fetchIfNeeded().get("profileImg");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (profileImg != null) {
+                Glide.with(context).load(profileImg.getUrl()).into(profileBtn);
+            }
+
+            ParseUser contact = connection.getOtherUser();
             ParseGeoPoint position1 = ParseUser.getCurrentUser().getParseGeoPoint("location");
 
             try {

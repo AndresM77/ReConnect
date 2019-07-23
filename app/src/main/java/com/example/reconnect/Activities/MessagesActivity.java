@@ -119,6 +119,17 @@ public class MessagesActivity extends AppCompatActivity {
                 }
                 Log.d(TAG, "Success");
                 conversation.setLastMessage(message);
+                conversation.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e!=null) {
+                            Log.d(TAG, "Error while saving");
+                            e.printStackTrace();
+                            return;
+                        }
+                        Log.d(TAG, "Success");
+                    }
+                });
                 queryMessages(conversation);
             }
         });

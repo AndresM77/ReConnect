@@ -71,7 +71,7 @@ public class CalendarFragment extends Fragment {
         //Instantiating connections list
         mEvents = new ArrayList<>();
         //Set up adapter
-        adapter = new EventAdapter(getContext(), mEvents);
+        adapter = new EventAdapter(getContext(), mEvents, this);
         //Set adapter on recycler view
         rvEvents.setAdapter(adapter);
         //Set up linear layout manager
@@ -187,7 +187,7 @@ public class CalendarFragment extends Fragment {
         postQuery.include(Event.KEY_CREATOR);
         postQuery.addDescendingOrder(Event.KEY_PENDING);
         postQuery.addAscendingOrder(Event.KEY_DATE);
-        //TODO add: postQuery.whereLessThan("KEY_DATE", new Date(System.currentTimeMillis()));
+        //TODO add: postQuery.whereGreaterThan("KEY_DATE", new Date(System.currentTimeMillis()));
         postQuery.setLimit(20);
 
         // Work to create event on both user profiles (the creator and the attendee)

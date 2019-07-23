@@ -60,4 +60,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.0.2'
     // Google maps android utility
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
+    // Notifications
+
+
 }

@@ -1,10 +1,12 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
+import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
 import com.example.reconnect.model.DateTitle;
@@ -82,7 +85,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public class ViewHolderTitle extends ViewHolder {
 
         TextView dateTitle;
-        ImageView addEvent;
+        Button addEvent;
 
         public ViewHolderTitle(@NonNull View itemView) {
             super(itemView);
@@ -92,7 +95,13 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public void bind(DateTitle date) {
             dateTitle.setText(date.getmDisplayDate());
-
+            addEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(mContext, RequestMeetingActivity.class);
+                    mContext.startActivity(i);
+                }
+            });
             //TODO add onItemClick listener for the button
         }
     }
@@ -128,7 +137,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             boolean stillPending = event.getPending();
             boolean hasBeenAccepted = event.getAccepted();
             try {
-                Boolean isAttendee = event.getAttendee().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().getUsername());
+                Boolean isAttendee = event.getAttendee().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername());
 
                 if (stillPending) {
                     if (!isAttendee) {

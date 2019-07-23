@@ -88,7 +88,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public class ViewHolderTitle extends ViewHolder {
 
         TextView dateTitle;
-        Button addEvent;
+        ImageView addEvent;
 
         public ViewHolderTitle(@NonNull View itemView) {
             super(itemView);

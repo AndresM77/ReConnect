@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "147766317812",
+    "firebase_url": "https://reconnect-587b7.firebaseio.com",
+    "project_id": "reconnect-587b7",
+    "storage_bucket": "reconnect-587b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147766317812:android:ca0ef0868df779f3",
+        "android_client_info": {
+          "package_name": "com.example.reconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147766317812-m7lmf94749pbna55q4m4h4ss46mvq3ae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAawZzy-xZpdMX_fihsgpKL3GxnNMdMYY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147766317812-m7lmf94749pbna55q4m4h4ss46mvq3ae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

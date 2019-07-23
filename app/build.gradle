@@ -60,7 +60,8 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.0.2'
     // Google maps android utility
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
-    // Notifications
-
-
+    implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.google.firebase:firebase-messaging:19.0.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

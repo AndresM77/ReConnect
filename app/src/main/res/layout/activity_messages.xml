@@ -7,14 +7,15 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
-        android:layout_width="409dp"
-        android:layout_height="538dp"
+        android:layout_width="411dp"
+        android:layout_height="521dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/etMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvContactName"
-        app:layout_constraintVertical_bias="0.456">
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMessages"
@@ -22,6 +23,27 @@
             android:layout_height="match_parent" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="416dp"
+        android:layout_height="90dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary">
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/ivProfileImg"
+        android:layout_width="71dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/baseline_account_circle_black_48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <EditText
         android:id="@+id/etMessage"
@@ -35,13 +57,13 @@
         android:hint="Type Message"
         android:inputType="textMultiLine"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+        app:layout_constraintBottom_toTopOf="@+id/btnMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btnSubmit"
+        android:id="@+id/btnMessage"
         android:layout_width="176dp"
         android:layout_height="49dp"
         android:layout_marginStart="8dp"
@@ -63,25 +85,34 @@
 
     <TextView
         android:id="@+id/tvContactName"
-        android:layout_width="400dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="227dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvSendMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send A Message!"
-        android:textColor="#9FB8AD"
-        android:textStyle="bold|italic"
-        tools:layout_editor_absoluteX="151dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:id="@+id/tvIndustry"
+        android:layout_width="227dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvContactName" />
+
+    <TextView
+        android:id="@+id/tvDistanceAway"
+        android:layout_width="227dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="8dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvIndustry" />
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

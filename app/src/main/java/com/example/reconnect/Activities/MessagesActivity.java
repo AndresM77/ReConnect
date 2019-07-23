@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,12 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.reconnect.Adapters.MessagesAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.Message;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -36,6 +39,9 @@ public class MessagesActivity extends AppCompatActivity {
     private List<Message> mMessage;
     private SwipeRefreshLayout swipeContainer;
     private TextView tvContactName;
+    private TextView tvIndustry;
+    private TextView tvDistanceAway;
+    private ImageView ivProfileImage;
     private EditText etMessage;
     private Button btnSubmit;
     private Button btnReturn;
@@ -61,13 +67,23 @@ public class MessagesActivity extends AppCompatActivity {
         rvMessages.setLayoutManager(linearLayoutManager);
         tvContactName = findViewById(R.id.tvContactName);
         etMessage = findViewById(R.id.etMessage);
-        btnSubmit = findViewById(R.id.btnSubmit);
+        btnSubmit = findViewById(R.id.btnMessage);
         btnReturn = findViewById(R.id.btnReturn);
+        tvDistanceAway = findViewById(R.id.tvDistanceAway);
+        tvIndustry = findViewById(R.id.tvIndustry);
+        ivProfileImage = findViewById(R.id.ivProfileImg);
+
+        ParseFile profileImg = null;
 
         try {
             tvContactName.setText(conversation.getConversee().fetchIfNeeded().getUsername());
+            tvIndustry.setText((String) conversation.getConversee().fetchIfNeeded().get("industry"));
+            profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+        if (profileImg != null) {
+            Glide.with(getBaseContext()).load(profileImg.getUrl()).into(ivProfileImage);
         }
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {

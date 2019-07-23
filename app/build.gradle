@@ -61,6 +61,7 @@ dependencies {
     // Google maps android utility
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
     implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.google.firebase:firebase-messaging:19.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

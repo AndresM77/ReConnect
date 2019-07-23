@@ -82,17 +82,18 @@ public class CalendarFragment extends Fragment {
         rvEvents.setLayoutManager(linearLayoutManager);
 
         //Set up button to change profile picture
-        btnChangeProfile = view.findViewById(R.id.btnChangeProfile);
+       // btnChangeProfile = view.findViewById(R.id.btnChangeProfile);
         //Set up profile picture to be changed
         ivProfilePic = view.findViewById(R.id.ivProfilePic);
 
         ParseUser user = ParseUser.getCurrentUser();
+        tvCurrentUsername.setText(user.getUsername() + "'s Calendar");
 
         if (user.get("profileImg") != null) {
             ParseFile img = (ParseFile) user.get("profileImg");
             Glide.with(getContext()).load(img.getUrl()).into(ivProfilePic);
         }
-        btnChangeProfile.setOnClickListener(new View.OnClickListener() {
+        /*btnChangeProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchCamera();
@@ -104,7 +105,7 @@ public class CalendarFragment extends Fragment {
                 saveUser(photoFile);
                 Glide.with(getContext()).load(photoFile).into(ivProfilePic);
             }
-        });
+        });*/
 
         // Lookup the swipe container view
         swipeContainer = view.findViewById(R.id.swipeContainer);

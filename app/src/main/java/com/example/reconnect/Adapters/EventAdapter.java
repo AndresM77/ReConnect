@@ -56,8 +56,12 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             Event event = (Event)mEvents.get(position);
             ((ViewHolderEvent)holder).bind(event);
         } else if (typeInView == TITLE){
-            DateTitle title = (DateTitle)mEvents.get(position);
-            ((ViewHolderTitle)holder).bind(title);
+            if (position + 1 < getItemCount()) {
+                if (getItemViewType(position + 1)!=TITLE) {
+                    DateTitle title = (DateTitle)mEvents.get(position);
+                    ((ViewHolderTitle)holder).bind(title);
+                }
+            }
         }
     }
 
@@ -165,7 +169,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         pending.setVisibility(View.GONE);
                     }
                     else {
-                        eventLayout.setVisibility(View.GONE);
+                        event.delete();
                         return;
                     }
                 }

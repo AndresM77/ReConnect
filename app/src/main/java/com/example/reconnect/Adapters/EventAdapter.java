@@ -236,6 +236,22 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             // meeting time assignment
             String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
             time.setText(timeSpan);
+
+            /* delete event functionality */
+            eventLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    try {
+                        event.delete();
+                        mFragment.queryEvents();
+                    } catch (ParseException e) {
+                        Log.e("Event Adapter", "Unable to delete the event");
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+            });
+
         }
     }
 

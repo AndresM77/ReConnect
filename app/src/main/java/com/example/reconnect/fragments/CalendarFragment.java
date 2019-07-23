@@ -32,6 +32,8 @@ import com.parse.ParseUser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -222,7 +224,8 @@ public class CalendarFragment extends Fragment {
 
         if (events.size() > 0) {
             Date dateTracker = events.get(0).getDate("date");
-            toReturn.add(new DateTitle(dateTracker.toString()));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, ''yy");
+            toReturn.add(new DateTitle(dateFormat.format(dateTracker).substring(0,11)));
 
             for (int i = 0; i < events.size(); i++) {
                 Event currEvent = events.get(i);
@@ -230,7 +233,7 @@ public class CalendarFragment extends Fragment {
 
                 if (!currEventDate.equals(dateTracker)) {
                     dateTracker = currEventDate;
-                    toReturn.add(new DateTitle(dateTracker.toString()));
+                    toReturn.add(new DateTitle(dateFormat.format(dateTracker.toString())));
                 }
                 toReturn.add(currEvent);
             }

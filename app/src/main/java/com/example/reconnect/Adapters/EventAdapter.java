@@ -12,17 +12,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.R;
+import com.example.reconnect.fragments.CalendarFragment;
 import com.example.reconnect.model.Event;
 import com.example.reconnect.model.DateTitle;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -31,12 +32,14 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private Context mContext;
     private List<Object> mEvents;
+    private CalendarFragment mFragment;
     public final int TITLE = 1;
     public final int EVENT = 2;
 
-    public EventAdapter(Context context, List<Object> events) {
+    public EventAdapter(Context context, List<Object> events, CalendarFragment fragment) {
         mContext = context;
         mEvents = events;
+        mFragment = fragment;
     }
 
     @NonNull
@@ -44,7 +47,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == EVENT) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_event_invite, parent, false);
-            return new ViewHolderEvent(view);
+            return new ViewHolderEvent(view, mFragment);
         } else {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_date_title, parent, false);
             return new ViewHolderTitle(view);
@@ -117,8 +120,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         ImageView pending;
         ImageView deny;
         ConstraintLayout eventLayout;
+        CalendarFragment mFragment;
 
-        public ViewHolderEvent(@NonNull View itemView) {
+        public ViewHolderEvent(@NonNull View itemView, CalendarFragment fragment) {
             super(itemView);
             meetingName = itemView.findViewById(R.id.meetingNameInvite);
             attendee = itemView.findViewById(R.id.attendeeInvite);
@@ -129,6 +133,8 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             pending = itemView.findViewById(R.id.ivPending);
             deny = itemView.findViewById(R.id.ivReject);
             eventLayout = itemView.findViewById(R.id.eventLayout);
+
+            mFragment = fragment;
         }
 
         public void bind(final Event event) {
@@ -156,6 +162,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                 event.setPending(false);
                                 event.setAccepted(true);
                                 event.saveInBackground();
+                                mFragment.queryEvents();
                             }
                         });
 
@@ -165,6 +172,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                 event.setPending(false);
                                 event.setAccepted(false);
                                 event.saveInBackground();
+                                mFragment.queryEvents();
                             }
                         });
                     }
@@ -237,6 +245,22 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             // meeting time assignment
             String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
             time.setText(timeSpan);
+
+            /* delete event functionality */
+            eventLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    try {
+                        event.delete();
+                        mFragment.queryEvents();
+                    } catch (ParseException e) {
+                        Log.e("Event Adapter", "Unable to delete the event");
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+            });
+
         }
     }
 

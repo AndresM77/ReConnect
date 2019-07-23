@@ -58,10 +58,12 @@ public class Event extends ParseObject {
     public void setDate(Date date) {
         put(KEY_DATE, date);
     }
+
     public Boolean getAccepted() {
         return getBoolean(KEY_ACCEPTED);
     }
 
+    public void setAccepted(Boolean accepted) { put(KEY_ACCEPTED, accepted);}
 
     public ParseUser getCurrentUser() {
         if (ParseUser.getCurrentUser().getUsername().equals(getCreator().getUsername())){

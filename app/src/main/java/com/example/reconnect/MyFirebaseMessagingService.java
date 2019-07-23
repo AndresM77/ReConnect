@@ -1,5 +1,6 @@
 package com.example.reconnect;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.example.reconnect.Activities.MapActivity;
@@ -24,8 +26,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     /* This method decides what to do when a notification is received */
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        //TODO delete
-        super.onMessageReceived(remoteMessage);
 
         Intent i = new Intent(this, MapActivity.class);
         NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -40,13 +40,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_ONE_SHOT);
 
         //create a notification
-        //TODO add all of the elements that we want
+        //TODO more customization here
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
                 .setContentTitle(remoteMessage.getData().get("title"))
                 .setContentText(remoteMessage.getData().get("message"))
                 .setContentIntent(pendingIntent);
 
-        // notify manager taht the notification has been built
+        // notify manager that the notification has been built
         nManager.notify(notificationId, nBuilder.build());
     }
 
@@ -58,7 +58,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onNewToken(s);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void setUpChannels(NotificationManager nManager) {
+        if (nManager != null) {
+            CharSequence adminChannelName = "New notification";
+            String adminChannelDescription = "Schedule events with other Users";
 
+            NotificationChannel adminChannel = new NotificationChannel(ADMIN_CHANNEL_ID, adminChannelName, NotificationManager.IMPORTANCE_HIGH);
+            adminChannel.setDescription(adminChannelDescription);
+            //TODO more customization here
+
+            nManager.createNotificationChannel(adminChannel);
+        }
     }
 }

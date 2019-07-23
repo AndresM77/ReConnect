@@ -5,7 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,13 +54,13 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
-        private ImageButton ibProfileButton;
+        private ImageView ibProfileButton;
         private TextView lastMessage;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.tvUserName);
-            ibProfileButton = itemView.findViewById(R.id.ibProfileImg);
+            ibProfileButton = itemView.findViewById(R.id.ivProfileImg);
             lastMessage = itemView.findViewById(R.id.tvMessage);
 
             // onClick listener to request a meeting

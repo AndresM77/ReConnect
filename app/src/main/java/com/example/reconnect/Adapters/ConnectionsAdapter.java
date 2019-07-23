@@ -6,7 +6,7 @@ import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,13 +55,13 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
         private TextView name;
         private TextView distanceAwayV;
-        private ImageButton profileBtn;
+        private ImageView profileBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.contactName);
             distanceAwayV = itemView.findViewById(R.id.distanceAway);
-            profileBtn = itemView.findViewById(R.id.ibProfileImg);
+            profileBtn = itemView.findViewById(R.id.ivProfileImg);
 
 
             // onClick listener to request a meeting

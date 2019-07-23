@@ -64,7 +64,11 @@ public class MessagesActivity extends AppCompatActivity {
         btnSubmit = findViewById(R.id.btnSubmit);
         btnReturn = findViewById(R.id.btnReturn);
 
-        tvContactName.setText(conversation.getConversee().getUsername());
+        try {
+            tvContactName.setText(conversation.getConversee().fetchIfNeeded().getUsername());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override

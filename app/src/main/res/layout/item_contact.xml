@@ -9,13 +9,13 @@
     android:layout_marginTop="5dp"
     >
 
-    <ImageButton
-        android:id="@+id/ibProfileImg"
-        android:layout_width="104dp"
-        android:layout_height="83dp"
+    <ImageView
+        android:id="@+id/ivProfileImg"
+        android:layout_width="96dp"
+        android:layout_height="94dp"
+        android:src="@drawable/baseline_account_circle_black_48"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/contactName"
@@ -24,7 +24,7 @@
         android:layout_marginStart="8dp"
         android:hint="Contact Name"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/ibProfileImg"
+        app:layout_constraintStart_toEndOf="@+id/ivProfileImg"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -35,6 +35,6 @@
         android:layout_marginStart="8dp"
         android:hint="Distance Away"
         android:textSize="11sp"
-        app:layout_constraintStart_toEndOf="@+id/ibProfileImg"
+        app:layout_constraintStart_toEndOf="@+id/ivProfileImg"
         app:layout_constraintTop_toBottomOf="@+id/contactName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

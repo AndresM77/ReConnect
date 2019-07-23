@@ -91,8 +91,8 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-        // Set default selection
         bottomNavigationView.setSelectedItemId(R.id.action_map);
+
     }
 
     @Override

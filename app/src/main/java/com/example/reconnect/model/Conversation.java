@@ -1,10 +1,14 @@
 package com.example.reconnect.model;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ParseClassName("Conversation")
 public class Conversation extends ParseObject {
@@ -49,6 +53,24 @@ public class Conversation extends ParseObject {
             e.printStackTrace();
             return getConverser();
         }
+    }
+
+    public static void queryConversations(FindCallback<Conversation> callback) {
+
+        ParseQuery<Conversation> postQuery = new ParseQuery<>(Conversation.class);
+        postQuery.whereEqualTo(Conversation.KEY_CONVERSER, ParseUser.getCurrentUser());
+
+        ParseQuery<Conversation> postQuery2 = new ParseQuery<>(Conversation.class);
+        postQuery2.whereEqualTo(Conversation.KEY_CONVERSEE, ParseUser.getCurrentUser());
+
+        List<ParseQuery<Conversation>> queries = new ArrayList<>();
+        queries.add(postQuery);
+        queries.add(postQuery2);
+
+        ParseQuery<Conversation> mainQuery = ParseQuery.or(queries);
+        mainQuery.addDescendingOrder(Conversation.KEY_CREATED_AT);
+
+        mainQuery.findInBackground(callback);
     }
 
     //Querying our Conversation class

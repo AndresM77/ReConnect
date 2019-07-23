@@ -15,6 +15,7 @@ public class SettingsActivity extends AppCompatActivity {
     //Implementing Item view listeners
     private Button btnLogOut;
     private Button btnReturn;
+    private Button btnUpload;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -18,17 +18,18 @@ import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.reconnect.Adapters.ConnectionsAdapter;
 import com.example.reconnect.Adapters.CustomWindowAdapter;
 import com.example.reconnect.MapPermissions.MapDemoActivityPermissionsDispatcher;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
+import com.example.reconnect.model.Conversation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -81,7 +82,8 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
     private Button switchBtn;
     private boolean centered;
     private List<Connection> mConnections;
-    private ConnectionsAdapter adapter;
+    private List<Conversation> mConversations;
+    private Connection contact;
 
     private final static String KEY_LOCATION = "location";
 
@@ -101,8 +103,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
         switchBtn = findViewById(R.id.btnSwitch);
         //Instantiating connections list
         mConnections = new ArrayList<>();
-        //Set up adapter
-        adapter = new ConnectionsAdapter(getApplicationContext(), mConnections);
+        mConversations = new ArrayList<>();
 
         switchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,13 +150,9 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             //On click logic for markers
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 public boolean onMarkerClick(Marker marker) {
-                    // Handle marker click here
-                    Connection contact = (Connection) marker.getTag();
-                    Intent i = new Intent(MapActivity.this, RequestMeetingActivity.class);
-                    i.putExtra("requesteeId", contact.getOtherUser().getObjectId());
-                    startActivity(i);
-                    // Further info found here https://guides.codepath.org/android/Google-Maps-API-v2-Usage
+                    showDialogForUserSelection(marker);
                     return true;
+                    // Further info found here https://guides.codepath.org/android/Google-Maps-API-v2-Usage
                 }
             });
             //Load markers of peoples positions on the map
@@ -378,6 +375,110 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
         Toast.makeText(this, "Long Press", Toast.LENGTH_LONG).show();
         // Custom code here...
         showAlertDialogForPoint(point);
+    }
+
+    private void showDialogForUserSelection(final Marker userMarker) {
+        View messageView = LayoutInflater.from(MapActivity.this).inflate(R.layout.item_contact_alert, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(messageView);
+
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+
+        contact = (Connection) userMarker.getTag();
+
+        //Configure Text
+        TextView userName = alertDialog.findViewById(R.id.tvUserName);
+        TextView industry = alertDialog.findViewById(R.id.tvIndustry);
+        /*try {
+            userName.setText(contact.getOtherUser().fetchIfNeeded().getUsername());
+            industry.setText((String) contact.getOtherUser().fetchIfNeeded().get("industry"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }*/
+
+        // Configure dialog button (Send Message)
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Create Meeting", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Handle marker click here
+                Intent intent = new Intent(MapActivity.this, RequestMeetingActivity.class);
+                intent.putExtra("requesteeId", contact.getOtherUser().getObjectId());
+                startActivity(intent);
+            }
+
+        });
+
+        // Configure dialog button (Send Message)
+        alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Send Message", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                query();
+            }
+
+        });
+
+        // Configure dialog button (Cancel)
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }
+        });
+
+        // Display the dialog
+        alertDialog.show();
+    }
+
+    public void createConversation(final Connection connection) {
+        final Conversation conversation = new Conversation();
+        conversation.setConverser(ParseUser.getCurrentUser());
+        conversation.setConversee(connection.getOtherUser());
+        conversation.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e!=null) {
+                    Log.d(TAG, "Error while saving");
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d(TAG, "Success");
+                Intent i = new Intent(MapActivity.this, MessagesActivity.class);
+                i.putExtra("conversation", conversation);
+                startActivity(i);
+            }
+        });
+    }
+
+    private void goToConversation(Conversation conversation) {
+        Intent i = new Intent(getApplicationContext(), MessagesActivity.class);
+        i.putExtra("conversation", conversation);
+        startActivity(i);
+    }
+
+    private void query() {
+        Conversation.queryConversations(new FindCallback<Conversation>() {
+            @Override
+            public void done(List<Conversation> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with Query");
+                    e.printStackTrace();
+                    return;
+                }
+                mConversations.clear();
+                mConversations.addAll(objects);
+                Conversation conversation;
+                for (int f = 0; f < mConversations.size(); f++) {
+                    try {
+                        if (mConversations.get(f).getConversee().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())
+                                || mConversations.get(f).getConverser().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
+                            conversation = mConversations.get(f);
+                            goToConversation(conversation);
+                            finish();
+                        }
+                    } catch (ParseException ee) {
+                        ee.printStackTrace();
+                    }
+                    createConversation(contact);
+                }
+            }
+        });
     }
 
     // Display the alert that adds the marker

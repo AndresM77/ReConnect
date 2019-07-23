@@ -15,14 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.reconnect.Adapters.ConversationsAdapter;
 import com.example.reconnect.Activities.MessageContactsActivity;
 import com.example.reconnect.Activities.MessagesActivity;
+import com.example.reconnect.Adapters.ConversationsAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Conversation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +92,7 @@ public class ConversationsFragment extends Fragment {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 swipeContainer.setRefreshing(false);
-                queryConversations();
+                query();
             }
         });
         // Configure the refreshing colors
@@ -102,7 +101,7 @@ public class ConversationsFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         //query posts
-        queryConversations();
+        query();
     }
 
     private void goToConversation(Conversation conversation) {
@@ -116,28 +115,17 @@ public class ConversationsFragment extends Fragment {
         startActivityForResult(i, REQUEST_CODE);
     }
 
-
-
-    public void queryConversations() {
-        ParseQuery<Conversation> postQuery = new ParseQuery<>(Conversation.class);
-        postQuery.include(Conversation.KEY_CONVERSER);
-        postQuery.setLimit(20);
-
-        postQuery.addDescendingOrder(Conversation.KEY_CREATED_AT);
-
-        //postQuery.whereEqualTo(Conversation., ParseUser.getCurrentUser());
-        // TODO - Add a check for KEY_USER2 and currentUser
-
-        postQuery.findInBackground(new FindCallback<Conversation>() {
+    private void query() {
+        Conversation.queryConversations(new FindCallback<Conversation>() {
             @Override
-            public void done(List<Conversation> conversations, ParseException e) {
+            public void done(List<Conversation> objects, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error with Query");
                     e.printStackTrace();
                     return;
                 }
                 mConversations.clear();
-                mConversations.addAll(conversations);
+                mConversations.addAll(objects);
                 adapter.notifyDataSetChanged();
             }
         });

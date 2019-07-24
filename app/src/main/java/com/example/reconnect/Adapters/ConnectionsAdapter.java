@@ -74,11 +74,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
                     Connection selectedConnection = connections.get(view.getVerticalScrollbarPosition());
 
-                    if (ParseUser.getCurrentUser().getUsername().equals(selectedConnection.getUser1().getUsername()))
-                        intent.putExtra("requesteeId", selectedConnection.getUser2().getObjectId());
-                    else {
-                        intent.putExtra("requesteeId", selectedConnection.getUser1().getObjectId());
-                    }
+                    intent.putExtra("requesteeId", selectedConnection.getOtherUser().getObjectId());
 
                     view.getContext().startActivity(intent);
                 }
@@ -100,7 +96,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             }
 
             ParseUser contact = connection.getOtherUser();
-            ParseGeoPoint position1 = ParseUser.getCurrentUser().getParseGeoPoint("location");
+            ParseGeoPoint position1 = connection.getCurrentUser().getParseGeoPoint("location");
 
             try {
                 name.setText(contact.fetchIfNeeded().getUsername());

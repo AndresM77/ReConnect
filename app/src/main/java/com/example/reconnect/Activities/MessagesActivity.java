@@ -101,6 +101,20 @@ public class MessagesActivity extends AppCompatActivity {
             }
         });
 
+        // onClick listener to request a meeting
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // New intent to send User to RequestMeeting Activity after selecting
+                // a contact User name
+                Intent intent = new Intent(view.getContext(), RequestMeetingActivity.class);
+
+                intent.putExtra("requesteeId", conversation.getOtherUser().getObjectId());
+
+                view.getContext().startActivity(intent);
+            }
+        });
+
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading

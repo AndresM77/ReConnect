@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.reconnect.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -79,6 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
         newUser.put("email", email);
         newUser.put("username", user);
         newUser.put("password", pass);
+        newUser.put("location", new ParseGeoPoint(0,0));
         try {
             newUser.signUp();
         } catch (ParseException e) {

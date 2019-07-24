@@ -1,6 +1,8 @@
 package com.example.reconnect.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,11 +12,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.reconnect.Adapters.UsersAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
-import com.example.reconnect.model.Conversation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ public class AllUsersActivity extends AppCompatActivity {
     private RecyclerView rvConnections;
     private UsersAdapter adapter;
     private List<ParseUser> mUsers;
-    private List<Conversation> mConversations;
+    private List<Connection> mConnections;
     private SwipeRefreshLayout swipeContainer;
     private UserClickListener listener;
     
@@ -39,12 +41,22 @@ public class AllUsersActivity extends AppCompatActivity {
         rvConnections = findViewById(R.id.rvMessages);
         //Instantiating connections list
         mUsers = new ArrayList<>();
-        mConversations = new ArrayList<>();
+        mConnections = new ArrayList<>();
         //Initialize
         listener = new UserClickListener() {
             @Override
             public void onClick(ParseUser user) {
-
+                //checking to see if unique connection
+                for (int i = 0; i < mConnections.size(); i++) {
+                    try {
+                        if (mConnections.get(i).getOtherUser().fetchIfNeeded().getUsername().equals(user.fetchIfNeeded().getUsername())) {
+                            return;
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                saveConnection(user);
             }
         };
 
@@ -80,7 +92,40 @@ public class AllUsersActivity extends AppCompatActivity {
         queryU();
     }
 
-    private void queryC(Connection connection) {
+    private void saveConnection(ParseUser user) {
+        Connection connection = new Connection();
+        connection.put("user1", ParseUser.getCurrentUser());
+        connection.put("user2", user);
+
+        connection.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e!=null) {
+                    Log.d("AllUsersActivity", "Error while saving");
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d("AllUsersActivity", "Success");
+                Intent i = new Intent(AllUsersActivity.this, SettingsActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    private void queryC() {
+        Connection.queryConnections(new FindCallback<Connection>() {
+            @Override
+            public void done(List<Connection> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with Query");
+                    e.printStackTrace();
+                    return;
+                }
+                mConnections.clear();
+                mConnections.addAll(objects);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void queryU() {

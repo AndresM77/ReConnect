@@ -17,6 +17,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -34,6 +35,8 @@ public class RegisterActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        mUsers = new ArrayList<>();
 
         etEmail = findViewById(R.id.tvEmail);
         etUser = findViewById(R.id.tvUserText);

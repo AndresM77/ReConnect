@@ -42,7 +42,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
     EditText meetingDate;
     EditText startTime;
     EditText endTime;
-    ImageView submitRequest;
+    Button submitRequest;
     ParseUser requestedUser;
 
     @Override

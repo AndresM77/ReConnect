@@ -54,7 +54,7 @@ public class CalendarFragment extends Fragment {
     public String photoFileName = "photo.jpg";
     private File photoFile;
     private ImageView ivProfilePic;
-    private Button btnChangeProfile;
+    private ImageView btnChangeProfile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,7 +82,7 @@ public class CalendarFragment extends Fragment {
         rvEvents.setLayoutManager(linearLayoutManager);
 
         //Set up button to change profile picture
-       // btnChangeProfile = view.findViewById(R.id.btnChangeProfile);
+        btnChangeProfile = view.findViewById(R.id.btnChangeProfile);
         //Set up profile picture to be changed
         ivProfilePic = view.findViewById(R.id.ivProfilePic);
 
@@ -93,7 +93,7 @@ public class CalendarFragment extends Fragment {
             ParseFile img = (ParseFile) user.get("profileImg");
             Glide.with(getContext()).load(img.getUrl()).into(ivProfilePic);
         }
-        /*btnChangeProfile.setOnClickListener(new View.OnClickListener() {
+        btnChangeProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchCamera();
@@ -105,7 +105,7 @@ public class CalendarFragment extends Fragment {
                 saveUser(photoFile);
                 Glide.with(getContext()).load(photoFile).into(ivProfilePic);
             }
-        });*/
+        });
 
         // Lookup the swipe container view
         swipeContainer = view.findViewById(R.id.swipeContainer);

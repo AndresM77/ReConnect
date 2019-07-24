@@ -18,10 +18,12 @@ import com.parse.ParseUser;
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
+    private static final int REQUEST_CODE = 20;
     //Implementing Item view listeners
     private Button btnLogOut;
     private Button btnReturn;
     private Button btnUpload;
+    private Button btnGetContacts;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,15 @@ public class SettingsActivity extends AppCompatActivity {
         btnLogOut = findViewById(R.id.btnLogOut);
         btnReturn = findViewById(R.id.btnReturn);
         btnUpload = findViewById(R.id.btnUpload);
+        btnGetContacts = findViewById(R.id.btnGetContacts);
+
+        btnGetContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SettingsActivity.this, AllUsersActivity.class);
+                startActivityForResult(i, REQUEST_CODE);
+            }
+        });
 
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -21,10 +21,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Activities.AllUsersActivity"></activity>
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity android:name=".Activities.RequestMeetingActivity" />
         <activity

@@ -20,4 +20,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Upload" />
+
+    <Button
+        android:id="@+id/btnGetContacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Find Connections" />
 </LinearLayout>

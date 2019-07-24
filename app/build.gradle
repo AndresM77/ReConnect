@@ -54,7 +54,8 @@ dependencies {
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$permissionDispatcherVersion"
     // Adding support libraries
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
-    implementation "com.android.support:support-v13:$supportLibVersion" // to remove lint error, found in .idea/libraries
+    implementation "com.android.support:support-v13:$supportLibVersion"
+    // to remove lint error, found in .idea/libraries
     // Adding androidx dependencies for recognizing support libraries
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.annotation:annotation:1.0.2'

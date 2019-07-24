@@ -61,10 +61,11 @@ dependencies {
     // Google maps android utility
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
     //Using Firebase for sending notifications
-    implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.google.firebase:firebase-core:17.0.1'
     implementation 'com.google.firebase:firebase-messaging:19.0.1'
     // Importing volley
     implementation 'com.android.volley:volley:1.1.1'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -9,14 +9,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
+import com.example.reconnect.MySingleton;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
 import com.parse.ParseException;
@@ -25,7 +31,12 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RequestMeetingActivity extends AppCompatActivity {
 
@@ -44,6 +55,15 @@ public class RequestMeetingActivity extends AppCompatActivity {
     EditText endTime;
     Button submitRequest;
     ParseUser requestedUser;
+
+    // Notifications
+    final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    final private String serverKey = "key=" + "Your Firebase server key";
+    final private String contentType = "application/json";
+    final String TAG = "NOTIFICATION TAG";
+    String NOTIFICATION_TITLE;
+    String NOTIFICATION_MESSAGE;
+    String TOPIC;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -137,6 +157,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // create Event for the requested meeting
+                // Creates event under the user's profile section
                 final Event event = new Event();
                 event.put("startTime", startTime.getText().toString());
                 event.put("endTime", endTime.getText().toString());
@@ -170,8 +191,54 @@ public class RequestMeetingActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 });
+
+                //Sending notification
+                TOPIC = "/topics/userABC"; //topic must match with what the receiver subscribed to
+                NOTIFICATION_TITLE = "From User 123";
+                NOTIFICATION_MESSAGE = "Hello! This is a test notification!";
+
+                JSONObject notification = new JSONObject();
+                JSONObject notifcationBody = new JSONObject();
+                try {
+                    notifcationBody.put("title", NOTIFICATION_TITLE);
+                    notifcationBody.put("message", NOTIFICATION_MESSAGE);
+
+                    notification.put("to", TOPIC);
+                    notification.put("data", notifcationBody);
+                } catch (JSONException e) {
+                    Log.e(TAG, "onCreate: " + e.getMessage() );
+                }
+                sendNotification(notification);
             }
+
+
         });
+    }
+
+    private void sendNotification(JSONObject notification) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i(TAG, "onResponse: " + response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(RequestMeetingActivity.this, "Request error", Toast.LENGTH_LONG).show();
+                        Log.i(TAG, "onErrorResponse: Didn't work");
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", serverKey);
+                params.put("Content-Type", contentType);
+                return params;
+            }
+        };
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
     }
 
     private RequestMeetingActivity.DatePickerDoneListener getDatePickerDoneListener(final int dialogId) {

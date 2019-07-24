@@ -234,7 +234,7 @@ public class CalendarFragment extends Fragment {
 
                 if (!currEventDate.equals(dateTracker)) {
                     dateTracker = currEventDate;
-                    toReturn.add(new DateTitle(dateFormat.format(dateTracker.toString())));
+                    toReturn.add(new DateTitle(dateFormat.format(dateTracker).substring(0,11)));
                 }
                 toReturn.add(currEvent);
             }

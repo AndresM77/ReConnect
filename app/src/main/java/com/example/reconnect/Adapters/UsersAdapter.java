@@ -10,8 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.reconnect.Activities.AllUsersActivity;
 import com.example.reconnect.R;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -30,7 +33,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     @NonNull
     @Override
     public UsersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_user, parent, false);
         return new UsersAdapter.ViewHolder(view);
     }
 
@@ -53,10 +56,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.contactName);
-            industry = itemView.findViewById(R.id.distanceAway);
+            name = itemView.findViewById(R.id.tvUserName);
+            industry = itemView.findViewById(R.id.tvIndustry);
             profileImg = itemView.findViewById(R.id.ivProfileImg);
-
 
             // onClick listener to request a meeting
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +72,17 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(ParseUser user) {
             name.setTag(user);
-
+            ParseFile img = null;
+            try {
+                name.setText(user.fetchIfNeeded().getUsername());
+                industry.setText((String) user.fetchIfNeeded().get("industry"));
+                img = (ParseFile) user.fetchIfNeeded().get("profileImg");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (img != null) {
+                Glide.with(context).load(img.getUrl()).into(profileImg);
+            }
         }
 
     }

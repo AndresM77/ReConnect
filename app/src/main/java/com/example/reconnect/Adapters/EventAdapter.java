@@ -1,6 +1,7 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,16 +12,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
+import com.example.reconnect.Activities.MapActivity;
 import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.fragments.CalendarFragment;
+import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Event;
 import com.example.reconnect.model.DateTitle;
+import com.google.android.gms.maps.model.Marker;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -88,7 +93,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public class ViewHolderTitle extends ViewHolder {
 
         TextView dateTitle;
-        Button addEvent;
+        ImageView addEvent;
 
         public ViewHolderTitle(@NonNull View itemView) {
             super(itemView);
@@ -248,15 +253,46 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             /* delete event functionality */
             eventLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                private void showDialogForUserSelection() {
+                    View view = LayoutInflater.from(mContext).inflate(R.layout.item_alert_delete_event, null);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+                    alertDialogBuilder.setView(view);
+
+                    final AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    //Configure Text
+                    ImageView yes = view.findViewById(R.id.deleteYes);
+                    ImageView no = view.findViewById(R.id.deleteNo);
+
+                    yes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            try {
+                                event.delete();
+                                mFragment.queryEvents();
+                                alertDialog.hide();
+                            } catch (ParseException e) {
+                                Log.e("Event Adapter", "Unable to delete the event");
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    no.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.hide();
+                        }
+                    });
+
+                    // Display the dialog
+                    alertDialog.show();
+                }
+
                 @Override
                 public boolean onLongClick(View view) {
-                    try {
-                        event.delete();
-                        mFragment.queryEvents();
-                    } catch (ParseException e) {
-                        Log.e("Event Adapter", "Unable to delete the event");
-                        e.printStackTrace();
-                    }
+                    showDialogForUserSelection();
+
                     return true;
                 }
             });
@@ -265,3 +301,4 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 }
+

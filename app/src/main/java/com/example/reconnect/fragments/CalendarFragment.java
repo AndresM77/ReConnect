@@ -54,7 +54,7 @@ public class CalendarFragment extends Fragment {
     public String photoFileName = "photo.jpg";
     private File photoFile;
     private ImageView ivProfilePic;
-    private Button btnChangeProfile;
+    private ImageView btnChangeProfile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,6 +87,7 @@ public class CalendarFragment extends Fragment {
         ivProfilePic = view.findViewById(R.id.ivProfilePic);
 
         ParseUser user = ParseUser.getCurrentUser();
+        tvCurrentUsername.setText(user.getUsername() + "'s Calendar");
 
         if (user.get("profileImg") != null) {
             ParseFile img = (ParseFile) user.get("profileImg");
@@ -233,7 +234,7 @@ public class CalendarFragment extends Fragment {
 
                 if (!currEventDate.equals(dateTracker)) {
                     dateTracker = currEventDate;
-                    toReturn.add(new DateTitle(dateFormat.format(dateTracker.toString())));
+                    toReturn.add(new DateTitle(dateFormat.format(dateTracker).substring(0,11)));
                 }
                 toReturn.add(currEvent);
             }

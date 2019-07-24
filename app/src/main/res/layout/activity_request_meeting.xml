@@ -7,22 +7,23 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="416dp"
-        android:layout_height="90dp"
+        android:layout_width="410dp"
+        android:layout_height="92dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/colorPrimary">
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/requestMeetingPrompt"></FrameLayout>
 
     <ImageView
         android:id="@+id/ivProfileImg"
         android:layout_width="71dp"
         android:layout_height="71dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:background="@color/colorAccent"
         android:src="@drawable/baseline_account_circle_black_48"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/frameLayout" />
 
     <Button
         android:id="@+id/btnMessage"
@@ -48,41 +49,46 @@
     <TextView
         android:id="@+id/tvUserName"
         android:layout_width="227dp"
-        android:layout_height="25dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="TextView"
+        android:layout_marginEnd="56dp"
+        android:hint="Person name"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/ivProfileImg" />
 
     <TextView
         android:id="@+id/tvIndustry"
         android:layout_width="227dp"
-        android:layout_height="23dp"
-        android:layout_marginEnd="8dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:hint="Industry"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tvUserName"
         app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
 
     <TextView
         android:id="@+id/tvDistance"
         android:layout_width="227dp"
-        android:layout_height="23dp"
-        android:layout_marginEnd="8dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:hint="INPUT DISTANCE HERE"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tvUserName"
         app:layout_constraintTop_toBottomOf="@+id/tvIndustry" />
 
     <EditText
         android:id="@+id/mtgEndTime"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="220dp"
         android:ems="10"
         android:hint="Select meeting end time."
         android:inputType="time"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,14 +96,15 @@
 
     <EditText
         android:id="@+id/startTime"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="220dp"
         android:ems="10"
-        android:hint="Select meeting time."
+        android:hint="Select meeting start time."
         android:inputType="time"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,39 +112,29 @@
 
     <TextView
         android:id="@+id/requestMeetingPrompt"
-        android:layout_width="231dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Request meeting prompt here."
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
-
-    <Button
-        android:id="@+id/submitRequest"
-        android:layout_width="wrap_content"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="Request Meeting"
+        android:background="@color/white"
+        android:text="Request meeting with"
+        android:textAlignment="viewStart"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtgEndTime" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/meetingDate"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="128dp"
         android:ems="10"
         android:hint="Select meeting date."
         android:inputType="time"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -145,14 +142,29 @@
 
     <EditText
         android:id="@+id/meetingName"
-        android:layout_width="167dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Meeting Title (Optional)"
+        android:layout_marginEnd="64dp"
+        android:hint="Create meeting title (optional)."
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/requestMeetingPrompt" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+    <ImageView
+        android:id="@+id/submitRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="64dp"
+        android:background="@color/white"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtgEndTime"
+        app:srcCompat="@drawable/baseline_done_black_18dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

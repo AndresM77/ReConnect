@@ -58,7 +58,8 @@ public class RequestMeetingActivity extends AppCompatActivity {
 
     // Notifications
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
-    final private String serverKey = "key=" + "Your Firebase server key";
+    final private String serverKey = "key=" + "AAAAImePEvQ:APA91bGBbetvSXQVxAjLHzkm97o14Dam0rpXkOh1aCxVrUSJVYjYELneksrf_YNJdS8B-dLoQH6_-VUatNFX7V3xHFcUsuXqz-SNhEdugthrpfljrwyC8JLcY3vcmIrvMO5W43AM2LCE"
+    ;
     final private String contentType = "application/json";
     final String TAG = "NOTIFICATION TAG";
     String NOTIFICATION_TITLE;

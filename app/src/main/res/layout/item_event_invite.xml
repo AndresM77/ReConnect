@@ -11,8 +11,8 @@
         android:id="@+id/meetingNameInvite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:hint="Meeting Name"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,8 +22,7 @@
         android:id="@+id/attendeeInvite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
         android:hint="Attendee"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +32,7 @@
         android:id="@+id/industryInvite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:hint="Industry"
         android:textSize="10sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +46,7 @@
         android:layout_marginEnd="32dp"
         android:hint="Date"
         android:textSize="10sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,7 +54,8 @@
         android:id="@+id/timeInvite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="18dp"
         android:hint="Time"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,36 +65,36 @@
         android:id="@+id/ivReject"
         android:layout_width="22dp"
         android:layout_height="21dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="18dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        app:srcCompat="@drawable/ic_no" />
 
     <ImageView
         android:id="@+id/ivAccept"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="72dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="48dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/checkbox_on_background" />
+        app:srcCompat="@drawable/ic_yes" />
 
     <ImageView
         android:id="@+id/ivPending"
         android:layout_width="21dp"
         android:layout_height="23dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="17dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeInvite"
         app:srcCompat="@drawable/clock" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

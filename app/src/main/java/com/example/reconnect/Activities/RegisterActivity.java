@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         mUsers = new ArrayList<>();
 
         etPhone = findViewById(R.id.etPhone);
-        etUser = findViewById(R.id.etPhone);
+        etUser = findViewById(R.id.etUsername);
         etPass = findViewById(R.id.tvPassText);
         btnSignUp = findViewById(R.id.btnCreate);
 
@@ -75,9 +75,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void saveUser(String email, String user, String pass) {
+    private void saveUser(String phoneNumber, String user, String pass) {
         ParseUser newUser = new ParseUser();
-        newUser.put("email", email);
+        newUser.put("email", phoneNumber);
         newUser.put("username", user);
         newUser.put("password", pass);
         newUser.put("location", new ParseGeoPoint(0,0));

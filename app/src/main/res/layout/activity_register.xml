@@ -31,6 +31,7 @@
         android:layout_marginEnd="30dp"
         android:hint="Password"
         android:textColor="#E6E8E6"
+        android:inputType="textPassword"
         android:textColorHint="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

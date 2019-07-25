@@ -9,8 +9,9 @@
         android:id="@+id/frameLayout"
         android:layout_width="410dp"
         android:layout_height="92dp"
-        android:background="@color/colorPrimary"
+        android:background="#9FB8AD"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/requestMeetingPrompt"></FrameLayout>
 
@@ -57,10 +58,9 @@
         android:layout_width="227dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
         android:hint="Person name"
         android:textColor="#E6E8E6"
-        android:textSize="30sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/ivProfileImg"
         app:layout_constraintTop_toTopOf="@+id/ivProfileImg" />
@@ -72,6 +72,7 @@
         android:hint="Industry"
         android:textColor="#E6E8E6"
         android:textSize="10sp"
+        android:textStyle="italic"
         app:layout_constraintStart_toStartOf="@+id/tvUserName"
         app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
 
@@ -82,7 +83,6 @@
         android:hint="INPUT DISTANCE HERE"
         android:textColor="#E6E8E6"
         android:textSize="10sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/tvIndustry"
         app:layout_constraintTop_toBottomOf="@+id/tvIndustry" />
 

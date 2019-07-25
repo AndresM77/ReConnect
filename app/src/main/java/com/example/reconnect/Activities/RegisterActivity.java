@@ -92,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 Log.d("RegisterActivity", "Success");
-                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                Intent i = new Intent(RegisterActivity.this, HomeActivity.class);
                 startActivity(i);
             }
         });

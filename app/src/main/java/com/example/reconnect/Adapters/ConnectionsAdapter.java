@@ -94,7 +94,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                 e.printStackTrace();
             }
             if (profileImg != null) {
-                Glide.with(context).load(profileImg.getUrl()).into(profileBtn);
+                Glide.with(context).load(profileImg.getUrl()).circleCrop().into(profileBtn);
             }
 
             ParseUser contact = connection.getOtherUser();

@@ -83,7 +83,7 @@ public class MessagesActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (profileImg != null) {
-            Glide.with(getBaseContext()).load(profileImg.getUrl()).into(ivProfileImage);
+            Glide.with(getBaseContext()).load(profileImg.getUrl()).circleCrop().into(ivProfileImage);
         }
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {

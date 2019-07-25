@@ -91,7 +91,7 @@ public class CalendarFragment extends Fragment {
 
         if (user.get("profileImg") != null) {
             ParseFile img = (ParseFile) user.get("profileImg");
-            Glide.with(getContext()).load(img.getUrl()).into(ivProfilePic);
+            Glide.with(getContext()).load(img.getUrl()).circleCrop().into(ivProfilePic);
         }
         btnChangeProfile.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -118,7 +118,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (profileImg != null) {
-            Glide.with(getBaseContext()).load(profileImg.getUrl()).into(ivProfileImg);
+            Glide.with(getBaseContext()).load(profileImg.getUrl()).circleCrop().into(ivProfileImg);
         }
 
 

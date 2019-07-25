@@ -7,23 +7,28 @@
         android:id="@+id/btnLogOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_shape"
         android:text="Log Out" />
 
     <Button
         android:id="@+id/btnReturn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_shape"
         android:text="Return" />
 
     <Button
         android:id="@+id/btnUpload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Upload" />
+        android:text="Upload"
+        android:background="@drawable/round_shape"
+        />
 
     <Button
         android:id="@+id/btnGetContacts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_shape"
         android:text="Find Connections" />
 </LinearLayout>

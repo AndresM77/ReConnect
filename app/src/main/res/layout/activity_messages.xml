@@ -37,8 +37,9 @@
         android:id="@+id/ivProfileImg"
         android:layout_width="71dp"
         android:layout_height="71dp"
-        android:layout_marginStart="96dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/circle_shape"
         android:src="@drawable/baseline_account_circle_black_48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -70,6 +71,7 @@
         android:layout_marginBottom="8dp"
         android:text="Submit"
         android:visibility="visible"
+        android:background="@drawable/round_shape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -80,6 +82,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Return"
+        android:background="@drawable/round_shape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -87,28 +90,28 @@
         android:id="@+id/tvContactName"
         android:layout_width="227dp"
         android:layout_height="25dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivProfileImg"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvIndustry"
         android:layout_width="227dp"
         android:layout_height="23dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivProfileImg"
         app:layout_constraintTop_toBottomOf="@+id/tvContactName" />
 
     <TextView
         android:id="@+id/tvDistanceAway"
         android:layout_width="227dp"
         android:layout_height="23dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivProfileImg"
         app:layout_constraintTop_toBottomOf="@+id/tvIndustry" />
 
 

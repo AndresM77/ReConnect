@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_map"
         android:icon="@drawable/map_icon"
-        android:iconTint="@color/black"
+        android:tint="@color/white"
         android:title="Map"
         android:visible="true"
         app:showAsAction="always" />
@@ -13,13 +13,14 @@
         android:enabled="true"
         android:visible="true"
         android:icon="@drawable/reconnect_icon"
-        android:iconTint="@color/black"
+        android:tint="@color/white"
         android:title="Reconnect"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_profile"
         android:icon="@drawable/profile_icon"
         android:visible="true"
+        android:tint="@color/white"
         android:title="Profile"
         app:showAsAction="always" />
     <item
@@ -27,7 +28,7 @@
         android:enabled="true"
         android:visible="true"
         android:icon="@drawable/messages_icon"
-        android:iconTint="@color/black"
+        android:tint="@color/white"
         android:title="Messages"
         app:showAsAction="always" />
 </menu>

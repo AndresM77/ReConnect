@@ -1,31 +1,25 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
-import com.example.reconnect.Activities.MapActivity;
 import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.fragments.CalendarFragment;
-import com.example.reconnect.model.Connection;
-import com.example.reconnect.model.Event;
 import com.example.reconnect.model.DateTitle;
-import com.google.android.gms.maps.model.Marker;
+import com.example.reconnect.model.Event;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 

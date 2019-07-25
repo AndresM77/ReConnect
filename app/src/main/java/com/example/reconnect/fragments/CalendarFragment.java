@@ -103,7 +103,7 @@ public class CalendarFragment extends Fragment {
                     return;
                 }
                 saveUser(photoFile);
-                Glide.with(getContext()).load(photoFile).into(ivProfilePic);
+                Glide.with(getContext()).load(photoFile).circleCrop().into(ivProfilePic);
             }
         });
 

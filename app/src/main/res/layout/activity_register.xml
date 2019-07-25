@@ -8,7 +8,7 @@
     android:background="@drawable/seattle_skyline_faded">
 
     <EditText
-        android:id="@+id/tvUserText"
+        android:id="@+id/etPhone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -60,7 +60,7 @@
         android:textColor="#E6E8E6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvUserText" />
+        app:layout_constraintTop_toBottomOf="@+id/etPhone" />
 
     <TextView
         android:id="@+id/tv_signupLabel"

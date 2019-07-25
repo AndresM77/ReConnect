@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.example.reconnect.Activities.MapActivity;
+import com.example.reconnect.Activities.NotificationActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -36,7 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             Log.d("FCM", "message received");
 
-            Intent i = new Intent(this, MapActivity.class);
+            Intent i = new Intent(this, NotificationActivity.class);
             NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             int notificationId = new Random().nextInt(5000);
 

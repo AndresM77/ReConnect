@@ -99,7 +99,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
         try {
             requestedUser = userParseQuery.get(requestedUserId);
-            if (requestedUser.equals(ParseUser.getCurrentUser())) {
+            if (!requestedUser.equals(ParseUser.getCurrentUser())) {
                 tvUserName.setText(requestedUser.fetchIfNeeded().getUsername());
                 tvIndustry.setText((String) requestedUser.fetchIfNeeded().get("industry"));
                 profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");

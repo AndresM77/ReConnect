@@ -31,7 +31,9 @@
         android:layout_height="49dp"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Message"
+        android:textColor="#E6E8E6"
         android:visibility="visible"
         android:background="@drawable/round_shape"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +45,10 @@
         android:layout_height="49dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/round_shape"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Return"
+        android:textColor="#E6E8E6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -54,7 +59,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:hint="Person name"
-        android:textColor="@color/colorAccent"
+        android:textColor="#E6E8E6"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/ivProfileImg"
         app:layout_constraintTop_toTopOf="@+id/ivProfileImg" />
@@ -64,7 +70,7 @@
         android:layout_width="227dp"
         android:layout_height="wrap_content"
         android:hint="Industry"
-        android:textColor="@color/colorAccent"
+        android:textColor="#E6E8E6"
         android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@+id/tvUserName"
         app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
@@ -74,7 +80,7 @@
         android:layout_width="227dp"
         android:layout_height="wrap_content"
         android:hint="INPUT DISTANCE HERE"
-        android:textColor="@color/colorAccent"
+        android:textColor="#E6E8E6"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/tvIndustry"
@@ -101,7 +107,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="220dp"
         android:ems="10"
         android:hint="Select meeting start time."
@@ -109,6 +115,7 @@
         android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/meetingDate" />
 
@@ -131,7 +138,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="128dp"
         android:ems="10"
         android:hint="Select meeting date."
@@ -139,6 +146,7 @@
         android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/meetingName" />
 
@@ -147,25 +155,26 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="64dp"
         android:hint="Create meeting title (optional)."
         android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
     <Button
         android:id="@+id/submitRequest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="131dp"
+        android:layout_height="52dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
-        android:backgroundTint="@color/white"
-        android:text="Submit Request"
-        android:textColor="@color/colorPrimary"
         android:background="@drawable/round_shape"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Submit Request"
+        android:textColor="#E6E8E6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtgEndTime" />
 

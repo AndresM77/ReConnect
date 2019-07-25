@@ -72,7 +72,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                     // a contact User name
                     Intent intent = new Intent(view.getContext(), RequestMeetingActivity.class);
 
-                    Connection selectedConnection = connections.get(view.getVerticalScrollbarPosition());
+                    Connection selectedConnection = (Connection) name.getTag();
 
                     intent.putExtra("requesteeId", selectedConnection.getOtherUser().getObjectId());
 
@@ -85,6 +85,8 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
         /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(Connection connection) {
 
+            name.setTag(connection);
+
             ParseFile profileImg = null;
             try {
                 profileImg = (ParseFile) connection.getOtherUser().fetchIfNeeded().get("profileImg");
@@ -96,39 +98,44 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             }
 
             ParseUser contact = connection.getOtherUser();
-            ParseGeoPoint position1 = connection.getCurrentUser().getParseGeoPoint("location");
+            ParseGeoPoint position1;
+
+            try {
+                position1 = connection.getCurrentUser().fetchIfNeeded().getParseGeoPoint("location");
+                ParseGeoPoint position2 = contact.getParseGeoPoint("location");
+
+                Location loc = new Location("");
+
+                loc.setLatitude(position1.getLatitude());
+
+                loc.setLongitude(position1.getLongitude());
+
+                Location loc2 = new Location("");
+
+                loc2.setLatitude(position2.getLatitude());
+
+                loc2.setLongitude(position2.getLongitude());
+
+                Double distance = new Float(loc.distanceTo(loc2)).doubleValue();
+
+                Double metersToMiles = 1609.344;
+
+                distance /= metersToMiles;
+
+                Math.round(distance);
+
+                String out = distance + " miles away";
+
+                distanceAwayV.setText(out);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
             try {
                 name.setText(contact.fetchIfNeeded().getUsername());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-            ParseGeoPoint position2 = contact.getParseGeoPoint("location");
-
-            Location loc = new Location("");
-
-            loc.setLatitude(position1.getLatitude());
-
-            loc.setLongitude(position1.getLongitude());
-
-            Location loc2 = new Location("");
-
-            loc2.setLatitude(position2.getLatitude());
-
-            loc2.setLongitude(position2.getLongitude());
-
-            Double distance = new Float(loc.distanceTo(loc2)).doubleValue();
-
-            Double metersToMiles = 1609.344;
-
-            distance /= metersToMiles;
-
-            Math.round(distance);
-
-            String out = distance + " miles away";
-
-            distanceAwayV.setText(out);
 
         }
 

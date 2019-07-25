@@ -32,7 +32,7 @@ public class AllUsersActivity extends AppCompatActivity {
     private List<Connection> mConnections;
     private SwipeRefreshLayout swipeContainer;
     private UserClickListener listener;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,19 +46,23 @@ public class AllUsersActivity extends AppCompatActivity {
         listener = new UserClickListener() {
             @Override
             public void onClick(ParseUser user) {
+                Boolean go = true;
                 //checking to see if unique connection
                 for (int i = 0; i < mConnections.size(); i++) {
                     try {
                         if (mConnections.get(i).getOtherUser().fetchIfNeeded().getUsername().equals(user.fetchIfNeeded().getUsername())) {
-                            return;
+                            go = false;
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
-                saveConnection(user);
+                if (go) {
+                    saveConnection(user);
+                }
             }
         };
+
 
         //Set up adapter
         adapter = new UsersAdapter(getBaseContext(), mUsers, listener);
@@ -80,7 +84,7 @@ public class AllUsersActivity extends AppCompatActivity {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 swipeContainer.setRefreshing(false);
-                queryU();
+                queryUsers();
             }
         });
         // Configure the refreshing colors
@@ -88,8 +92,10 @@ public class AllUsersActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        //query posts
-        queryU();
+        //query users
+        queryUsers();
+        //query connections
+        queryConnections();
     }
 
     private void saveConnection(ParseUser user) {
@@ -100,7 +106,7 @@ public class AllUsersActivity extends AppCompatActivity {
         connection.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e!=null) {
+                if (e != null) {
                     Log.d("AllUsersActivity", "Error while saving");
                     e.printStackTrace();
                     return;
@@ -112,7 +118,7 @@ public class AllUsersActivity extends AppCompatActivity {
         });
     }
 
-    private void queryC() {
+    private void queryConnections() {
         Connection.queryConnections(new FindCallback<Connection>() {
             @Override
             public void done(List<Connection> objects, ParseException e) {
@@ -123,12 +129,11 @@ public class AllUsersActivity extends AppCompatActivity {
                 }
                 mConnections.clear();
                 mConnections.addAll(objects);
-                adapter.notifyDataSetChanged();
             }
         });
     }
 
-    private void queryU() {
+    private void queryUsers() {
         ParseQuery<ParseUser> postQuery = new ParseQuery<>(ParseUser.class);
         postQuery.whereNotEqualTo("username", ParseUser.getCurrentUser());
 
@@ -139,6 +144,17 @@ public class AllUsersActivity extends AppCompatActivity {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 mUsers.clear();
+//                for (int i = 0; i < objects.size(); i++) {
+//                    for (int k = 0; k < mConnections.size(); k++) {
+//                        try {
+//                            if (mConnections.get(k).getOtherUser().fetchIfNeeded().getUsername().equals(objects.get(i).fetchIfNeeded().getUsername())) {
+//                               if (!mUsers.contains(objects.get(i))) { mUsers.add(objects.get(i)); }
+//                            }
+//                        } catch (ParseException ee) {
+//                            ee.printStackTrace();
+//                        }
+//                    }
+//                }
                 mUsers.addAll(objects);
                 adapter.notifyDataSetChanged();
             }

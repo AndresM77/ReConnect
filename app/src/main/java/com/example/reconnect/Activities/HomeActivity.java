@@ -2,6 +2,7 @@ package com.example.reconnect.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,7 +18,11 @@ import com.example.reconnect.fragments.CalendarFragment;
 import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.fragments.MapFragment;
 import com.example.reconnect.fragments.ReconnectFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.parse.ParseUser;
 
 public class HomeActivity extends AppCompatActivity {
@@ -92,6 +97,28 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
         bottomNavigationView.setSelectedItemId(R.id.action_map);
+
+
+        // get the token id for the current user
+        //TODO check
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("FCM token", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        ParseUser.getCurrentUser().put("deviceId", token);
+                        ParseUser.getCurrentUser().saveInBackground();
+
+                        // Log and toast
+                        Log.d("FCM token", token);
+                    }
+                });
 
     }
 

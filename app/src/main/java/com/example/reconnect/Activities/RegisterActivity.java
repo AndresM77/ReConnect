@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.reconnect.R;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -95,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 Log.d("RegisterActivity", "Success");
-                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                Intent i = new Intent(RegisterActivity.this, HomeActivity.class);
                 startActivity(i);
             }
         });

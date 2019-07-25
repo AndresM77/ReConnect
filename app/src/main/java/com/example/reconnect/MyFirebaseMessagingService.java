@@ -9,14 +9,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.example.reconnect.Activities.MapActivity;
-import com.google.firebase.messaging.FirebaseMessagingService;
+import com.example.reconnect.Activities.NotificationActivity;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.parse.ParseUser;
 
 import java.util.Random;
@@ -29,27 +32,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /* This method decides what to do when a notification is received */
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        Intent i = new Intent(this, MapActivity.class);
-        NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        int notificationId = new Random().nextInt(5000);
+        //TODO check
+       // if(remoteMessage.getData().get("recipient").equals(ParseUser.getCurrentUser().getObjectId())) {
 
-        // set up channels if the Android version requires it
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            setUpChannels(nManager);
-        }
+            Log.d("FCM", "message received");
 
-        // intent stuff that I do not understand right now
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_ONE_SHOT);
+            Intent i = new Intent(this, NotificationActivity.class);
+            NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int notificationId = new Random().nextInt(5000);
 
-        //create a notification
-        //TODO more customization here
-        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-                .setContentTitle(remoteMessage.getData().get("title"))
-                .setContentText(remoteMessage.getData().get("message"))
-                .setContentIntent(pendingIntent);
+            // set up channels if the Android version requires it
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                setUpChannels(nManager);
+            }
 
-        // notify manager that the notification has been built
-        nManager.notify(notificationId, nBuilder.build());
+            // intent stuff that I do not understand right now
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_ONE_SHOT);
+
+            //create a notification
+            //TODO more customization here
+            NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
+                    .setContentTitle(remoteMessage.getData().get("title"))
+                    .setContentText(remoteMessage.getData().get("message"))
+                    .setContentIntent(pendingIntent);
+
+            // notify manager that the notification has been built
+            nManager.notify(notificationId, nBuilder.build());
+      //  }
     }
 
     @Override

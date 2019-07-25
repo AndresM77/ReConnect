@@ -25,8 +25,11 @@ import com.example.reconnect.Dialogs.TimePickerFragment;
 import com.example.reconnect.MySingleton;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -58,9 +61,11 @@ public class RequestMeetingActivity extends AppCompatActivity {
 
     // Notifications
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
-    final private String serverKey = "key=" + "Your Firebase server key";
+    final private String serverKey = "key=" + "AAAAImePEvQ:APA91bGBbetvSXQVxAjLHzkm97o14Dam0rpXkOh1aCxVrUSJVYjYELneksrf_YNJdS8B-dLoQH6_-VUatNFX7V3xHFcUsuXqz-SNhEdugthrpfljrwyC8JLcY3vcmIrvMO5W43AM2LCE"
+    ;
     final private String contentType = "application/json";
     final String TAG = "NOTIFICATION TAG";
+    public final String SENDER_ID = "147766317812";
     String NOTIFICATION_TITLE;
     String NOTIFICATION_MESSAGE;
     String TOPIC;
@@ -94,10 +99,19 @@ public class RequestMeetingActivity extends AppCompatActivity {
         ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
         try {
             requestedUser = userParseQuery.get(requestedUserId);
-            tvUserName.setText(requestedUser.fetchIfNeeded().getUsername());
-            tvIndustry.setText((String) requestedUser.fetchIfNeeded().get("industry"));
-            profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
-
+            if (!requestedUser.equals(ParseUser.getCurrentUser())) {
+                tvUserName.setText(requestedUser.fetchIfNeeded().getUsername());
+                tvIndustry.setText((String) requestedUser.fetchIfNeeded().get("industry"));
+                profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
+            }
+            else {
+                TextView prompt = findViewById(R.id.requestMeetingPrompt);
+                prompt.setText("Add personal event.");
+                ivProfileImg.setVisibility(View.GONE);
+                tvUserName.setVisibility(View.GONE);
+                tvIndustry.setVisibility(View.GONE);
+                tvDistance.setVisibility(View.GONE);
+            }
         }
         catch(ParseException e) {
             Log.e("RequestMeeting Activity", "Unable to get the name of the requested User!");
@@ -142,6 +156,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
 
             }
         });
+
 
         btnReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,54 +206,62 @@ public class RequestMeetingActivity extends AppCompatActivity {
                     }
                 });
 
-                //Sending notification
-                TOPIC = "/topics/userABC"; //topic must match with what the receiver subscribed to
-                NOTIFICATION_TITLE = "From User 123";
-                NOTIFICATION_MESSAGE = "Hello! This is a test notification!";
+                // THIS MIGHT SEND A MESSAGE
+                //TODO check
+                RemoteMessage.Builder remBuilder = new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com");
+                remBuilder.addData("message","hello");
+                remBuilder.addData("recipientId",event.getAttendee().getObjectId());
+                FirebaseMessaging.getInstance().send(remBuilder.build());
 
-                JSONObject notification = new JSONObject();
-                JSONObject notifcationBody = new JSONObject();
-                try {
-                    notifcationBody.put("title", NOTIFICATION_TITLE);
-                    notifcationBody.put("message", NOTIFICATION_MESSAGE);
 
-                    notification.put("to", TOPIC);
-                    notification.put("data", notifcationBody);
-                } catch (JSONException e) {
-                    Log.e(TAG, "onCreate: " + e.getMessage() );
-                }
-                sendNotification(notification);
+
+//                TOPIC = "/topics/userABC"; //topic must match with what the receiver subscribed to
+//                NOTIFICATION_TITLE = "From User 123";
+//                NOTIFICATION_MESSAGE = "Hello! This is a test notification!";
+//
+//                JSONObject notification = new JSONObject();
+//                JSONObject notifcationBody = new JSONObject();
+//                try {
+//                    notifcationBody.put("title", NOTIFICATION_TITLE);
+//                    notifcationBody.put("message", NOTIFICATION_MESSAGE);
+//
+//                    notification.put("to", TOPIC);
+//                    notification.put("data", notifcationBody);
+//                } catch (JSONException e) {
+//                    Log.e(TAG, "onCreate: " + e.getMessage() );
+//                }
+//                sendNotification(notification);
             }
 
 
         });
     }
 
-    private void sendNotification(JSONObject notification) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.i(TAG, "onResponse: " + response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RequestMeetingActivity.this, "Request error", Toast.LENGTH_LONG).show();
-                        Log.i(TAG, "onErrorResponse: Didn't work");
-                    }
-                }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("Authorization", serverKey);
-                params.put("Content-Type", contentType);
-                return params;
-            }
-        };
-        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
-    }
+//    private void sendNotification(JSONObject notification) {
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        Log.i(TAG, "onResponse: " + response.toString());
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(RequestMeetingActivity.this, "Request error", Toast.LENGTH_LONG).show();
+//                        Log.i(TAG, "onErrorResponse: Didn't work");
+//                    }
+//                }){
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("Authorization", serverKey);
+//                params.put("Content-Type", contentType);
+//                return params;
+//            }
+//        };
+//        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+//    }
 
     private RequestMeetingActivity.DatePickerDoneListener getDatePickerDoneListener(final int dialogId) {
         return new RequestMeetingActivity.DatePickerDoneListener() {

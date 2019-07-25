@@ -3,6 +3,7 @@ package com.example.reconnect.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,10 +75,17 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
                     Connection selectedConnection = connections.get(view.getVerticalScrollbarPosition());
 
-                    if (ParseUser.getCurrentUser().getUsername().equals(selectedConnection.getUser1().getUsername()))
-                        intent.putExtra("requesteeId", selectedConnection.getUser2().getObjectId());
-                    else {
-                        intent.putExtra("requesteeId", selectedConnection.getUser1().getObjectId());
+                    try {
+                        String currentUsername = ParseUser.getCurrentUser().fetchIfNeeded().getUsername();
+                        String requestedConnection = selectedConnection.getOtherUser().fetchIfNeeded().getUsername();
+                        if (currentUsername.equals(requestedConnection))
+                            intent.putExtra("requesteeId", selectedConnection.getUser2().getObjectId());
+                        else {
+                            intent.putExtra("requesteeId", selectedConnection.getUser1().getObjectId());
+                        }
+                    } catch (ParseException e) {
+                        Log.e("Connections Adapter", "Unable to get the usernames of the connection");
+                        e.printStackTrace();
                     }
 
                     view.getContext().startActivity(intent);

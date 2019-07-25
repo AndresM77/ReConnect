@@ -60,7 +60,7 @@
         android:background="@drawable/circle_shape"
         app:layout_constraintBottom_toBottomOf="@+id/ivProfilePic"
         app:layout_constraintEnd_toEndOf="@+id/ivProfilePic"
-        app:srcCompat="@drawable/ic_change_profile_pic" />
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <View
         android:id="@+id/divider2"

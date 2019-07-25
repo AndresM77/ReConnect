@@ -99,10 +99,19 @@ public class RequestMeetingActivity extends AppCompatActivity {
         ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
         try {
             requestedUser = userParseQuery.get(requestedUserId);
-            tvUserName.setText(requestedUser.fetchIfNeeded().getUsername());
-            tvIndustry.setText((String) requestedUser.fetchIfNeeded().get("industry"));
-            profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
-
+            if (requestedUser.equals(ParseUser.getCurrentUser())) {
+                tvUserName.setText(requestedUser.fetchIfNeeded().getUsername());
+                tvIndustry.setText((String) requestedUser.fetchIfNeeded().get("industry"));
+                profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
+            }
+            else {
+                TextView prompt = findViewById(R.id.requestMeetingPrompt);
+                prompt.setText("Add personal event.");
+                ivProfileImg.setVisibility(View.GONE);
+                tvUserName.setVisibility(View.GONE);
+                tvIndustry.setVisibility(View.GONE);
+                tvDistance.setVisibility(View.GONE);
+            }
         }
         catch(ParseException e) {
             Log.e("RequestMeeting Activity", "Unable to get the name of the requested User!");

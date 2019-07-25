@@ -107,10 +107,10 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(mContext, RequestMeetingActivity.class);
+                    i.putExtra("requesteeId", ParseUser.getCurrentUser().getObjectId());
                     mContext.startActivity(i);
                 }
             });
-            //TODO add onItemClick listener for the button
         }
     }
 
@@ -143,6 +143,58 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         public void bind(final Event event) {
+
+            boolean isPersonalEvent;
+            try {
+                isPersonalEvent = event.getAttendee().fetchIfNeeded().getUsername().equals(event.getCreator().fetchIfNeeded().getUsername());
+
+            /* Elements we always want to show */
+
+            String meetingTitle;
+            if (event.getName().equals("")) { meetingTitle = "Meeting"; }
+            else { meetingTitle = event.getName(); }
+
+            if (isPersonalEvent) {
+                meetingName.setVisibility(View.INVISIBLE);
+                industry.setVisibility(View.INVISIBLE);
+                attendee.setText(meetingTitle);
+                accept.setVisibility(View.GONE);
+                deny.setVisibility(View.GONE);
+                pending.setVisibility(View.GONE);
+            }
+            else {
+                // meeting name assignment
+                String meetingWith = meetingTitle + " with";
+                meetingName.setText(meetingWith);
+
+                // attendee assignment
+                String currentUserName;
+                String attendeeUserName;
+                Boolean isAttendee;
+                try {
+                    currentUserName = ParseUser.getCurrentUser().fetchIfNeeded().getUsername();
+                    attendeeUserName = event.getAttendee().fetchIfNeeded().getUsername();
+                    isAttendee = attendeeUserName.equals(currentUserName);
+                    if (isAttendee) {
+                        attendee.setText(event.getCreator().fetchIfNeeded().getUsername());
+                    } else {
+                        attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
+                    }
+                } catch (ParseException e) {
+                    Log.e("EventAdapter", "Unable to retrieve attendee name");
+                    e.printStackTrace();
+                }
+
+                // industry assignment
+                try {
+                    industry.setText(event.getAttendee().fetchIfNeeded().get("industry").toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
             /* Elements we want to show depending on the status of the invite */
             boolean stillPending = event.getPending();
@@ -202,35 +254,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 e.printStackTrace();
             }
 
-
-            /* Elements we always want to show */
-
-            // meeting name assignment
-            String meetingTitle;
-            if (event.getName().equals("")) { meetingTitle = "Meeting"; }
-            else { meetingTitle = event.getName(); }
-            String meetingWith = meetingTitle + " with";
-            meetingName.setText(meetingWith);
-
-            // attendee assignment
-            String currentUserName;
-            String attendeeUserName;
-            Boolean isAttendee;
-            try {
-                currentUserName = ParseUser.getCurrentUser().fetchIfNeeded().getUsername();
-                attendeeUserName = event.getAttendee().fetchIfNeeded().getUsername();
-                isAttendee = attendeeUserName.equals(currentUserName);
-                if (isAttendee) {
-                    attendee.setText(event.getCreator().fetchIfNeeded().getUsername());
-                } else {
-                    attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
-                }
-            }
-            catch (ParseException e){
-                Log.e("EventAdapter", "Unable to retrieve attendee name");
-                e.printStackTrace();
-            }
-
             // meeting date assignment
             Calendar calendar = Calendar.getInstance();
             calendar.setTime((Date) event.get("date"));
@@ -240,12 +263,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             String displayDate = month + "/" + day + "/" + year;
             date.setText(displayDate);
 
-            // industry assignment
-            try {
-                industry.setText(event.getAttendee().fetchIfNeeded().get("industry").toString());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
             // meeting time assignment
             String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
@@ -292,7 +309,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public boolean onLongClick(View view) {
                     showDialogForUserSelection();
-
                     return true;
                 }
             });

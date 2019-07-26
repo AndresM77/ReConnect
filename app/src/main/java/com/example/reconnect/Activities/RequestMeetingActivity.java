@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -51,7 +53,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
     TextView tvDistance;
     ImageView ivProfileImg;
     Button btnMessage;
-    Button btnReturn;
     //Meeting Items
     TextView request;
     EditText meetingName;
@@ -87,7 +88,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
         tvDistance = findViewById(R.id.tvDistance);
         ivProfileImg = findViewById(R.id.ivProfileImg);
         btnMessage = findViewById(R.id.btnMessage);
-        btnReturn = findViewById(R.id.btnReturn);
         //Meeting items
         //request = findViewById(R.id.requestMeetingPrompt);
         meetingName = findViewById(R.id.meetingName);
@@ -164,15 +164,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-            }
-        });
-
-
-        btnReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
-                startActivity(i);
             }
         });
 
@@ -300,4 +291,34 @@ public class RequestMeetingActivity extends AppCompatActivity {
     public interface TimePickerDoneListener {
         void done(String timeText);
     }
+
+    // for toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_request, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.ivSettings:
+                //Take to settings activity
+                Intent i = new Intent(RequestMeetingActivity.this, SettingsActivity.class);
+                startActivity(i); // brings up the second activity
+                return true;
+            case R.id.ivBack:
+                //Take back, finish this intent
+                Intent intent = new Intent(RequestMeetingActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

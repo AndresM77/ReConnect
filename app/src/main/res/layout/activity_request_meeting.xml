@@ -29,23 +29,10 @@
         app:layout_constraintTop_toTopOf="@+id/frameLayout" />
 
     <Button
-        android:id="@+id/btnMessage"
-        android:layout_width="176dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Message"
-        android:textColor="#E6E8E6"
-        android:visibility="visible"
-        android:background="@drawable/round_shape"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
         android:id="@+id/btnReturn"
         android:layout_width="176dp"
         android:layout_height="49dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/round_shape"
@@ -53,7 +40,8 @@
         android:text="Return"
         android:textColor="#E6E8E6"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tvUserName"

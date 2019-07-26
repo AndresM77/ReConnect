@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
 import com.android.volley.AuthFailureError;
@@ -84,12 +85,18 @@ public class RequestMeetingActivity extends AppCompatActivity {
         btnMessage = findViewById(R.id.btnMessage);
         btnReturn = findViewById(R.id.btnReturn);
         //Meeting items
-        request = findViewById(R.id.requestMeetingPrompt);
+        //request = findViewById(R.id.requestMeetingPrompt);
         meetingName = findViewById(R.id.meetingName);
         meetingDate = findViewById(R.id.meetingDate);
         startTime = findViewById(R.id.startTime);
         endTime = findViewById(R.id.mtgEndTime);
         submitRequest = findViewById(R.id.submitRequest);
+
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
 
         // grab the objectId of the requested User
         final String requestedUserId = getIntent().getStringExtra("requesteeId");
@@ -105,8 +112,8 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
             }
             else {
-                TextView prompt = findViewById(R.id.requestMeetingPrompt);
-                prompt.setText("Add personal event.");
+//                TextView prompt = findViewById(R.id.requestMeetingPrompt);
+//                prompt.setText("Add personal event.");
                 ivProfileImg.setVisibility(View.GONE);
                 tvUserName.setVisibility(View.GONE);
                 tvIndustry.setVisibility(View.GONE);

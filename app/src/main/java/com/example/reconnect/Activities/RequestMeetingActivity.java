@@ -1,6 +1,7 @@
 package com.example.reconnect.Activities;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -54,11 +55,13 @@ public class RequestMeetingActivity extends AppCompatActivity {
     //Meeting Items
     TextView request;
     EditText meetingName;
-    EditText meetingDate;
-    EditText startTime;
-    EditText endTime;
+    ImageView startTime;
+    TextView tv_startTime;
+    ImageView endTime;
+    TextView tv_endTime;
     Button submitRequest;
     ImageView selectDate;
+    TextView tv_meetingDate;
     ParseUser requestedUser;
 
     // Notifications
@@ -89,9 +92,12 @@ public class RequestMeetingActivity extends AppCompatActivity {
         //request = findViewById(R.id.requestMeetingPrompt);
         meetingName = findViewById(R.id.meetingName);
         selectDate = findViewById(R.id.selectDate);
+        tv_meetingDate = findViewById(R.id.tv_meetingDate);
         startTime = findViewById(R.id.startTime);
-        endTime = findViewById(R.id.mtgEndTime);
+        endTime = findViewById(R.id.endTime);
         submitRequest = findViewById(R.id.submitRequest);
+        tv_startTime = findViewById(R.id.tv_startTime);
+        tv_endTime = findViewById(R.id.tv_endTime);
 
         // Find the toolbar view inside the activity layout
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -133,7 +139,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment datePicker = new DatePickerFragment(getDatePickerDoneListener(R.id.meetingDate));
+                DialogFragment datePicker = new DatePickerFragment(getDatePickerDoneListener(R.id.tv_meetingDate));
                 datePicker.show(getSupportFragmentManager(), "DatePicker");
             }
         });
@@ -141,7 +147,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.startTime));
+                DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.tv_startTime));
                 timePicker.show(getSupportFragmentManager(), "TimePicker");
             }
         });
@@ -149,7 +155,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.mtgEndTime));
+                DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.tv_endTime));
                 timePicker.show(getSupportFragmentManager(), "TimePicker");
             }
         });
@@ -177,14 +183,14 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 // create Event for the requested meeting
                 // Creates event under the user's profile section
                 final Event event = new Event();
-                event.put("startTime", startTime.getText().toString());
-                event.put("endTime", endTime.getText().toString());
+                event.put("startTime", tv_startTime.getText().toString());
+                event.put("endTime", tv_endTime.getText().toString());
                 event.put("name", meetingName.getText().toString());
                 event.put("creator", ParseUser.getCurrentUser());
                 event.put("pending", true);
                 event.put("accepted", false);
                 event.put("reconnect", true);
-                event.put("date", Date.valueOf(meetingDate.getText().toString()));
+                event.put("date", Date.valueOf(tv_meetingDate.getText().toString()));
 
                 ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
                 try {
@@ -271,8 +277,8 @@ public class RequestMeetingActivity extends AppCompatActivity {
         return new RequestMeetingActivity.DatePickerDoneListener() {
             @Override
             public void done(String dateText) {
-                EditText meetingDate = findViewById(dialogId);
-                meetingDate.setText(dateText);
+                TextView tv_meetingDate = findViewById(dialogId);
+                tv_meetingDate.setText(dateText);
             }
         };
     }
@@ -281,8 +287,8 @@ public class RequestMeetingActivity extends AppCompatActivity {
         return new RequestMeetingActivity.TimePickerDoneListener() {
             @Override
             public void done(String timeText) {
-                EditText meetingTime = findViewById(dialogId);
-                meetingTime.setText(timeText);
+                TextView timeSet = findViewById(dialogId);
+                timeSet.setText(timeText);
             }
         };
     }

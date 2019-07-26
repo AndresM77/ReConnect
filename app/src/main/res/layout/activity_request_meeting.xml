@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/requestMeetingPrompt"></FrameLayout>
+        tools:layout_editor_absoluteY="32dp"></FrameLayout>
 
     <ImageView
         android:id="@+id/ivProfileImg"
@@ -119,20 +119,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/meetingDate" />
 
-    <TextView
-        android:id="@+id/requestMeetingPrompt"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:text="Request meeting with"
-        android:textAlignment="viewStart"
-        android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/meetingDate"
         android:layout_width="0dp"
@@ -177,5 +163,16 @@
         android:textColor="#E6E8E6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtgEndTime" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="408dp"
+        android:layout_height="30dp"
+        android:background="#FFFF"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@android:color/white"></androidx.appcompat.widget.Toolbar>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

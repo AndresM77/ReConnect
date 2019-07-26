@@ -33,7 +33,7 @@
         android:text="Find someone you know..."
         android:textAlignment="center"
         android:textColor="#9FB8AD"
-        android:textSize="8sp"
+        android:textSize="14sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/swipeContainer"
         app:layout_constraintEnd_toEndOf="parent"

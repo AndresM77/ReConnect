@@ -11,7 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="Back to Connections"
+        android:background="@drawable/round_shape"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Back To Connections"
+        android:textColor="#E6E8E6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

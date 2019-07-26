@@ -130,31 +130,27 @@ public class RequestMeetingActivity extends AppCompatActivity {
         }
 
 
-        selectDate.setOnTouchListener(new View.OnTouchListener() {
+        selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onClick(View view) {
                 DialogFragment datePicker = new DatePickerFragment(getDatePickerDoneListener(R.id.meetingDate));
                 datePicker.show(getSupportFragmentManager(), "DatePicker");
-                //prevents the keyboard from popping up
-                return true;
             }
         });
 
-        startTime.setOnTouchListener(new View.OnTouchListener() {
+        startTime.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onClick(View view) {
                 DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.startTime));
                 timePicker.show(getSupportFragmentManager(), "TimePicker");
-                return true;
             }
         });
 
-        endTime.setOnTouchListener(new View.OnTouchListener() {
+        endTime.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onClick(View view) {
                 DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.mtgEndTime));
                 timePicker.show(getSupportFragmentManager(), "TimePicker");
-                return true;
             }
         });
 

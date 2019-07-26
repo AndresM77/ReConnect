@@ -1,8 +1,15 @@
 package com.example.reconnect.fragments;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,8 +38,10 @@ import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.util.ArrayList;
@@ -96,14 +106,14 @@ public class CalendarFragment extends Fragment {
         btnChangeProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchCamera();
-                if (photoFile == null) {
-                    Log.e(TAG, "No photo to submit");
-                    Toast.makeText(getContext(), "There is no photo!", Toast.LENGTH_SHORT).show();
-                    return;
+                if (!hasWritePermissions() || !hasReadPermissions()) {
+                    requestPermissions(
+                            new String[] {
+                                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            }, 1234); // your request code
                 }
-                saveUser(photoFile);
-                Glide.with(getContext()).load(photoFile).circleCrop().into(ivProfilePic);
+                launchCamera();
             }
         });
 
@@ -133,11 +143,6 @@ public class CalendarFragment extends Fragment {
 
     public void launchCamera() {
         Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        if (hasImageCaptureBug()) {
-            i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File("/sdcard/tmp")));
-        } else {
-            i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        }
         startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
@@ -148,40 +153,29 @@ public class CalendarFragment extends Fragment {
         user.saveInBackground();
     }
 
-    public boolean hasImageCaptureBug() {
-
-        // list of known devices that have the bug
-        ArrayList<String> devices = new ArrayList<String>();
-        devices.add("android-devphone1/dream_devphone/dream");
-        devices.add("generic/sdk/generic");
-        devices.add("vodafone/vfpioneer/sapphire");
-        devices.add("tmobile/kila/dream");
-        devices.add("verizon/voles/sholes");
-        devices.add("google_ion/google_ion/sapphire");
-
-        return devices.contains(android.os.Build.BRAND + "/" + android.os.Build.PRODUCT + "/"
-                + android.os.Build.DEVICE);
-
-    }
-
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         switch (requestCode) {
             case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
-                Uri u;
-                if (hasImageCaptureBug()) {
-                    File fi = new File("/sdcard/tmp");
-                    try {
-                        u = Uri.parse(android.provider.MediaStore.Images.Media.insertImage(getContext().getContentResolver(), fi.getAbsolutePath(), null, null));
-                        if (!fi.delete()) {
-                            Log.i("profileImg", "Failed to delete " + fi);
-                        }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    u = intent.getData();
+
+                Bitmap photo = (Bitmap) intent.getExtras().get("data");
+
+                FileOutputStream outputFileStream = null;
+
+                String fileName = Environment.getExternalStorageDirectory() + "/hello.jpg";
+                try {
+                    outputFileStream = new FileOutputStream(fileName);
+
+                    photo.compress(Bitmap.CompressFormat.JPEG, 100, outputFileStream);
+
+                    File image = new File(fileName);
+
+                    Glide.with(getContext()).load(image).circleCrop().into(ivProfilePic);
+                    saveUser(image);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 }
         }
+
     }
 
 
@@ -218,6 +212,13 @@ public class CalendarFragment extends Fragment {
 
     }
 
+    private boolean hasReadPermissions() {
+        return (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private boolean hasWritePermissions() {
+        return (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+    }
 
     /* creates an array that represents the order of title and event views we wish to display on the profile */
     public ArrayList<Object> createViewOrderArray(List<Event> events) {

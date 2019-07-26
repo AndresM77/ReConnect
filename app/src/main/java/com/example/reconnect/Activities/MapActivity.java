@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.reconnect.Adapters.CustomWindowAdapter;
 import com.example.reconnect.MapPermissions.MapDemoActivityPermissionsDispatcher;
 import com.example.reconnect.R;
@@ -53,6 +57,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -388,40 +393,26 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
         contact = (Connection) userMarker.getTag();
 
         //Configure Text
-        TextView userName = alertDialog.findViewById(R.id.tvUserName);
-        TextView industry = alertDialog.findViewById(R.id.tvIndustry);
-        /*try {
+        TextView userName = messageView.findViewById(R.id.tvUserName);
+        TextView industry = messageView.findViewById(R.id.tvIndustry);
+        ImageView profileImg = messageView.findViewById(R.id.ivProfileImg);
+        Button btnMessage = messageView.findViewById(R.id.btnMessage);
+        Button btnMeeting = messageView.findViewById(R.id.btnMeeting);
+        try {
             userName.setText(contact.getOtherUser().fetchIfNeeded().getUsername());
             industry.setText((String) contact.getOtherUser().fetchIfNeeded().get("industry"));
+            if (contact.get("profileImg") != null) {
+                ParseFile img = (ParseFile) contact.get("profileImg");
+                Glide.with(getApplicationContext()).load(img.getUrl()).circleCrop().into(profileImg);
+            } else {
+                Glide.with(getApplicationContext()).load(getDrawable(R.drawable.baseline_account_circle_black_48)).circleCrop().into(profileImg);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
-        }*/
+        }
 
-        // Configure dialog button (Send Message)
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Create Meeting", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // Handle marker click here
-                Intent intent = new Intent(MapActivity.this, RequestMeetingActivity.class);
-                intent.putExtra("requesteeId", contact.getOtherUser().getObjectId());
-                startActivity(intent);
-            }
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        });
-
-        // Configure dialog button (Send Message)
-        alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Send Message", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                query();
-            }
-
-        });
-
-        // Configure dialog button (Cancel)
-        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }
-        });
 
         // Display the dialog
         alertDialog.show();

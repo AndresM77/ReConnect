@@ -1,22 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/layout_root"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="@null">
+
+    <FrameLayout
+        android:id="@+id/flBody"
+        android:layout_width="386dp"
+        android:layout_height="188dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/round_shape"
+        android:backgroundTint="@color/colorAccent3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tvUserName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="340dp"
+        android:layout_height="23dp"
         android:layout_alignLeft="@+id/etSnippet"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:hint="UserName: "
         android:paddingTop="20dp"
-        android:hint="Title"></TextView>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfileImg"></TextView>
 
     <TextView
         android:id="@+id/tvIndustry"
+        android:layout_width="339dp"
+        android:layout_height="19dp"
         android:layout_below="@id/tvUserName"
-        android:layout_width="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="Industry: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.535"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvUserName"></TextView>
+    
+    <ImageView
+        android:id="@+id/ivProfileImg"
+        android:layout_width="129dp"
+        android:layout_height="98dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic">
+    </ImageView>
+
+    <Button
+        android:id="@+id/btnMessage"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Snippet"></TextView>
-</RelativeLayout>
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/round_shape"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="6dp"
+        android:text="Send Message"
+        android:textColor="@color/colorPrimaryLight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvIndustry" />
+
+    <Button
+        android:id="@+id/btnMeeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/round_shape"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="6dp"
+        android:text="Set Up Meeting"
+        android:textColor="@color/colorPrimaryLight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvIndustry" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

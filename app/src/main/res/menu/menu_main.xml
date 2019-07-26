@@ -9,4 +9,11 @@
         app:showAsAction="ifRoom"
         android:title="@string/settings">
     </item>
+
+    <item
+        android:id="@+id/addToCalendar"
+        android:icon="@drawable/add_icon"
+        android:title="@string/addToCalendar">
+
+        app:showAsAction="ifRoom"</item>
 </menu>

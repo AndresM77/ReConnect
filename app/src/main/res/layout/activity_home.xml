@@ -39,6 +39,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@android:color/white">
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@drawable/relink_logo"
+            android:backgroundTint="@color/cardview_dark_background"
+            android:title="Compose"
+            app:showAsAction="ifRoom"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="8dp"></ImageView>
     </androidx.appcompat.widget.Toolbar>
 
 

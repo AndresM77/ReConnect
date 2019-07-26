@@ -145,6 +145,10 @@ public class HomeActivity extends AppCompatActivity {
                 Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
                 startActivity(i); // brings up the second activity
                 return true;
+            case R.id.addToCalendar:
+                Intent i2 = new Intent(this, RequestMeetingActivity.class);
+                i2.putExtra("requesteeId", ParseUser.getCurrentUser().getObjectId());
+                startActivity(i2);
             default:
                 return super.onOptionsItemSelected(item);
         }

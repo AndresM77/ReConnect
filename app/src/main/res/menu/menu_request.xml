@@ -1,18 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Activities.HomeActivity">
+    tools:context=".Activities.RequestMeetingActivity">
 
+    <item
+        android:id="@+id/ivBack"
+        android:icon="@drawable/outline_arrow_back_black_18dp"
+        android:title="Item"
+        app:showAsAction="always" />
     <item
         android:id="@+id/ivSettings"
         android:icon="@drawable/ic_settings"
         app:showAsAction="ifRoom"
         android:title="@string/settings">
     </item>
-
-    <item
-        android:id="@+id/addToCalendar"
-        android:icon="@drawable/add_icon"
-        android:title="@string/addToCalendar"
-        app:showAsAction="ifRoom"></item>
 </menu>

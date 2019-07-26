@@ -1,33 +1,49 @@
 package com.example.reconnect.Activities;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
+import com.example.reconnect.MySingleton;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RequestMeetingActivity extends AppCompatActivity {
 
@@ -36,15 +52,17 @@ public class RequestMeetingActivity extends AppCompatActivity {
     TextView tvIndustry;
     TextView tvDistance;
     ImageView ivProfileImg;
-    Button btnReturn;
+    Button btnMessage;
     //Meeting Items
     TextView request;
     EditText meetingName;
-    EditText meetingDate;
-    EditText startTime;
-    EditText endTime;
+    ImageView startTime;
+    TextView tv_startTime;
+    ImageView endTime;
+    TextView tv_endTime;
     Button submitRequest;
     ImageView selectDate;
+    TextView tv_meetingDate;
     ParseUser requestedUser;
 
     // Notifications
@@ -69,14 +87,17 @@ public class RequestMeetingActivity extends AppCompatActivity {
         tvIndustry = findViewById(R.id.tvIndustry);
         tvDistance = findViewById(R.id.tvDistance);
         ivProfileImg = findViewById(R.id.ivProfileImg);
-        btnReturn = findViewById(R.id.btnReturn);
+        btnMessage = findViewById(R.id.btnMessage);
         //Meeting items
         //request = findViewById(R.id.requestMeetingPrompt);
         meetingName = findViewById(R.id.meetingName);
         selectDate = findViewById(R.id.selectDate);
+        tv_meetingDate = findViewById(R.id.tv_meetingDate);
         startTime = findViewById(R.id.startTime);
-        endTime = findViewById(R.id.mtgEndTime);
+        endTime = findViewById(R.id.endTime);
         submitRequest = findViewById(R.id.submitRequest);
+        tv_startTime = findViewById(R.id.tv_startTime);
+        tv_endTime = findViewById(R.id.tv_endTime);
 
         // Find the toolbar view inside the activity layout
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -118,7 +139,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment datePicker = new DatePickerFragment(getDatePickerDoneListener(R.id.meetingDate));
+                DialogFragment datePicker = new DatePickerFragment(getDatePickerDoneListener(R.id.tv_meetingDate));
                 datePicker.show(getSupportFragmentManager(), "DatePicker");
             }
         });
@@ -126,7 +147,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.startTime));
+                DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.tv_startTime));
                 timePicker.show(getSupportFragmentManager(), "TimePicker");
             }
         });
@@ -134,16 +155,15 @@ public class RequestMeetingActivity extends AppCompatActivity {
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.mtgEndTime));
+                DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.tv_endTime));
                 timePicker.show(getSupportFragmentManager(), "TimePicker");
             }
         });
 
-        btnReturn.setOnClickListener(new View.OnClickListener() {
+        btnMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
-                startActivity(i);
+
             }
         });
 
@@ -154,14 +174,14 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 // create Event for the requested meeting
                 // Creates event under the user's profile section
                 final Event event = new Event();
-                event.put("startTime", startTime.getText().toString());
-                event.put("endTime", endTime.getText().toString());
+                event.put("startTime", tv_startTime.getText().toString());
+                event.put("endTime", tv_endTime.getText().toString());
                 event.put("name", meetingName.getText().toString());
                 event.put("creator", ParseUser.getCurrentUser());
                 event.put("pending", true);
                 event.put("accepted", false);
                 event.put("reconnect", true);
-                event.put("date", Date.valueOf(meetingDate.getText().toString()));
+                event.put("date", Date.valueOf(tv_meetingDate.getText().toString()));
 
                 ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
                 try {
@@ -248,8 +268,8 @@ public class RequestMeetingActivity extends AppCompatActivity {
         return new RequestMeetingActivity.DatePickerDoneListener() {
             @Override
             public void done(String dateText) {
-                EditText meetingDate = findViewById(dialogId);
-                meetingDate.setText(dateText);
+                TextView tv_meetingDate = findViewById(dialogId);
+                tv_meetingDate.setText(dateText);
             }
         };
     }
@@ -258,8 +278,8 @@ public class RequestMeetingActivity extends AppCompatActivity {
         return new RequestMeetingActivity.TimePickerDoneListener() {
             @Override
             public void done(String timeText) {
-                EditText meetingTime = findViewById(dialogId);
-                meetingTime.setText(timeText);
+                TextView timeSet = findViewById(dialogId);
+                timeSet.setText(timeText);
             }
         };
     }
@@ -271,4 +291,34 @@ public class RequestMeetingActivity extends AppCompatActivity {
     public interface TimePickerDoneListener {
         void done(String timeText);
     }
+
+    // for toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_request, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.ivSettings:
+                //Take to settings activity
+                Intent i = new Intent(RequestMeetingActivity.this, SettingsActivity.class);
+                startActivity(i); // brings up the second activity
+                return true;
+            case R.id.ivBack:
+                //Take back, finish this intent
+                Intent intent = new Intent(RequestMeetingActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

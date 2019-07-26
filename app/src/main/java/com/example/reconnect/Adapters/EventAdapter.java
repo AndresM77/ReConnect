@@ -87,24 +87,24 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public class ViewHolderTitle extends ViewHolder {
 
         TextView dateTitle;
-        ImageView addEvent;
+//        ImageView addEvent;
 
         public ViewHolderTitle(@NonNull View itemView) {
             super(itemView);
             dateTitle = itemView.findViewById(R.id.dateTitle);
-            addEvent = itemView.findViewById(R.id.addEvent);
+//            addEvent = itemView.findViewById(R.id.addEvent);
         }
 
         public void bind(DateTitle date) {
             dateTitle.setText(date.getmDisplayDate());
-            addEvent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(mContext, RequestMeetingActivity.class);
-                    i.putExtra("requesteeId", ParseUser.getCurrentUser().getObjectId());
-                    mContext.startActivity(i);
-                }
-            });
+//            addEvent.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent i = new Intent(mContext, RequestMeetingActivity.class);
+//                    i.putExtra("requesteeId", ParseUser.getCurrentUser().getObjectId());
+//                    mContext.startActivity(i);
+//                }
+//            });
         }
     }
 

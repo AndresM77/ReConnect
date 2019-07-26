@@ -27,8 +27,8 @@
         android:layout_height="63dp"
         android:layout_marginStart="171dp"
         android:layout_marginTop="4dp"
-        android:cropToPadding="false"
         android:background="@drawable/circle_shape"
+        android:cropToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_account_circle_black_48"
@@ -37,12 +37,11 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
-        android:layout_width="410dp"
-        android:layout_height="660dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="405dp"
+        android:layout_height="662dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider2">
 

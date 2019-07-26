@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_map"
-        android:icon="@drawable/map_icon"
-        android:iconTint="@color/black"
+        android:icon="@drawable/ic_map"
         android:title="Map"
         android:visible="true"
         app:showAsAction="always" />
@@ -12,13 +11,12 @@
         android:id="@+id/action_reconnect"
         android:enabled="true"
         android:visible="true"
-        android:icon="@drawable/reconnect_icon"
-        android:iconTint="@color/black"
+        android:icon="@drawable/ic_globe"
         android:title="Reconnect"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_profile"
-        android:icon="@drawable/profile_icon"
+        android:icon="@drawable/ic_person"
         android:visible="true"
         android:title="Profile"
         app:showAsAction="always" />
@@ -26,8 +24,7 @@
         android:id="@+id/action_messages"
         android:enabled="true"
         android:visible="true"
-        android:icon="@drawable/messages_icon"
-        android:iconTint="@color/black"
+        android:icon="@drawable/ic_conversation"
         android:title="Messages"
         app:showAsAction="always" />
 </menu>

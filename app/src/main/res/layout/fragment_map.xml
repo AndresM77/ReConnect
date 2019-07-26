@@ -9,8 +9,8 @@
 
     <Button
         android:id="@+id/btnSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="95dp"
+        android:layout_height="22dp"
         android:layout_marginStart="155dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="156dp"
@@ -32,21 +32,22 @@
         android:layout_marginBottom="16dp"
         android:text="Find someone you know..."
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textColor="#9FB8AD"
+        android:textSize="8sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/swipeContainer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="165dp"
-        android:layout_height="92dp"
+        android:layout_width="281dp"
+        android:layout_height="113dp"
         android:layout_marginStart="123dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="123dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,11 +56,12 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
-        android:layout_width="411dp"
-        android:layout_height="523dp"
+        android:layout_width="410dp"
+        android:layout_height="547dp"
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvFindText">
 

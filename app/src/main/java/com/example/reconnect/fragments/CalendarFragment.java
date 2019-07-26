@@ -45,6 +45,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -226,8 +227,11 @@ public class CalendarFragment extends Fragment {
 
         if (events.size() > 0) {
             Date dateTracker = events.get(0).getDate("date");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, ''yy");
-            toReturn.add(new DateTitle(dateFormat.format(dateTracker).substring(0,11)));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d");
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dateTracker);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+            toReturn.add(new DateTitle(dateFormat.format(dateTracker)+ getEnding(day)));
 
             for (int i = 0; i < events.size(); i++) {
                 Event currEvent = events.get(i);
@@ -235,12 +239,38 @@ public class CalendarFragment extends Fragment {
 
                 if (!currEventDate.equals(dateTracker)) {
                     dateTracker = currEventDate;
-                    toReturn.add(new DateTitle(dateFormat.format(dateTracker).substring(0,11)));
+                    Calendar cal2 = Calendar.getInstance();
+                    cal2.setTime(dateTracker);
+                    day = cal2.get(Calendar.DAY_OF_MONTH);
+                    toReturn.add(new DateTitle(dateFormat.format(dateTracker) + getEnding(day)));
                 }
                 toReturn.add(currEvent);
             }
         }
         return toReturn;
 
+    }
+
+    //TODO clean up this logic
+    public String getEnding(int day) {
+        if (day >= 20) {
+            day = day - 20;
+        }
+        else if (day >= 30) {
+            day = day - 30;
+        }
+
+        if (day == 1) {
+            return "st";
+        }
+        else if (day == 2) {
+            return "nd";
+        }
+        else if (day == 3) {
+            return "rd";
+        }
+        else {
+            return "th";
+        }
     }
 }

@@ -312,8 +312,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 return true;
             case R.id.ivBack:
                 //Take back, finish this intent
-                Intent intent = new Intent(RequestMeetingActivity.this, HomeActivity.class);
-                startActivity(intent);
                 finish();
                 return true;
             default:

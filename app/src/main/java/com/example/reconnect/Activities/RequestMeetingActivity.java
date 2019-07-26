@@ -271,8 +271,8 @@ public class RequestMeetingActivity extends AppCompatActivity {
         return new RequestMeetingActivity.DatePickerDoneListener() {
             @Override
             public void done(String dateText) {
-                EditText meetingDate = findViewById(dialogId);
-                meetingDate.setText(dateText);
+                TextView tv_meetingDate = findViewById(R.id.tv_meetingDate);
+                tv_meetingDate.setText(dateText);
             }
         };
     }

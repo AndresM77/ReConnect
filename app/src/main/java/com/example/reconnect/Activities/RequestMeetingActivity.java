@@ -53,7 +53,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
     TextView tvDistance;
     ImageView ivProfileImg;
     Button btnMessage;
-    Button btnReturn;
     //Meeting Items
     TextView request;
     EditText meetingName;
@@ -89,7 +88,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
         tvDistance = findViewById(R.id.tvDistance);
         ivProfileImg = findViewById(R.id.ivProfileImg);
         btnMessage = findViewById(R.id.btnMessage);
-        btnReturn = findViewById(R.id.btnReturn);
         //Meeting items
         //request = findViewById(R.id.requestMeetingPrompt);
         meetingName = findViewById(R.id.meetingName);
@@ -166,15 +164,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-            }
-        });
-
-
-        btnReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
-                startActivity(i);
             }
         });
 

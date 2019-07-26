@@ -30,23 +30,17 @@
 
     <Button
         android:id="@+id/btnMessage"
-        android:layout_width="176dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="119dp"
+        android:layout_width="77dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
         android:text="Message"
         android:textColor="#E6E8E6"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/submitRequest"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayout" />
 
     <TextView
         android:id="@+id/tvUserName"
@@ -86,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
         android:hint="Create meeting title (optional)."
         android:textColor="@color/colorPrimary"
@@ -101,7 +95,7 @@
         android:layout_width="131dp"
         android:layout_height="52dp"
         android:layout_marginStart="140dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="140dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
@@ -125,12 +119,13 @@
 
     <ImageView
         android:id="@+id/selectDate"
-        android:layout_width="67dp"
-        android:layout_height="45dp"
+        android:layout_width="64dp"
+        android:layout_height="58dp"
         android:layout_marginStart="172dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="172dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/meetingName"
         app:srcCompat="@drawable/ic_calendar" />
@@ -151,8 +146,8 @@
 
     <ImageView
         android:id="@+id/startTime"
-        android:layout_width="49dp"
-        android:layout_height="43dp"
+        android:layout_width="53dp"
+        android:layout_height="57dp"
         android:layout_marginStart="172dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="172dp"
@@ -177,8 +172,8 @@
 
     <ImageView
         android:id="@+id/endTime"
-        android:layout_width="50dp"
-        android:layout_height="45dp"
+        android:layout_width="53dp"
+        android:layout_height="62dp"
         android:layout_marginStart="172dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="172dp"

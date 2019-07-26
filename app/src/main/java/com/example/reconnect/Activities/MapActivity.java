@@ -411,6 +411,22 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
             e.printStackTrace();
         }
 
+        btnMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                query();
+            }
+        });
+
+        btnMeeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MapActivity.this, RequestMeetingActivity.class);
+                i.putExtra("requesteeId", contact.getOtherUser().getObjectId());
+                startActivity(i);
+            }
+        });
+
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
@@ -460,7 +476,9 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapLon
                 for (int f = 0; f < mConversations.size(); f++) {
                     try {
                         if (mConversations.get(f).getConversee().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())
-                                || mConversations.get(f).getConverser().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
+                                && mConversations.get(f).getConverser().fetchIfNeeded().getUsername().equals(contact.getOtherUser().fetchIfNeeded().getUsername())
+                                    || mConversations.get(f).getConverser().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())
+                                        && mConversations.get(f).getConversee().fetchIfNeeded().getUsername().equals(contact.getOtherUser().fetchIfNeeded().getUsername())) {
                             conversation = mConversations.get(f);
                             goToConversation(conversation);
                             change = false;

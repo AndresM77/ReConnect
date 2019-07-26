@@ -58,6 +58,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
     EditText startTime;
     EditText endTime;
     Button submitRequest;
+    ImageView selectDate;
     ParseUser requestedUser;
 
     // Notifications
@@ -87,7 +88,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         //Meeting items
         //request = findViewById(R.id.requestMeetingPrompt);
         meetingName = findViewById(R.id.meetingName);
-        meetingDate = findViewById(R.id.meetingDate);
+        selectDate = findViewById(R.id.selectDate);
         startTime = findViewById(R.id.startTime);
         endTime = findViewById(R.id.mtgEndTime);
         submitRequest = findViewById(R.id.submitRequest);
@@ -129,7 +130,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         }
 
 
-        meetingDate.setOnTouchListener(new View.OnTouchListener() {
+        selectDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 DialogFragment datePicker = new DatePickerFragment(getDatePickerDoneListener(R.id.meetingDate));

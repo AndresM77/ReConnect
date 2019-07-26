@@ -82,7 +82,7 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
                 e.printStackTrace();
             }
             if (profileImg != null) {
-                Glide.with(context).load(profileImg.getUrl()).into(ibProfileButton);
+                Glide.with(context).load(profileImg.getUrl()).circleCrop().into(ibProfileButton);
             }
             try {
                 name.setText(conversation.getOtherUser().fetchIfNeeded().getUsername());

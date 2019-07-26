@@ -81,7 +81,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 e.printStackTrace();
             }
             if (img != null) {
-                Glide.with(context).load(img.getUrl()).into(profileImg);
+                Glide.with(context).load(img.getUrl()).circleCrop().into(profileImg);
             }
         }
 

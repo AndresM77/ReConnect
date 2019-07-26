@@ -28,6 +28,7 @@
         android:layout_marginStart="171dp"
         android:layout_marginTop="4dp"
         android:cropToPadding="false"
+        android:background="@drawable/circle_shape"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_account_circle_black_48"
@@ -56,10 +57,10 @@
         android:id="@+id/btnChangeProfile"
         android:layout_width="19dp"
         android:layout_height="19dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/circle_shape"
         app:layout_constraintBottom_toBottomOf="@+id/ivProfilePic"
         app:layout_constraintEnd_toEndOf="@+id/ivProfilePic"
-        app:srcCompat="@drawable/ic_change_profile_pic" />
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <View
         android:id="@+id/divider2"

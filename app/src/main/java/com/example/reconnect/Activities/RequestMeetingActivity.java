@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
 import com.android.volley.AuthFailureError;
@@ -57,6 +58,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
     EditText startTime;
     EditText endTime;
     Button submitRequest;
+    ImageView selectDate;
     ParseUser requestedUser;
 
     // Notifications
@@ -84,12 +86,18 @@ public class RequestMeetingActivity extends AppCompatActivity {
         btnMessage = findViewById(R.id.btnMessage);
         btnReturn = findViewById(R.id.btnReturn);
         //Meeting items
-        request = findViewById(R.id.requestMeetingPrompt);
+        //request = findViewById(R.id.requestMeetingPrompt);
         meetingName = findViewById(R.id.meetingName);
-        meetingDate = findViewById(R.id.meetingDate);
+        selectDate = findViewById(R.id.selectDate);
         startTime = findViewById(R.id.startTime);
         endTime = findViewById(R.id.mtgEndTime);
         submitRequest = findViewById(R.id.submitRequest);
+
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
 
         // grab the objectId of the requested User
         final String requestedUserId = getIntent().getStringExtra("requesteeId");
@@ -105,8 +113,8 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
             }
             else {
-                TextView prompt = findViewById(R.id.requestMeetingPrompt);
-                prompt.setText("Add personal event.");
+//                TextView prompt = findViewById(R.id.requestMeetingPrompt);
+//                prompt.setText("Add personal event.");
                 ivProfileImg.setVisibility(View.GONE);
                 tvUserName.setVisibility(View.GONE);
                 tvIndustry.setVisibility(View.GONE);
@@ -118,35 +126,31 @@ public class RequestMeetingActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (profileImg != null) {
-            Glide.with(getBaseContext()).load(profileImg.getUrl()).into(ivProfileImg);
+            Glide.with(getBaseContext()).load(profileImg.getUrl()).circleCrop().into(ivProfileImg);
         }
 
 
-        meetingDate.setOnTouchListener(new View.OnTouchListener() {
+        selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onClick(View view) {
                 DialogFragment datePicker = new DatePickerFragment(getDatePickerDoneListener(R.id.meetingDate));
                 datePicker.show(getSupportFragmentManager(), "DatePicker");
-                //prevents the keyboard from popping up
-                return true;
             }
         });
 
-        startTime.setOnTouchListener(new View.OnTouchListener() {
+        startTime.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onClick(View view) {
                 DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.startTime));
                 timePicker.show(getSupportFragmentManager(), "TimePicker");
-                return true;
             }
         });
 
-        endTime.setOnTouchListener(new View.OnTouchListener() {
+        endTime.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onClick(View view) {
                 DialogFragment timePicker = new TimePickerFragment(getPickerDoneListener(R.id.mtgEndTime));
                 timePicker.show(getSupportFragmentManager(), "TimePicker");
-                return true;
             }
         });
 

@@ -6,18 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.reconnect.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -46,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         } else {
 
-            usernameInput = findViewById(R.id.tvUserText);
+            usernameInput = findViewById(R.id.etPhone);
             passwordInput = findViewById(R.id.tvPassText);
             loginBtn = findViewById(R.id.btnLogIn);
             registerBtn = findViewById(R.id.btnSignUp);

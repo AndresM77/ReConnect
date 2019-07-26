@@ -11,8 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.reconnect.R;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -28,7 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     //Initializing fragment tag
     public final static String TAG = "RegisterActivity";
     //Initializing View objects
-    private EditText etEmail;
+    private EditText etPhone;
     private EditText etUser;
     private EditText etPass;
     private Button btnSignUp;
@@ -41,8 +39,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         mUsers = new ArrayList<>();
 
-        etEmail = findViewById(R.id.tvEmail);
-        etUser = findViewById(R.id.tvUserText);
+        etPhone = findViewById(R.id.etPhone);
+        etUser = findViewById(R.id.etUsername);
         etPass = findViewById(R.id.tvPassText);
         btnSignUp = findViewById(R.id.btnCreate);
 
@@ -71,15 +69,15 @@ public class RegisterActivity extends AppCompatActivity {
                 if (mUsers.size() > 0) {
                     Toast.makeText(getApplicationContext(), "UserName exists", Toast.LENGTH_LONG).show();
                 } else {
-                    saveUser(etEmail.getText().toString(), etUser.getText().toString(), etPass.getText().toString());
+                    saveUser(etPhone.getText().toString(), etUser.getText().toString(), etPass.getText().toString());
                 }
             }
         });
     }
 
-    private void saveUser(String email, String user, String pass) {
+    private void saveUser(String phoneNumber, String user, String pass) {
         ParseUser newUser = new ParseUser();
-        newUser.put("email", email);
+        newUser.put("email", phoneNumber);
         newUser.put("username", user);
         newUser.put("password", pass);
         newUser.put("location", new ParseGeoPoint(0,0));

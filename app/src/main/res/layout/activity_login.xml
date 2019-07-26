@@ -9,11 +9,11 @@
 
 
     <EditText
-        android:id="@+id/tvUserText"
+        android:id="@+id/etPhone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="30dp"
         android:hint="Username"
         android:textColor="#E6E8E6"
@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/relinkLogo" />
 
     <EditText
         android:id="@+id/tvPassText"
@@ -31,22 +31,25 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="30dp"
         android:hint="Password"
+        android:inputType="textPassword"
         android:textColorHint="@color/colorPrimaryDark"
         android:textColor="#E6E8E6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvUserText" />
+        app:layout_constraintTop_toBottomOf="@+id/etPhone" />
 
     <Button
         android:id="@+id/btnLogIn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="30dp"
-        android:backgroundTint="#CED0CE"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="100dp"
+        android:background="@drawable/round_shape"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Log In"
+        android:textColor="#E6E8E6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,42 +57,33 @@
 
     <Button
         android:id="@+id/btnSignUp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="30dp"
-        android:backgroundTint="#CED0CE"
-        android:text="Sign Up"
+        android:layout_width="210dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="100dp"
+        android:background="@drawable/round_shape"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Create Account"
+        android:textColor="#E6E8E6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpPrompt" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/signUpPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="124dp"
-        android:layout_marginTop="32dp"
-        android:text="Already have an account?"
-        android:textColor="#E6E8E6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:text="No account yet? Sign up!"
         android:textColor="#E6E8E6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogIn" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/relinkLogo"
         android:layout_width="158dp"
         android:layout_height="154dp"
         android:layout_marginStart="8dp"

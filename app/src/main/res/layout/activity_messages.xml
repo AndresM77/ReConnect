@@ -69,9 +69,11 @@
         android:layout_height="49dp"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Submit"
-        android:visibility="visible"
         android:background="@drawable/round_shape"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Submit"
+        android:textColor="#E6E8E6"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -81,8 +83,10 @@
         android:layout_height="49dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Return"
         android:background="@drawable/round_shape"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Return"
+        android:textColor="#E6E8E6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

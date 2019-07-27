@@ -23,8 +23,9 @@
         android:layout_width="297dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:fontFamily="@font/orkney"
         android:hint="Contact Name"
-        android:textSize="14sp"
+        android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/ivProfileImg"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,8 +36,10 @@
         android:layout_height="32dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
+        android:fontFamily="@font/orkney"
         android:hint="Distance Away"
         android:textSize="10sp"
+        android:textStyle="italic"
         app:layout_constraintStart_toEndOf="@+id/ivProfileImg"
         app:layout_constraintTop_toBottomOf="@+id/contactName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

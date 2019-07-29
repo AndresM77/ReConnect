@@ -209,7 +209,8 @@ public class RequestMeetingActivity extends AppCompatActivity {
 
                 // THIS MIGHT SEND A MESSAGE
                 //TODO check
-                RemoteMessage.Builder remBuilder = new RemoteMessage.Builder(SENDER_ID + "@gcm.googleapis.com");
+                RemoteMessage.Builder remBuilder = new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com");
+                remBuilder.setMessageId(String.valueOf(Math.random() * 1000000));
                 remBuilder.addData("message","hello");
                 remBuilder.addData("recipientId",event.getAttendee().getObjectId());
                 FirebaseMessaging.getInstance().send(remBuilder.build());

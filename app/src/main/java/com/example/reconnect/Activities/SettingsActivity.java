@@ -103,4 +103,5 @@ public class SettingsActivity extends AppCompatActivity {
             cur.close();
         }
     }
+
 }

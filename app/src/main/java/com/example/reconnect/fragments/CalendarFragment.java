@@ -185,6 +185,8 @@ public class CalendarFragment extends Fragment {
             postQuery.whereEqualTo(Event.KEY_CREATOR, ParseUser.getCurrentUser());
         } else if (Event.KEY_ATTENDEE.equals(ParseUser.getCurrentUser())) {
             postQuery.whereEqualTo(Event.KEY_ATTENDEE, ParseUser.getCurrentUser());
+        } else {
+            return;
         }
 
         postQuery.addDescendingOrder(Event.KEY_CREATED_AT);

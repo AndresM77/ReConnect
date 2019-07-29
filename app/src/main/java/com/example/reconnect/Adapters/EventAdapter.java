@@ -56,13 +56,13 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int typeInView = getItemViewType(position);
         if (typeInView == EVENT) {
-            Event event = (Event)mEvents.get(position);
-            ((ViewHolderEvent)holder).bind(event);
+            Event event = (Event) mEvents.get(position);
+            ((ViewHolderEvent) holder).bind(event);
         } else if (typeInView == TITLE) {
             if (position + 1 < getItemCount()) {
-                if (getItemViewType(position + 1)!=TITLE) {
-                    DateTitle title = (DateTitle)mEvents.get(position);
-                    ((ViewHolderTitle)holder).bind(title);
+                if (getItemViewType(position + 1) != TITLE) {
+                    DateTitle title = (DateTitle) mEvents.get(position);
+                    ((ViewHolderTitle) holder).bind(title);
                 }
             }
         }
@@ -70,7 +70,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        if (mEvents.get(position) instanceof Event){
+        if (mEvents.get(position) instanceof Event) {
             return EVENT;
         } else {
             return TITLE;
@@ -120,183 +120,153 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             pending = itemView.findViewById(R.id.ivPending);
             deny = itemView.findViewById(R.id.ivReject);
             eventLayout = itemView.findViewById(R.id.eventLayout);
-
             mFragment = fragment;
         }
 
         public void bind(final Event event) {
-
-            boolean isPersonalEvent;
             try {
-                isPersonalEvent = event.getAttendee().fetchIfNeeded().getUsername().equals(event.getCreator().fetchIfNeeded().getUsername());
 
-            /* Elements we always want to show */
+                String meetingTitle = event.getName().equals("") ? "Meeting " : event.getName();
+                Boolean isPersonalEvent = event.getAttendee().fetchIfNeeded().getUsername().equals(event.getCreator().fetchIfNeeded().getUsername());
 
-            String meetingTitle;
-            if (event.getName().equals("")) { meetingTitle = "Meeting"; }
-            else { meetingTitle = event.getName(); }
+                // set all views with information that does not depend on the status of the event
 
-            if (isPersonalEvent) {
-                meetingName.setVisibility(View.INVISIBLE);
-                industry.setVisibility(View.INVISIBLE);
-                attendee.setText(meetingTitle);
-                accept.setVisibility(View.GONE);
-                deny.setVisibility(View.GONE);
-                pending.setVisibility(View.GONE);
-            }
-            else {
-                // meeting name assignment
-                String meetingWith = meetingTitle + " with";
-                meetingName.setText(meetingWith);
+                // meeting date assignment
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime((Date) event.get("date"));
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                String displayDate = month + "/" + day + "/" + year;
+                date.setText(displayDate);
 
-                // attendee assignment
-                String currentUserName;
-                String attendeeUserName;
-                Boolean isAttendee;
-                try {
-                    currentUserName = ParseUser.getCurrentUser().fetchIfNeeded().getUsername();
-                    attendeeUserName = event.getAttendee().fetchIfNeeded().getUsername();
-                    isAttendee = attendeeUserName.equals(currentUserName);
+                // meeting time assignment
+                String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
+                time.setText(timeSpan);
+
+                if (isPersonalEvent) {
+                    meetingName.setVisibility(View.GONE);
+                    accept.setVisibility(View.GONE);
+                    deny.setVisibility(View.GONE);
+                    pending.setVisibility(View.GONE);
+                    industry.setVisibility(View.INVISIBLE);
+                    // (1) set meeting title
+                    attendee.setText(meetingTitle);
+
+                } else {
+
+                    String currentUserName = ParseUser.getCurrentUser().fetchIfNeeded().getUsername();
+                    String attendeeUserName = event.getAttendee().fetchIfNeeded().getUsername();
+                    Boolean isAttendee = attendeeUserName.equals(currentUserName);
+                    Boolean stillPending = event.getPending();
+                    Boolean hasBeenAccepted = event.getAccepted();
+
+                    // (1) set meeting title
+                    meetingName.setText(meetingTitle + " with");
+
+                    // (2) set the attendee
+
                     if (isAttendee) {
                         attendee.setText(event.getCreator().fetchIfNeeded().getUsername());
                     } else {
                         attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
                     }
-                } catch (ParseException e) {
-                    Log.e("EventAdapter", "Unable to retrieve attendee name");
-                    e.printStackTrace();
-                }
 
-                // industry assignment
-                try {
-                    industry.setText(event.getAttendee().fetchIfNeeded().get("industry").toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+                    // (3) set the industry of the attendee
+                    String attendeeIndustry = event.getAttendee().fetchIfNeeded().get("industry").toString();
+                    industry.setText(attendeeIndustry);
 
-            /* Elements we want to show depending on the status of the invite */
-            boolean stillPending = event.getPending();
-            boolean hasBeenAccepted = event.getAccepted();
-            try {
-                Boolean isAttendee = event.getAttendee().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername());
+                    // (4) show other views depending on status of the event
+                    if (stillPending) {
+                        if (!isAttendee) {
+                            accept.setVisibility(View.GONE);
+                            deny.setVisibility(View.GONE);
+                        }
 
-                if (stillPending) {
-                    if (!isAttendee) {
-                        // hide the accept and deny images
-                        accept.setVisibility(View.GONE);
-                        deny.setVisibility(View.GONE);
+                        else {
+                            pending.setVisibility(View.GONE);
+
+                            // implementation of accept or reject event functionality
+                            accept.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    event.setPending(false);
+                                    event.setAccepted(true);
+                                    event.saveInBackground();
+                                    mFragment.queryEvents();
+                                }
+                            });
+                            deny.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    event.setPending(false);
+                                    event.setAccepted(false);
+                                    event.saveInBackground();
+                                    mFragment.queryEvents();
+                                }
+                            });
+                        }
                     }
-                    else {
-                        // hide the pending icon
-                        pending.setVisibility(View.GONE);
 
-                        // implementation of accept or reject event functionality
-                        accept.setOnClickListener(new View.OnClickListener() {
+                    else {
+                        if (hasBeenAccepted) {
+                            accept.setVisibility(View.GONE);
+                            deny.setVisibility(View.GONE);
+                            pending.setVisibility(View.GONE);
+                        }
+                        else {
+                            event.delete();
+                            return;
+                        }
+                    }
+                }
+
+                // delete event functionality
+                eventLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                    private void showDialogForUserSelection() {
+                        View view = LayoutInflater.from(mContext).inflate(R.layout.item_alert_delete_event, null);
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+                        alertDialogBuilder.setView(view);
+                        final AlertDialog alertDialog = alertDialogBuilder.create();
+
+                        ImageView yes = view.findViewById(R.id.deleteYes);
+                        ImageView no = view.findViewById(R.id.deleteNo);
+
+                        yes.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                event.setPending(false);
-                                event.setAccepted(true);
-                                event.saveInBackground();
-                                mFragment.queryEvents();
+                                try {
+                                    event.delete();
+                                    mFragment.queryEvents();
+                                    alertDialog.hide();
+                                } catch (ParseException e) {
+                                    Log.e("Event Adapter", "Unable to delete the event");
+                                    e.printStackTrace();
+                                }
                             }
                         });
 
-                        deny.setOnClickListener(new View.OnClickListener() {
+                        no.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                event.setPending(false);
-                                event.setAccepted(false);
-                                event.saveInBackground();
-                                mFragment.queryEvents();
-                            }
-                        });
-                    }
-                }
-
-                else {
-                    if (hasBeenAccepted) {
-                        // hide all status icons
-                        accept.setVisibility(View.GONE);
-                        deny.setVisibility(View.GONE);
-                        pending.setVisibility(View.GONE);
-                    }
-                    else {
-                        event.delete();
-                        return;
-                    }
-                }
-            }
-
-            catch (ParseException e) {
-                Log.e("Event Adapter", "Unable to tell if current user is attendee of event");
-                e.printStackTrace();
-            }
-
-            // meeting date assignment
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime((Date) event.get("date"));
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            String displayDate = month + "/" + day + "/" + year;
-            date.setText(displayDate);
-
-
-            // meeting time assignment
-            String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
-            time.setText(timeSpan);
-
-            /* delete event functionality */
-            eventLayout.setOnLongClickListener(new View.OnLongClickListener() {
-                private void showDialogForUserSelection() {
-                    View view = LayoutInflater.from(mContext).inflate(R.layout.item_alert_delete_event, null);
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-                    alertDialogBuilder.setView(view);
-
-                    final AlertDialog alertDialog = alertDialogBuilder.create();
-
-                    //Configure Text
-                    ImageView yes = view.findViewById(R.id.deleteYes);
-                    ImageView no = view.findViewById(R.id.deleteNo);
-
-                    yes.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            try {
-                                event.delete();
-                                mFragment.queryEvents();
                                 alertDialog.hide();
-                            } catch (ParseException e) {
-                                Log.e("Event Adapter", "Unable to delete the event");
-                                e.printStackTrace();
                             }
-                        }
-                    });
+                        });
+                        alertDialog.show();
+                    }
 
-                    no.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            alertDialog.hide();
-                        }
-                    });
+                    @Override
+                    public boolean onLongClick(View view) {
+                        showDialogForUserSelection();
+                        return true;
+                    }
+                });
 
-                    // Display the dialog
-                    alertDialog.show();
-                }
-
-                @Override
-                public boolean onLongClick(View view) {
-                    showDialogForUserSelection();
-                    return true;
-                }
-            });
-
+            }
+            catch (ParseException e){
+                Log.e("Event Adapter", "There was a problem fetching information to bind events together for calendar");
+                e.printStackTrace();
+            }
         }
     }
-
 }
-

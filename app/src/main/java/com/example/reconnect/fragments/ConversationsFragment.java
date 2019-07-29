@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.reconnect.Activities.MessageContactsActivity;
 import com.example.reconnect.Activities.MessagesActivity;
 import com.example.reconnect.Adapters.ConversationsAdapter;
 import com.example.reconnect.R;
@@ -37,7 +35,6 @@ public class ConversationsFragment extends Fragment {
     private List<Conversation> mConversations;
     private SwipeRefreshLayout swipeContainer;
     //Initializing extraneous view objects
-    private Button btnCreateConversation;
     private ConversationClickListener listener;
 
     public static ConversationsFragment newInstance() {
@@ -56,7 +53,6 @@ public class ConversationsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
         rvConversations = view.findViewById(R.id.rvConversations);
-        btnCreateConversation = view.findViewById(R.id.btnCreate);
         //Instantiating connections list
         mConversations = new ArrayList<>();
         //Set up listener
@@ -74,13 +70,6 @@ public class ConversationsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager((getContext()));
         //Set layout manager on recycler view
         rvConversations.setLayoutManager(linearLayoutManager);
-
-        btnCreateConversation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectRecipient();
-            }
-        });
 
         // Lookup the swipe container view
         swipeContainer = view.findViewById(R.id.swipeContainer);
@@ -108,12 +97,6 @@ public class ConversationsFragment extends Fragment {
         Intent i = new Intent(getContext(), MessagesActivity.class);
         i.putExtra("conversation", conversation);
         startActivity(i);
-    }
-
-    public void selectRecipient(){
-        Intent i = new Intent(getContext(), MessageContactsActivity.class);
-        startActivity(i);
-        //startActivityForResult(i, REQUEST_CODE);
     }
 
     private void query() {

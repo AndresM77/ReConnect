@@ -89,6 +89,7 @@ public class MessagesActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                etMessage.setText("");
                 saveMessage();
             }
         });

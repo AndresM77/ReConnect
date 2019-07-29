@@ -1,6 +1,7 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -229,12 +230,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         alertDialogBuilder.setView(view);
                         final AlertDialog alertDialog = alertDialogBuilder.create();
 
-                        ImageView yes = view.findViewById(R.id.deleteYes);
-                        ImageView no = view.findViewById(R.id.deleteNo);
-
-                        yes.setOnClickListener(new View.OnClickListener() {
+                        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(View view) {
+                            public void onClick(DialogInterface dialogInterface, int i) {
                                 try {
                                     event.delete();
                                     mFragment.queryEvents();
@@ -246,12 +244,11 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             }
                         });
 
-                        no.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                alertDialog.hide();
-                            }
-                        });
+                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }
+                                });
+
                         alertDialog.show();
                     }
 

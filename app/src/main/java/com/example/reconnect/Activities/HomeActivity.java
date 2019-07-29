@@ -148,21 +148,25 @@ public class HomeActivity extends AppCompatActivity {
     private void recFragmentInteraction(Menu menu) {
         menu.findItem(R.id.ivSettings).setVisible(true);
         menu.findItem(R.id.addToCalendar).setVisible(false);
+        menu.findItem(R.id.newConversation).setVisible(false);
     }
 
     private void mesFragmentInteraction(Menu menu) {
         menu.findItem(R.id.ivSettings).setVisible(true);
         menu.findItem(R.id.addToCalendar).setVisible(false);
+        menu.findItem(R.id.newConversation).setVisible(true);
     }
 
     private void mapFragmentInteraction(Menu menu) {
         menu.findItem(R.id.ivSettings).setVisible(true);
         menu.findItem(R.id.addToCalendar).setVisible(false);
+        menu.findItem(R.id.newConversation).setVisible(false);
     }
 
     public void calFragmentInteraction(Menu menu) {
         menu.findItem(R.id.ivSettings).setVisible(true);
         menu.findItem(R.id.addToCalendar).setVisible(true);
+        menu.findItem(R.id.newConversation).setVisible(false);
     }
 
 

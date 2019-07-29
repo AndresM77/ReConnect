@@ -15,4 +15,10 @@
         android:icon="@drawable/add_icon"
         android:title="@string/addToCalendar"
         app:showAsAction="ifRoom"></item>
+
+    <item
+        android:id="@+id/newConversation"
+        android:icon="@drawable/ic_new_conversation"
+        android:title="New Conversation"
+        app:showAsAction="ifRoom"></item>
 </menu>

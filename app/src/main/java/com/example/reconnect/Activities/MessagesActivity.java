@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -89,8 +90,11 @@ public class MessagesActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                etMessage.setText("");
-                saveMessage();
+                if (etMessage.getText().equals("")) {
+                    Toast.makeText(getApplicationContext(),"Invalid Message", Toast.LENGTH_LONG).show();
+                } else {
+                    saveMessage();
+                }
             }
         });
 
@@ -165,20 +169,32 @@ public class MessagesActivity extends AppCompatActivity {
                         Log.d(TAG, "Success");
                     }
                 });
+                etMessage.setText("");
                 queryMessages(conversation);
             }
         });
     }
 
-    public void queryMessages(Conversation conversation) {
-        ParseQuery<Message> postQuery = new ParseQuery<Message>(Message.class);
-        postQuery.include(Message.KEY_SENDER);
-        postQuery.setLimit(20);
-        postQuery.whereEqualTo(Message.KEY_SENDER, ParseUser.getCurrentUser());
-        postQuery.whereEqualTo(Message.KEY_RECIPIENT, conversation.getOtherUser());
-        postQuery.addDescendingOrder(Message.KEY_CREATED_AT);
 
-        postQuery.findInBackground(new FindCallback<Message>() {
+    public void queryMessages(Conversation conversation) {
+        ParseQuery<Message> query1 = new ParseQuery<Message>(Message.class);
+        query1.whereEqualTo(Message.KEY_SENDER, ParseUser.getCurrentUser());
+        query1.whereEqualTo(Message.KEY_RECIPIENT, conversation.getOtherUser());
+
+        ParseQuery<Message> query2 = new ParseQuery<Message>(Message.class);
+        query2.whereEqualTo(Message.KEY_SENDER, conversation.getOtherUser());
+        query2.whereEqualTo(Message.KEY_RECIPIENT, ParseUser.getCurrentUser());
+
+        List<ParseQuery<Message>> queries = new ArrayList<>();
+        queries.add(query1);
+        queries.add(query2);
+
+        ParseQuery<Message> mainQuery = ParseQuery.or(queries);
+        mainQuery.include(Message.KEY_SENDER);
+        mainQuery.addDescendingOrder(Message.KEY_CREATED_AT);
+        mainQuery.setLimit(20);
+
+        mainQuery.findInBackground(new FindCallback<Message>() {
             @Override
             public void done(List<Message> messages, ParseException e) {
                 if (e != null) {
@@ -189,10 +205,6 @@ public class MessagesActivity extends AppCompatActivity {
                 mMessage.clear();
                 mMessage.addAll(messages);
                 adapter.notifyDataSetChanged();
-                for (int i = 0; i < mMessage.size(); i++) {
-                    Message message = mMessage.get(i);
-                    Log.d(TAG, "Sender: " + message.getSender().getUsername());
-                }
             }
         });
     }

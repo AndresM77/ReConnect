@@ -40,8 +40,8 @@ public class RegisterActivity extends AppCompatActivity {
         mUsers = new ArrayList<>();
 
         etPhone = findViewById(R.id.etPhone);
-        etUser = findViewById(R.id.etUsername);
-        etPass = findViewById(R.id.tvPassText);
+        etUser = findViewById(R.id.etUser);
+        etPass = findViewById(R.id.etPass);
         btnSignUp = findViewById(R.id.btnCreate);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -77,13 +77,14 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void saveUser(String phoneNumber, String user, String pass) {
         ParseUser newUser = new ParseUser();
-        newUser.put("email", phoneNumber);
+        newUser.put("phoneNumber", phoneNumber);
         newUser.put("username", user);
         newUser.put("password", pass);
         newUser.put("location", new ParseGeoPoint(0,0));
         try {
             newUser.signUp();
         } catch (ParseException e) {
+            Log.e("Register Activity", "Unable to sign up user.");
             e.printStackTrace();
         }
         newUser.saveInBackground(new SaveCallback() {

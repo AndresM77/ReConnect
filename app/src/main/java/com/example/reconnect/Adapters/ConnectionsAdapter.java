@@ -2,7 +2,7 @@ package com.example.reconnect.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,6 @@ import com.example.reconnect.model.Connection;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -71,11 +70,8 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                     // New intent to send User to RequestMeeting Activity after selecting
                     // a contact User name
                     Intent intent = new Intent(view.getContext(), RequestMeetingActivity.class);
-
                     Connection selectedConnection = (Connection) name.getTag();
-
                     intent.putExtra("requesteeId", selectedConnection.getOtherUser().getObjectId());
-
                     view.getContext().startActivity(intent);
                 }
             });
@@ -84,56 +80,27 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
         /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(Connection connection) {
-
-            name.setTag(connection);
-
-            ParseFile profileImg = null;
             try {
-                profileImg = (ParseFile) connection.getOtherUser().fetchIfNeeded().get("profileImg");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            if (profileImg != null) {
-                Glide.with(context).load(profileImg.getUrl()).circleCrop().into(profileBtn);
-            }
+                //set tag in order to get correct Connection to display later
+                name.setTag(connection);
 
-            ParseUser contact = connection.getOtherUser();
-            ParseGeoPoint position1;
+                // set the profile image
+                ParseFile profileImg = profileImg = (ParseFile) connection.getOtherUser().fetchIfNeeded().get("profileImg");
+                if (profileImg != null) {
+                    Glide.with(context).load(profileImg.getUrl()).circleCrop().into(profileBtn);
+                }
 
-            try {
-                position1 = connection.getCurrentUser().fetchIfNeeded().getParseGeoPoint("location");
-                ParseGeoPoint position2 = contact.getParseGeoPoint("location");
-
-                Location loc = new Location("");
-
-                loc.setLatitude(position1.getLatitude());
-
-                loc.setLongitude(position1.getLongitude());
-
-                Location loc2 = new Location("");
-
-                loc2.setLatitude(position2.getLatitude());
-
-                loc2.setLongitude(position2.getLongitude());
-
-                Double distance = new Float(loc.distanceTo(loc2)).doubleValue();
-
-                Double metersToMiles = 1609.344;
-
-                distance /= metersToMiles;
-
-                Math.round(distance);
-
-                String out = distance + " miles away";
-
+                // set the location away of the user
+                ParseGeoPoint position1 = connection.getCurrentUser().fetchIfNeeded().getParseGeoPoint("location");
+                ParseGeoPoint position2 = connection.getOtherUser().getParseGeoPoint("location");
+                String out = Connection.getDistanceAway(position1, position2);
                 distanceAwayV.setText(out);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
-            try {
-                name.setText(contact.fetchIfNeeded().getUsername());
+                // set the name of the connection
+                name.setText(connection.getOtherUser().fetchIfNeeded().getUsername());
+
             } catch (ParseException e) {
+                Log.e("Connections Adapter", "Unable to bind the required views together for each contact/connection");
                 e.printStackTrace();
             }
 

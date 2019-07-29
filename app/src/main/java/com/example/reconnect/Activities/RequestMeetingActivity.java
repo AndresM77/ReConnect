@@ -54,7 +54,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
     ImageView ivProfileImg;
     Button btnMessage;
     //Meeting Items
-    TextView request;
     EditText meetingName;
     ImageView startTime;
     TextView tv_startTime;
@@ -104,6 +103,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // grab the objectId of the requested User
         final String requestedUserId = getIntent().getStringExtra("requesteeId");
@@ -310,10 +310,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 Intent i = new Intent(RequestMeetingActivity.this, SettingsActivity.class);
                 startActivity(i); // brings up the second activity
                 return true;
-            case R.id.ivBack:
-                //Take back, finish this intent
-                Intent intent = new Intent(RequestMeetingActivity.this, HomeActivity.class);
-                startActivity(intent);
+            case android.R.id.home:
                 finish();
                 return true;
             default:

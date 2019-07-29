@@ -4,11 +4,6 @@
     tools:context=".Activities.RequestMeetingActivity">
 
     <item
-        android:id="@+id/ivBack"
-        android:icon="@drawable/outline_arrow_back_black_18dp"
-        android:title="Item"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/ivSettings"
         android:icon="@drawable/ic_settings"
         app:showAsAction="ifRoom"

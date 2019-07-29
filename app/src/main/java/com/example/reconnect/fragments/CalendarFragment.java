@@ -251,26 +251,20 @@ public class CalendarFragment extends Fragment {
 
     }
 
-    //TODO clean up this logic
     public String getEnding(int day) {
-        if (day >= 20) {
-            day = day - 20;
-        }
-        else if (day >= 30) {
-            day = day - 30;
-        }
 
-        if (day == 1) {
-            return "st";
-        }
-        else if (day == 2) {
-            return "nd";
-        }
-        else if (day == 3) {
-            return "rd";
-        }
-        else {
-            return "th";
+        String stringDay = Integer.toString(day);
+        char sigDigit = stringDay.charAt(stringDay.length()-1);
+
+        switch(sigDigit) {
+            case '1':
+                return "st";
+            case '2':
+                return "nd";
+            case '3':
+                return "rd";
+            default:
+                return "th";
         }
     }
 }

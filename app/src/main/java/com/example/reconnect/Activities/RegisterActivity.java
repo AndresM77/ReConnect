@@ -40,8 +40,8 @@ public class RegisterActivity extends AppCompatActivity {
         mUsers = new ArrayList<>();
 
         etPhone = findViewById(R.id.etPhone);
-        etUser = findViewById(R.id.etUsername);
-        etPass = findViewById(R.id.tvPassText);
+        etUser = findViewById(R.id.etUser);
+        etPass = findViewById(R.id.etPass);
         btnSignUp = findViewById(R.id.btnCreate);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {

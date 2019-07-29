@@ -1,8 +1,11 @@
 package com.example.reconnect.model;
 
+import android.location.Location;
+
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -89,6 +92,22 @@ public class Connection extends ParseObject {
     @Override
     public Date getCreatedAt() {
         return super.getCreatedAt();
+    }
+
+    public static String getDistanceAway(ParseGeoPoint position1, ParseGeoPoint position2) {
+        Location loc = new Location("");
+        loc.setLatitude(position1.getLatitude());
+        loc.setLongitude(position1.getLongitude());
+
+        Location loc2 = new Location("");
+        loc2.setLatitude(position2.getLatitude());
+        loc2.setLongitude(position2.getLongitude());
+
+        Double distance = new Float(loc.distanceTo(loc2)).doubleValue();
+        Double metersToMiles = 1609.344;
+        distance /= metersToMiles;
+
+        return distance.intValue() + " miles away";
     }
 
     //Querying our Connection class

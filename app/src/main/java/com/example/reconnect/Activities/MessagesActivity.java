@@ -76,8 +76,8 @@ public class MessagesActivity extends AppCompatActivity {
         ParseFile profileImg = null;
 
         try {
-            tvContactName.setText(conversation.getConversee().fetchIfNeeded().getUsername());
-            tvIndustry.setText((String) conversation.getConversee().fetchIfNeeded().get("industry"));
+            tvContactName.setText(conversation.getOtherUser().fetchIfNeeded().getUsername());
+            tvIndustry.setText((String) conversation.getOtherUser().fetchIfNeeded().get("industry"));
             profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");
         } catch (ParseException e) {
             e.printStackTrace();
@@ -142,7 +142,7 @@ public class MessagesActivity extends AppCompatActivity {
         final Message message = new Message();
         message.setConversation(conversation);
         message.setMessage(etMessage.getText().toString());
-        message.setRecipient(conversation.getConversee());
+        message.setRecipient(conversation.getOtherUser());
         message.setSender(ParseUser.getCurrentUser());
         message.saveInBackground(new SaveCallback() {
             @Override
@@ -175,7 +175,7 @@ public class MessagesActivity extends AppCompatActivity {
         postQuery.include(Message.KEY_SENDER);
         postQuery.setLimit(20);
         postQuery.whereEqualTo(Message.KEY_SENDER, ParseUser.getCurrentUser());
-        postQuery.whereEqualTo(Message.KEY_RECIPIENT, conversation.getConversee());
+        postQuery.whereEqualTo(Message.KEY_RECIPIENT, conversation.getOtherUser());
         postQuery.addDescendingOrder(Message.KEY_CREATED_AT);
 
         postQuery.findInBackground(new FindCallback<Message>() {

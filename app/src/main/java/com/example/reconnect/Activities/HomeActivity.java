@@ -27,9 +27,16 @@ import com.parse.ParseUser;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static final int MENU_ITEM_ITEM1 = 2;
     //Initializing fragment tag
     public final static String TAG = "HomeActivity";
     public ParseUser currentUser;
+    public Fragment fragment;
+    // define your fragments here
+    public Fragment fragment1;
+    public Fragment fragment2;
+    public Fragment fragment3;
+    public Fragment fragment4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +71,16 @@ public class HomeActivity extends AppCompatActivity {
 
 
         // define your fragments here
-        final Fragment fragment1 = new MapFragment();
-        final Fragment fragment2 = new ReconnectFragment();
-        final Fragment fragment3 = new CalendarFragment();
-        final Fragment fragment4 = new ConversationsFragment();
+        fragment1 = new MapFragment();
+        fragment2 = new ReconnectFragment();
+        fragment3 = new CalendarFragment();
+        fragment4 = new ConversationsFragment();
 
         // handle navigation selection
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Fragment fragment;
                         switch (item.getItemId()) {
                             case R.id.action_map:
                                 fragment = fragment1;
@@ -132,6 +138,9 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (fragment == fragment3) {
+            menu.add(Menu.NONE, MENU_ITEM_ITEM1, Menu.NONE, "AddToCalendar");
+        }
         return true;
     }
 

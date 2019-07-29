@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">ReConnect</string>
     <string name="settings">Settings</string>
-    <string name="addToCalendar">Add to Calendar</string>
+    <string name="addToCalendar">AddToCalendar</string>
 </resources>

@@ -13,6 +13,7 @@ import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.annotation.WorkerThread;
 import androidx.core.app.NotificationCompat;
 
 import com.example.reconnect.Activities.MapActivity;
@@ -52,6 +53,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             //create a notification
             //TODO more customization here
             NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
+                    .setSmallIcon(R.drawable.reconnect_icon)
                     .setContentTitle(remoteMessage.getData().get("title"))
                     .setContentText(remoteMessage.getData().get("message"))
                     .setContentIntent(pendingIntent);
@@ -59,6 +61,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // notify manager that the notification has been built
             nManager.notify(notificationId, nBuilder.build());
       //  }
+    }
+
+    @Override
+    public void onMessageSent(String var1) {
+
+    }
+
+    @Override
+    public void onSendError(String var1, Exception var2) {
+
     }
 
     @Override

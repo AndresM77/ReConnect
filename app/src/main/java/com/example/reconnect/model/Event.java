@@ -1,11 +1,14 @@
 package com.example.reconnect.model;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @ParseClassName("Event")
 public class Event extends ParseObject {
@@ -71,6 +74,26 @@ public class Event extends ParseObject {
         } else {
             return getAttendee();
         }
+    }
+
+    public static void queryEvents(FindCallback<Event> callback) {
+        ParseQuery<Event> query1 = new ParseQuery<Event>(Event.class);
+        query1.whereEqualTo(Event.KEY_CREATOR, ParseUser.getCurrentUser());
+        ParseQuery<Event> query2 = new ParseQuery<Event>(Event.class);
+        query2.whereEqualTo(Event.KEY_ATTENDEE, ParseUser.getCurrentUser());
+
+        List<ParseQuery<Event>> queries = new ArrayList<>();
+        queries.add(query1);
+        queries.add(query2);
+
+        ParseQuery<Event> mainQuery = ParseQuery.or(queries);
+        mainQuery.addDescendingOrder(Event.KEY_PENDING);
+        mainQuery.addDescendingOrder(Event.KEY_CREATED_AT);
+        mainQuery.addAscendingOrder(Event.KEY_DATE);
+        mainQuery.setLimit(20);
+
+        mainQuery.findInBackground(callback);
+
     }
 
     public ParseUser getOtherUser() {

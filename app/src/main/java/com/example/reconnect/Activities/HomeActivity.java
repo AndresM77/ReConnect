@@ -37,28 +37,15 @@ public class HomeActivity extends AppCompatActivity {
     public Fragment fragment2;
     public Fragment fragment3;
     public Fragment fragment4;
+    public FragmentManager fragmentManager;
+    public Menu actionMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //If saved instance state is null set the timeline fragment to be the initial instance
-        if (null == savedInstanceState) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, MapFragment.newInstance())
-                    .commit();
-        }
-
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-
-        //check if the meetingId sent by the intent is true...if not null do things
-        if (getIntent().getStringExtra("meetingId") != null) {
-            fragmentManager.beginTransaction().replace(R.id.container, new CalendarFragment()).commit();
-        }
-
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        initFragmentManager(savedInstanceState);
 
         // Find the toolbar view inside the activity layout
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -66,44 +53,10 @@ public class HomeActivity extends AppCompatActivity {
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
 
+        setBottomNavView();
+
         // Get the current user
         currentUser = ParseUser.getCurrentUser();
-
-
-        // define your fragments here
-        fragment1 = new MapFragment();
-        fragment2 = new ReconnectFragment();
-        fragment3 = new CalendarFragment();
-        fragment4 = new ConversationsFragment();
-
-        // handle navigation selection
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_map:
-                                fragment = fragment1;
-                                break;
-                            case R.id.action_reconnect:
-                                fragment = fragment2;
-                                break;
-                            case R.id.action_profile:
-                                fragment = fragment3;
-                                break;
-                            case R.id.action_messages:
-                                fragment = fragment4;
-                                break;
-                            default:
-                                fragment = fragment1;
-                                break;
-                        }
-                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-                        return true;
-                    }
-                });
-        bottomNavigationView.setSelectedItemId(R.id.action_map);
-
 
         // get the token id for the current user
         //TODO check
@@ -128,19 +81,98 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private void initFragmentManager(Bundle savedInstanceState) {
+        //If saved instance state is null set the timeline fragment to be the initial instance
+        if (null == savedInstanceState) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, MapFragment.newInstance())
+                    .commit();
+        }
+
+        fragmentManager = getSupportFragmentManager();
+
+        //check if the meetingId sent by the intent is true...if not null do things
+        if (getIntent().getStringExtra("meetingId") != null) {
+            fragmentManager.beginTransaction().replace(R.id.container, new CalendarFragment()).commit();
+        }
+    }
+
+    private void setBottomNavView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // define your fragments here
+        fragment1 = new MapFragment();
+        fragment2 = new ReconnectFragment();
+        fragment3 = new CalendarFragment();
+        fragment4 = new ConversationsFragment();
+
+        // handle navigation selection
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_map:
+                                fragment = fragment1;
+                                //mapFragmentInteraction(actionMenu);
+                                break;
+                            case R.id.action_reconnect:
+                                fragment = fragment2;
+                                recFragmentInteraction(actionMenu);
+                                break;
+                            case R.id.action_profile:
+                                fragment = fragment3;
+                                calFragmentInteraction(actionMenu);
+                                break;
+                            case R.id.action_messages:
+                                fragment = fragment4;
+                                mesFragmentInteraction(actionMenu);
+                                break;
+                            default:
+                                fragment = fragment1;
+                                //mapFragmentInteraction(actionMenu);
+                                break;
+                        }
+                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                        return true;
+                    }
+                });
+        bottomNavigationView.setSelectedItemId(R.id.action_map);
+    }
+
+    private void recFragmentInteraction(Menu menu) {
+        menu.findItem(R.id.ivSettings).setVisible(true);
+        menu.findItem(R.id.addToCalendar).setVisible(false);
+    }
+
+    private void mesFragmentInteraction(Menu menu) {
+        menu.findItem(R.id.ivSettings).setVisible(true);
+        menu.findItem(R.id.addToCalendar).setVisible(false);
+    }
+
+    private void mapFragmentInteraction(Menu menu) {
+        menu.findItem(R.id.ivSettings).setVisible(true);
+        menu.findItem(R.id.addToCalendar).setVisible(false);
+    }
+
+    public void calFragmentInteraction(Menu menu) {
+        menu.findItem(R.id.ivSettings).setVisible(true);
+        menu.findItem(R.id.addToCalendar).setVisible(true);
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        if (fragment == fragment3) {
-            menu.add(Menu.NONE, MENU_ITEM_ITEM1, Menu.NONE, "AddToCalendar");
-        }
+        actionMenu = menu;
         return true;
     }
 
@@ -162,5 +194,6 @@ public class HomeActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 }

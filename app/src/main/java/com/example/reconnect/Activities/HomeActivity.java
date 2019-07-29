@@ -43,21 +43,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
 
+        initObjects();
         initFragmentManager(savedInstanceState);
+        initToolbar();
+        grabTokenId();
+    }
 
-        // Find the toolbar view inside the activity layout
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        // Sets the Toolbar to act as the ActionBar for this Activity window.
-        // Make sure the toolbar exists in the activity and is not null
-        setSupportActionBar(toolbar);
-
-        setBottomNavView();
-
-        // Get the current user
-        currentUser = ParseUser.getCurrentUser();
-
+    private void grabTokenId() {
         // get the token id for the current user
         //TODO check
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -78,7 +71,19 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d("FCM token", token);
                     }
                 });
+    }
 
+    private void initObjects() {
+        setContentView(R.layout.activity_home);
+        currentUser = ParseUser.getCurrentUser();
+    }
+
+    private void initToolbar() {
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
     }
 
     private void initFragmentManager(Bundle savedInstanceState) {
@@ -114,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.action_map:
                                 fragment = fragment1;
-                                //mapFragmentInteraction(actionMenu);
+                                mapFragmentInteraction(actionMenu);
                                 break;
                             case R.id.action_reconnect:
                                 fragment = fragment2;
@@ -130,7 +135,7 @@ public class HomeActivity extends AppCompatActivity {
                                 break;
                             default:
                                 fragment = fragment1;
-                                //mapFragmentInteraction(actionMenu);
+                                mapFragmentInteraction(actionMenu);
                                 break;
                         }
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
@@ -164,15 +169,16 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         actionMenu = menu;
+        // Called after options menu to ensure menu is populated
+        setBottomNavView();
+
         return true;
     }
 

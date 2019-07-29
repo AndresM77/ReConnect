@@ -1,7 +1,6 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
-import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.fragments.CalendarFragment;
 import com.example.reconnect.model.DateTitle;
@@ -60,7 +58,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (typeInView == EVENT) {
             Event event = (Event)mEvents.get(position);
             ((ViewHolderEvent)holder).bind(event);
-        } else if (typeInView == TITLE){
+        } else if (typeInView == TITLE) {
             if (position + 1 < getItemCount()) {
                 if (getItemViewType(position + 1)!=TITLE) {
                     DateTitle title = (DateTitle)mEvents.get(position);
@@ -87,24 +85,14 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public class ViewHolderTitle extends ViewHolder {
 
         TextView dateTitle;
-//        ImageView addEvent;
 
         public ViewHolderTitle(@NonNull View itemView) {
             super(itemView);
             dateTitle = itemView.findViewById(R.id.dateTitle);
-//            addEvent = itemView.findViewById(R.id.addEvent);
         }
 
         public void bind(DateTitle date) {
             dateTitle.setText(date.getmDisplayDate());
-//            addEvent.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent i = new Intent(mContext, RequestMeetingActivity.class);
-//                    i.putExtra("requesteeId", ParseUser.getCurrentUser().getObjectId());
-//                    mContext.startActivity(i);
-//                }
-//            });
         }
     }
 

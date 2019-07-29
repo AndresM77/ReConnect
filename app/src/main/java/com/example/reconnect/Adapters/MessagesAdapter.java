@@ -1,6 +1,7 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.R;
 import com.example.reconnect.model.Message;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -55,9 +58,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         // method that connects information to create item_contact for MapFragment's Recycler View
         public void bind(Message message) {
             tvMessage.setText(message.getMessage());
-            /*
+
             try {
-                if (message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
+                if (!message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
                     tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
                 }
                 else {
@@ -67,7 +70,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                 Log.e("Messages Adapter", "Unable to determine the which side to show message on");
                 e.printStackTrace();
             }
-            */
         }
 
     }

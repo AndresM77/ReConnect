@@ -1,51 +1,35 @@
 package com.example.reconnect.Activities;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
-import com.example.reconnect.MySingleton;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RequestMeetingActivity extends AppCompatActivity {
 
@@ -68,7 +52,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
     ParseFile profileImg = null;
 
     // Notifications
-    private FirebaseFunctions mFunctions;
+    //private FirebaseFunctions mFunctions;
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
     final private String serverKey = "key=" + "AAAAImePEvQ:APA91bGBbetvSXQVxAjLHzkm97o14Dam0rpXkOh1aCxVrUSJVYjYELneksrf_YNJdS8B-dLoQH6_-VUatNFX7V3xHFcUsuXqz-SNhEdugthrpfljrwyC8JLcY3vcmIrvMO5W43AM2LCE"
     ;
@@ -171,7 +155,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 });
 
                 // THIS MIGHT SEND A MESSAGE
-                mFunctions = FirebaseFunctions.getInstance();
+                //mFunctions = FirebaseFunctions.getInstance();
                 //TODO check
                 RemoteMessage.Builder remBuilder = new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com");
                 remBuilder.setMessageId(String.valueOf(Math.random() * 1000000));

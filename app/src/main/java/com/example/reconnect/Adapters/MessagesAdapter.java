@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -61,11 +60,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             tvMessage.setText(message.getMessage());
 
             try {
-                if (message.getRecipient().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
-                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
+                if (!message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
+                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
                 }
                 else {
-                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
+                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
                 }
             } catch (ParseException e) {
                 Log.e("Messages Adapter", "Unable to determine the which side to show message on");

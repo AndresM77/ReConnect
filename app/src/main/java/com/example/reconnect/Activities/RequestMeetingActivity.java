@@ -169,9 +169,10 @@ public class RequestMeetingActivity extends AppCompatActivity {
                             e.printStackTrace();
                             return;
                         }
-                        Intent i = new Intent(RequestMeetingActivity.this, ReconnectFragment.class);
-                        i.putExtra("meetingId", event.getObjectId());
-                        startActivity(i);
+                        finish();
+//                        Intent i = new Intent(RequestMeetingActivity.this, ReconnectFragment.class);
+//                        i.putExtra("meetingId", event.getObjectId());
+//                        startActivity(i);
                     }
                 });
 

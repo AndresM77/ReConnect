@@ -30,6 +30,7 @@ public class AllUsersActivity extends AppCompatActivity {
     private UsersAdapter adapter;
     private List<ParseUser> mUsers;
     private List<Connection> mConnections;
+    private List<String> cUserNames;
     private SwipeRefreshLayout swipeContainer;
     private UserClickListener listener;
 
@@ -42,6 +43,7 @@ public class AllUsersActivity extends AppCompatActivity {
         //Instantiating connections list
         mUsers = new ArrayList<>();
         mConnections = new ArrayList<>();
+        cUserNames = new ArrayList<>();
         //Initialize
         listener = new UserClickListener() {
             @Override
@@ -92,8 +94,7 @@ public class AllUsersActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        //query users
-        queryUsers();
+
         //query connections
         queryConnections();
     }
@@ -129,32 +130,35 @@ public class AllUsersActivity extends AppCompatActivity {
                 }
                 mConnections.clear();
                 mConnections.addAll(objects);
+                cUserNames.clear();
+                for (int i = 0; i < objects.size(); i++) {
+                    try {
+                        cUserNames.add(objects.get(i).getOtherUser().fetchIfNeeded().getUsername());
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                queryUsers();
             }
         });
     }
 
     private void queryUsers() {
-        ParseQuery<ParseUser> postQuery = new ParseQuery<>(ParseUser.class);
-        postQuery.whereNotEqualTo("username", ParseUser.getCurrentUser());
+        ParseQuery <ParseUser> query1 = new ParseQuery<ParseUser>(ParseUser.class);
+        try {
+            query1.whereNotEqualTo("username", ParseUser.getCurrentUser().fetchIfNeeded().getUsername());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        query1.whereNotContainedIn("username", cUserNames);
 
-        postQuery.addDescendingOrder("createdAt");
-        postQuery.setLimit(20);
+        query1.addDescendingOrder("createdAt");
+        query1.setLimit(20);
 
-        postQuery.findInBackground(new FindCallback<ParseUser>() {
+        query1.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 mUsers.clear();
-//                for (int i = 0; i < objects.size(); i++) {
-//                    for (int k = 0; k < mConnections.size(); k++) {
-//                        try {
-//                            if (mConnections.get(k).getOtherUser().fetchIfNeeded().getUsername().equals(objects.get(i).fetchIfNeeded().getUsername())) {
-//                               if (!mUsers.contains(objects.get(i))) { mUsers.add(objects.get(i)); }
-//                            }
-//                        } catch (ParseException ee) {
-//                            ee.printStackTrace();
-//                        }
-//                    }
-//                }
                 mUsers.addAll(objects);
                 adapter.notifyDataSetChanged();
             }

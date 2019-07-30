@@ -43,7 +43,7 @@ public class NotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
-        setUpNotifDisplay();
+        getMainViews();
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +68,7 @@ public class NotificationActivity extends AppCompatActivity {
         });
     }
 
-    public void setUpNotifDisplay() {
+    public void getMainViews() {
         edtTitle = findViewById(R.id.et_title);
         edtMessage = findViewById(R.id.et_message);
         btnSend = findViewById(R.id.btn_sendNotif);

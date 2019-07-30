@@ -13,24 +13,42 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.reconnect.R;
+import com.example.reconnect.model.Connection;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
-    private static final int REQUEST_CODE = 20;
     //Implementing Item view listeners
     private Button btnLogOut;
     private Button btnReturn;
     private Button btnUpload;
     private Button btnGetContacts;
+    private List<ParseUser> mUsers;
+    private List<Connection> mConnections;
+    private List<String> cUserNames;
+    private List<String> mPhones;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        setUpSettingsButtons();
+        btnLogOut = findViewById(R.id.btnLogOut);
+        btnReturn = findViewById(R.id.btnReturn);
+        btnUpload = findViewById(R.id.btnUpload);
+        btnGetContacts = findViewById(R.id.btnGetContacts);
+        mUsers = new ArrayList<>();
+        mPhones = new ArrayList<>();
+        mConnections = new ArrayList<>();
+        cUserNames = new ArrayList<>();
 
         btnGetContacts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Unleash the best and get the contacts
                 getContactList();
-                Toast.makeText(getApplicationContext(), "Check logs", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Importing Contacts from phone", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -65,16 +83,14 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-    }
 
-    public void setUpSettingsButtons() {
-        btnLogOut = findViewById(R.id.btnLogOut);
-        btnReturn = findViewById(R.id.btnReturn);
-        btnUpload = findViewById(R.id.btnUpload);
-        btnGetContacts = findViewById(R.id.btnGetContacts);
+
+        //query connections
+        queryConnections();
     }
 
     private void getContactList() {
+        mPhones.clear();
         ContentResolver cr = getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null);
@@ -94,11 +110,14 @@ public class SettingsActivity extends AppCompatActivity {
                             ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
                             new String[]{id}, null);
                     while (pCur.moveToNext()) {
-                        String phoneNo = pCur.getString(pCur.getColumnIndex(
-                                ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         Log.i(TAG, "Name: " + name);
                         Log.i(TAG, "Phone Number: " + phoneNo);
+                        String placeholder = phoneNo.substring(0,3) + phoneNo.substring(4,7) + phoneNo.substring(8);
+                        Log.i(TAG, "Phone Number without dashes: " + placeholder);
+                        mPhones.add(placeholder);
                     }
+                    checkForConnections();
                     pCur.close();
                 }
             }
@@ -106,6 +125,88 @@ public class SettingsActivity extends AppCompatActivity {
         if(cur!=null){
             cur.close();
         }
+    }
+
+    private void queryConnections() {
+        Connection.queryConnections(new FindCallback<Connection>() {
+            @Override
+            public void done(List<Connection> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with Query");
+                    e.printStackTrace();
+                    return;
+                }
+                mConnections.clear();
+                mConnections.addAll(objects);
+                cUserNames.clear();
+                for (int i = 0; i < objects.size(); i++) {
+                    try {
+                        cUserNames.add(objects.get(i).getOtherUser().fetchIfNeeded().getUsername());
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                queryUsers();
+            }
+        });
+    }
+
+    private void queryUsers() {
+        ParseQuery <ParseUser> query1 = new ParseQuery<ParseUser>(ParseUser.class);
+        try {
+            query1.whereNotEqualTo("username", ParseUser.getCurrentUser().fetchIfNeeded().getUsername());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        query1.whereNotContainedIn("username", cUserNames);
+
+        query1.addDescendingOrder("createdAt");
+        query1.setLimit(20);
+
+        query1.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                mUsers.clear();
+                mUsers.addAll(objects);
+            }
+        });
+    }
+
+    private void checkForConnections() {
+        int uploadCount = 0;
+        for (int i = 0; i < mUsers.size(); i++) {
+            try {
+                if (mPhones.contains(mUsers.get(i).fetchIfNeeded().get("phoneNumber"))) {
+                    addConnection(mUsers.get(i));
+                    uploadCount++;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        Toast.makeText(getApplicationContext(), "Contacts imported from phone and LinkedIn: " + uploadCount, Toast.LENGTH_LONG).show();
+    }
+
+    private void addConnection(final ParseUser user) {
+        Connection connection = new Connection();
+        connection.put("user1", ParseUser.getCurrentUser());
+        connection.put("user2", user);
+
+        connection.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.d(TAG, "Error while saving");
+                    e.printStackTrace();
+                    return;
+                }
+                try {
+                    Log.d(TAG, "Success, Added user:" + user.fetchIfNeeded().getUsername());
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
     }
 
 }

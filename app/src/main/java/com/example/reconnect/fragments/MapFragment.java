@@ -82,7 +82,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     public final static String TAG = "MapFragment";
 
     //From MapActivity
-    private static final double ESTIMATION_CONSTANT = 0.999999;
+    private double RANDOMIZATION_DISTANCE = 0.0002;
     //private final String TAG = "MapActivity";
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -129,6 +129,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
         centered = false;
 
@@ -255,7 +256,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            LatLng pos = new LatLng(geo.getLatitude() * ESTIMATION_CONSTANT, geo.getLongitude() *ESTIMATION_CONSTANT);
+            LatLng pos = new LatLng(geo.getLatitude() + randomizer(), geo.getLongitude() + randomizer());
             // Define custom marker
             BitmapDescriptor customMarker = BitmapDescriptorFactory.fromResource(R.drawable.map_user_marker);
             Marker marker = googleMap.addMarker(new MarkerOptions()
@@ -265,6 +266,10 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             marker.setTag(mConnections.get(i));
             //Toast.makeText(getActivity(), "Making markers", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private double randomizer() {
+        return Math.random() * (RANDOMIZATION_DISTANCE) - (RANDOMIZATION_DISTANCE/2);
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")
@@ -348,7 +353,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             //Toast.makeText(getActivity(), "GPS location was found!", Toast.LENGTH_SHORT).show();
             LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-            map.animateCamera(cameraUpdate);
+            map.moveCamera(cameraUpdate);
         } else {
             //Toast.makeText(getActivity(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }

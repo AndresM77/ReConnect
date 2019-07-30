@@ -43,6 +43,7 @@ public class AllUsersActivity extends AppCompatActivity {
         //Instantiating connections list
         mUsers = new ArrayList<>();
         mConnections = new ArrayList<>();
+        cUserNames = new ArrayList<>();
         //Initialize
         listener = new UserClickListener() {
             @Override

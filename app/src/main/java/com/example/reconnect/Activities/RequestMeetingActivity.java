@@ -176,7 +176,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
 
                 // THIS MIGHT SEND A MESSAGE
                 mFunctions = FirebaseFunctions.getInstance();
-                Task<String> result = sendNotifications("hello");
+                Task<String> result = sendNotifications(event.getAttendee().get("deviceId").toString(), "You have a new meeting request from " + event.getAttendee().getUsername());
                 //TODO check
 //                RemoteMessage.Builder remBuilder = new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com");
 //                remBuilder.setMessageId(String.valueOf(Math.random() * 1000000));
@@ -208,12 +208,13 @@ public class RequestMeetingActivity extends AppCompatActivity {
         });
     }
 
-    private Task<String>  sendNotifications(String text) {
+    private Task<String>  sendNotifications(String token, String text) {
         Map<String,Object> data = new HashMap<>();
         data.put("text", text);
+        data.put("token", token);
         data.put("push", true);
 
-        return mFunctions.getHttpsCallable("sendNotifications")
+        return mFunctions.getHttpsCallable("sendMessage")
                 .call(data)
                 .continueWith(new Continuation<HttpsCallableResult, String>() {
                     @Override

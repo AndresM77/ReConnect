@@ -32,8 +32,6 @@ public class ReconnectFragment extends Fragment {
     private ConnectionsAdapter adapter;
     private List<Connection> mConnections;
     private SwipeRefreshLayout swipeContainer;
-    //Initializing view objects
-    private Button switchBtn;
 
 
     @Nullable
@@ -61,16 +59,6 @@ public class ReconnectFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager((getContext()));
         //Set layout manager on recycler view
         rvConnections.setLayoutManager(linearLayoutManager);
-        //Initializing view objects
-        switchBtn = view.findViewById(R.id.btnSwitch);
-
-        switchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent i = new Intent(getContext(), MapActivity.class);
-//                startActivity(i);
-            }
-        });
 
         // Lookup the swipe container view
         swipeContainer = view.findViewById(R.id.swipeContainer);

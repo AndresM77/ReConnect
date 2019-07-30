@@ -30,6 +30,7 @@ public class AllUsersActivity extends AppCompatActivity {
     private UsersAdapter adapter;
     private List<ParseUser> mUsers;
     private List<Connection> mConnections;
+    private List<String> cUserNames;
     private SwipeRefreshLayout swipeContainer;
     private UserClickListener listener;
 
@@ -92,8 +93,7 @@ public class AllUsersActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        //query users
-        queryUsers();
+
         //query connections
         queryConnections();
     }
@@ -129,18 +129,34 @@ public class AllUsersActivity extends AppCompatActivity {
                 }
                 mConnections.clear();
                 mConnections.addAll(objects);
+                cUserNames.clear();
+                for (int i = 0; i < objects.size(); i++) {
+                    try {
+                        cUserNames.add(objects.get(i).getOtherUser().fetchIfNeeded().getUsername());
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                queryUsers();
             }
         });
     }
 
     private void queryUsers() {
-        ParseQuery<ParseUser> postQuery = new ParseQuery<>(ParseUser.class);
-        postQuery.whereNotEqualTo("username", ParseUser.getCurrentUser());
+        ParseQuery <ParseUser> query1 = new ParseQuery<ParseUser>(ParseUser.class);
+        query1.whereEqualTo("username", ParseUser.getCurrentUser());
+        ParseQuery <ParseUser> query2 = new ParseQuery<ParseUser>(ParseUser.class);
+        query2.whereNotContainedIn("username", cUserNames);
 
-        postQuery.addDescendingOrder("createdAt");
-        postQuery.setLimit(20);
+        List<ParseQuery<ParseUser>> queries = new ArrayList<>();
+        queries.add(query1);
+        queries.add(query2);
 
-        postQuery.findInBackground(new FindCallback<ParseUser>() {
+        ParseQuery<ParseUser> mainQuery = ParseQuery.or(queries);
+        mainQuery.addDescendingOrder("createdAt");
+        mainQuery.setLimit(20);
+
+        mainQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 mUsers.clear();

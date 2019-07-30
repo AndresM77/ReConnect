@@ -63,8 +63,6 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Unleash the best and get the contacts
                 getContactList();
-                //query users
-                queryUsers();
                 Toast.makeText(getApplicationContext(), "Check logs", Toast.LENGTH_LONG).show();
             }
         });
@@ -152,6 +150,7 @@ public class SettingsActivity extends AppCompatActivity {
                         e1.printStackTrace();
                     }
                 }
+                queryUsers();
             }
         });
     }
@@ -174,17 +173,6 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 mUsers.clear();
-                //for (int i = 0; i < objects.size(); i++) {
-//                    for (int k = 0; k < mConnections.size(); k++) {
-//                        try {
-//                            if (mConnections.get(k).getOtherUser().fetchIfNeeded().getUsername().equals(objects.get(i).fetchIfNeeded().getUsername())) {
-//                               if (!mUsers.contains(objects.get(i))) { mUsers.add(objects.get(i)); }
-//                            }
-//                        } catch (ParseException ee) {
-//                            ee.printStackTrace();
-//                        }
-//                    }
-//                }
                 mUsers.addAll(objects);
             }
         });

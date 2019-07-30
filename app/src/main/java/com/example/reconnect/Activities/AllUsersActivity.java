@@ -145,19 +145,17 @@ public class AllUsersActivity extends AppCompatActivity {
 
     private void queryUsers() {
         ParseQuery <ParseUser> query1 = new ParseQuery<ParseUser>(ParseUser.class);
-        query1.whereNotEqualTo("username", ParseUser.getCurrentUser());
-        ParseQuery <ParseUser> query2 = new ParseQuery<ParseUser>(ParseUser.class);
-        query2.whereNotContainedIn("username", cUserNames);
+        try {
+            query1.whereNotEqualTo("username", ParseUser.getCurrentUser().fetchIfNeeded().getUsername());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        query1.whereNotContainedIn("username", cUserNames);
 
-        List<ParseQuery<ParseUser>> queries = new ArrayList<>();
-        queries.add(query1);
-        queries.add(query2);
+        query1.addDescendingOrder("createdAt");
+        query1.setLimit(20);
 
-        ParseQuery<ParseUser> mainQuery = ParseQuery.or(queries);
-        mainQuery.addDescendingOrder("createdAt");
-        mainQuery.setLimit(20);
-
-        mainQuery.findInBackground(new FindCallback<ParseUser>() {
+        query1.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 mUsers.clear();

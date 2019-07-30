@@ -63,7 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Unleash the best and get the contacts
                 getContactList();
-                Toast.makeText(getApplicationContext(), "Importing Contacts from phone", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Importing Contacts from phone", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -117,6 +117,7 @@ public class SettingsActivity extends AppCompatActivity {
                         Log.i(TAG, "Phone Number without dashes: " + placeholder);
                         mPhones.add(placeholder);
                     }
+                    checkForConnections();
                     pCur.close();
                 }
             }
@@ -124,7 +125,6 @@ public class SettingsActivity extends AppCompatActivity {
         if(cur!=null){
             cur.close();
         }
-        checkForConnections();
     }
 
     private void queryConnections() {
@@ -152,22 +152,18 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void queryUsers() {
-        //Not the current user
         ParseQuery <ParseUser> query1 = new ParseQuery<ParseUser>(ParseUser.class);
-        query1.whereNotEqualTo("username", ParseUser.getCurrentUser());
-        //Not a connection
-        ParseQuery <ParseUser> query2 = new ParseQuery<ParseUser>(ParseUser.class);
-        query2.whereNotContainedIn("username", cUserNames);
+        try {
+            query1.whereNotEqualTo("username", ParseUser.getCurrentUser().fetchIfNeeded().getUsername());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        query1.whereNotContainedIn("username", cUserNames);
 
-        List<ParseQuery<ParseUser>> queries = new ArrayList<>();
-        queries.add(query1);
-        queries.add(query2);
+        query1.addDescendingOrder("createdAt");
+        query1.setLimit(20);
 
-        ParseQuery<ParseUser> mainQuery = ParseQuery.or(queries);
-        mainQuery.addDescendingOrder("createdAt");
-        mainQuery.setLimit(20);
-
-        mainQuery.findInBackground(new FindCallback<ParseUser>() {
+        query1.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 mUsers.clear();
@@ -188,7 +184,7 @@ public class SettingsActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        Toast.makeText(getApplicationContext(), uploadCount + " contacts imported", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Contacts imported from phone and LinkedIn: " + uploadCount, Toast.LENGTH_LONG).show();
     }
 
     private void addConnection(final ParseUser user) {

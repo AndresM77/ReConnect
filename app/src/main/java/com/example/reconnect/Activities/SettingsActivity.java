@@ -18,6 +18,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,6 @@ import java.util.List;
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
-    private static final int REQUEST_CODE = 20;
     //Implementing Item view listeners
     private Button btnLogOut;
     private Button btnReturn;
@@ -34,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
     private List<ParseUser> mUsers;
     private List<Connection> mConnections;
     private List<String> cUserNames;
-    private List<Integer> mPhones;
+    private List<String> mPhones;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,12 +113,8 @@ public class SettingsActivity extends AppCompatActivity {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         Log.i(TAG, "Name: " + name);
                         Log.i(TAG, "Phone Number: " + phoneNo);
-                        int areaCodeFactor = 10000000;
-                        int secondCodeFactor = 10000;
-                        int placeholder = Integer.parseInt(phoneNo.substring(0,2)) * areaCodeFactor;
-                        placeholder += Integer.parseInt(phoneNo.substring(3,6)) * secondCodeFactor;
-                        placeholder += Integer.parseInt(phoneNo.substring(7));
-                        Log.i(TAG, "Phone Number in int: " + placeholder);
+                        String placeholder = phoneNo.substring(0,3) + phoneNo.substring(4,7) + phoneNo.substring(8);
+                        Log.i(TAG, "Phone Number without dashes: " + placeholder);
                         mPhones.add(placeholder);
                     }
                     pCur.close();
@@ -156,8 +152,10 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void queryUsers() {
+        //Not the current user
         ParseQuery <ParseUser> query1 = new ParseQuery<ParseUser>(ParseUser.class);
-        query1.whereEqualTo("username", ParseUser.getCurrentUser());
+        query1.whereNotEqualTo("username", ParseUser.getCurrentUser());
+        //Not a connection
         ParseQuery <ParseUser> query2 = new ParseQuery<ParseUser>(ParseUser.class);
         query2.whereNotContainedIn("username", cUserNames);
 
@@ -180,8 +178,36 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void checkForConnections() {
         for (int i = 0; i < mUsers.size(); i++) {
-
+            try {
+                if (mPhones.contains(mUsers.get(i).fetchIfNeeded().get("phoneNumber"))) {
+                    addConnection(mUsers.get(i));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private void addConnection(final ParseUser user) {
+        Connection connection = new Connection();
+        connection.put("user1", ParseUser.getCurrentUser());
+        connection.put("user2", user);
+
+        connection.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.d(TAG, "Error while saving");
+                    e.printStackTrace();
+                    return;
+                }
+                try {
+                    Log.d(TAG, "Success, Added user:" + user.fetchIfNeeded().getUsername());
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
     }
 
 }

@@ -29,6 +29,14 @@ public class ParseApp extends Application {
                 .server("http://andresm77-reconnect.herokuapp.com/parse")
                 .build();
 
+        /*
+        ****Back4App Data*****
+        AppId: 3OmO8VKHOH67fUwxjApifThHKMFO9ekctPQinpfb
+        ClientKey: Hmo5MI87Y9rJiMMzlR0zaJUsZaC6mRKBpWE4NXL0
+        Server: mongodb://admin:kGCXhftgon7EntawKPYirDRj@mongodb.back4app.com:27017/84c81018df4944d485867a2060708d2d?ssl=true
+        You do not need to host it yourself as it is automatically hosted on AWS so you just need o go on the website to access it
+         */
+
 
 
         Parse.initialize(configuration);

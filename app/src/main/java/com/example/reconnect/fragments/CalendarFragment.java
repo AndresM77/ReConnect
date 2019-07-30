@@ -29,7 +29,6 @@ import com.example.reconnect.model.Event;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.File;
@@ -120,7 +119,7 @@ public class CalendarFragment extends Fragment {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 swipeContainer.setRefreshing(false);
-                queryEvents();
+                eventQuery();
             }
         });
 
@@ -131,7 +130,7 @@ public class CalendarFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         //query posts
-        queryEvents();
+        eventQuery();
     }
 
     public void launchCamera() {
@@ -172,37 +171,20 @@ public class CalendarFragment extends Fragment {
     }
 
 
-    public void queryEvents() {
-        ParseQuery<Event> postQuery = new ParseQuery<>(Event.class);
-        postQuery.include(Event.KEY_CREATOR);
-        postQuery.addDescendingOrder(Event.KEY_PENDING);
-        postQuery.addAscendingOrder(Event.KEY_DATE);
-        //TODO add: postQuery.whereGreaterThan("KEY_DATE", new Date(System.currentTimeMillis()));
-        postQuery.setLimit(20);
-
-        // Work to create event on both user profiles (the creator and the attendee)
-        if (Event.KEY_CREATOR.equals(ParseUser.getCurrentUser())) {
-            postQuery.whereEqualTo(Event.KEY_CREATOR, ParseUser.getCurrentUser());
-        } else if (Event.KEY_ATTENDEE.equals(ParseUser.getCurrentUser())) {
-            postQuery.whereEqualTo(Event.KEY_ATTENDEE, ParseUser.getCurrentUser());
-        }
-
-        postQuery.addDescendingOrder(Event.KEY_CREATED_AT);
-
-        postQuery.findInBackground(new FindCallback<Event>() {
+    public void eventQuery() {
+        Event.queryEvents(new FindCallback<Event>() {
             @Override
-            public void done(List<Event> events, ParseException e) {
+            public void done(List<Event> objects, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error with Query");
                     e.printStackTrace();
                     return;
                 }
                 mEvents.clear();
-                mEvents.addAll(createViewOrderArray(events));
+                mEvents.addAll(createViewOrderArray(objects));
                 adapter.notifyDataSetChanged();
             }
         });
-
     }
 
     private boolean hasReadPermissions() {

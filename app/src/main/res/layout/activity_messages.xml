@@ -19,15 +19,15 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
-        android:layout_width="411dp"
-        android:layout_height="521dp"
+        android:layout_width="401dp"
+        android:layout_height="416dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/etMessage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+        app:layout_constraintVertical_bias="0.491">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMessages"
@@ -79,14 +79,17 @@
         android:id="@+id/btnMessage"
         android:layout_width="176dp"
         android:layout_height="49dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
         android:text="Submit"
         android:textColor="#E6E8E6"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView

@@ -30,10 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        btnLogOut = findViewById(R.id.btnLogOut);
-        btnReturn = findViewById(R.id.btnReturn);
-        btnUpload = findViewById(R.id.btnUpload);
-        btnGetContacts = findViewById(R.id.btnGetContacts);
+        setUpSettingsButtons();
 
         btnGetContacts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +65,13 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    public void setUpSettingsButtons() {
+        btnLogOut = findViewById(R.id.btnLogOut);
+        btnReturn = findViewById(R.id.btnReturn);
+        btnUpload = findViewById(R.id.btnUpload);
+        btnGetContacts = findViewById(R.id.btnGetContacts);
     }
 
     private void getContactList() {

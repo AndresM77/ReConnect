@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -48,31 +49,15 @@ public class MessagesActivity extends AppCompatActivity {
     private EditText etMessage;
     private Button btnSubmit;
     private Conversation conversation;
+    LinearLayoutManager linearLayoutManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
-        conversation = getIntent().getParcelableExtra("conversation");
 
-        //Setup view objects
-        rvMessages = findViewById(R.id.rvMessages);
-        //Instantiating connections list
-        mMessage = new ArrayList<>();
-        //Set up adapter
-        adapter = new MessagesAdapter(this, mMessage);
-        //Set adapter on recycler view
-        rvMessages.setAdapter(adapter);
-        //Set up linear layout manager
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        //Set layout manager on recycler view
-        rvMessages.setLayoutManager(linearLayoutManager);
-        tvContactName = findViewById(R.id.tvContactName);
-        etMessage = findViewById(R.id.etMessage);
-        btnSubmit = findViewById(R.id.btnMessage);
-        tvDistanceAway = findViewById(R.id.tvDistanceAway);
-        tvIndustry = findViewById(R.id.tvIndustry);
-        ivProfileImage = findViewById(R.id.ivProfileImg);
+        initViewComp();
+
 
         ParseFile profileImg = null;
 
@@ -90,8 +75,11 @@ public class MessagesActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                etMessage.setText("");
-                saveMessage();
+                if (etMessage.getText().equals("")) {
+                    Toast.makeText(getApplicationContext(),"Invalid Message", Toast.LENGTH_LONG).show();
+                } else {
+                    saveMessage();
+                }
             }
         });
 
@@ -138,6 +126,29 @@ public class MessagesActivity extends AppCompatActivity {
         queryMessages(conversation);
     }
 
+    private void initViewComp() {
+        conversation = getIntent().getParcelableExtra("conversation");
+
+        //Setup view objects
+        rvMessages = findViewById(R.id.rvMessages);
+        //Instantiating connections list
+        mMessage = new ArrayList<>();
+        //Set up adapter
+        adapter = new MessagesAdapter(this, mMessage);
+        //Set adapter on recycler view
+        rvMessages.setAdapter(adapter);
+        //Set up linear layout manager
+        linearLayoutManager = new LinearLayoutManager(this);
+        //Set layout manager on recycler view
+        rvMessages.setLayoutManager(linearLayoutManager);
+        tvContactName = findViewById(R.id.tvContactName);
+        etMessage = findViewById(R.id.etMessage);
+        btnSubmit = findViewById(R.id.btnMessage);
+        tvDistanceAway = findViewById(R.id.tvDistanceAway);
+        tvIndustry = findViewById(R.id.tvIndustry);
+        ivProfileImage = findViewById(R.id.ivProfileImg);
+    }
+
     private void saveMessage() {
         final Message message = new Message();
         message.setConversation(conversation);
@@ -165,6 +176,7 @@ public class MessagesActivity extends AppCompatActivity {
                         Log.d(TAG, "Success");
                     }
                 });
+                etMessage.setText("");
                 queryMessages(conversation);
             }
         });
@@ -192,14 +204,24 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     public void queryMessages(Conversation conversation) {
-        ParseQuery<Message> postQuery = new ParseQuery<Message>(Message.class);
-        postQuery.include(Message.KEY_SENDER);
-        postQuery.setLimit(20);
-        postQuery.whereEqualTo(Message.KEY_SENDER, ParseUser.getCurrentUser());
-        postQuery.whereEqualTo(Message.KEY_RECIPIENT, conversation.getOtherUser());
-        postQuery.addDescendingOrder(Message.KEY_CREATED_AT);
+        ParseQuery<Message> query1 = new ParseQuery<Message>(Message.class);
+        query1.whereEqualTo(Message.KEY_SENDER, ParseUser.getCurrentUser());
+        query1.whereEqualTo(Message.KEY_RECIPIENT, conversation.getOtherUser());
 
-        postQuery.findInBackground(new FindCallback<Message>() {
+        ParseQuery<Message> query2 = new ParseQuery<Message>(Message.class);
+        query2.whereEqualTo(Message.KEY_SENDER, conversation.getOtherUser());
+        query2.whereEqualTo(Message.KEY_RECIPIENT, ParseUser.getCurrentUser());
+
+        List<ParseQuery<Message>> queries = new ArrayList<>();
+        queries.add(query1);
+        queries.add(query2);
+
+        ParseQuery<Message> mainQuery = ParseQuery.or(queries);
+        mainQuery.include(Message.KEY_SENDER);
+        mainQuery.addDescendingOrder(Message.KEY_CREATED_AT);
+        mainQuery.setLimit(20);
+
+        mainQuery.findInBackground(new FindCallback<Message>() {
             @Override
             public void done(List<Message> messages, ParseException e) {
                 if (e != null) {

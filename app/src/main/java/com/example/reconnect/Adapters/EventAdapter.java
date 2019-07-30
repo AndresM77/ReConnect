@@ -194,7 +194,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                     event.setPending(false);
                                     event.setAccepted(true);
                                     event.saveInBackground();
-                                    mFragment.queryEvents();
+                                    mFragment.eventQuery();
                                 }
                             });
                             deny.setOnClickListener(new View.OnClickListener() {
@@ -203,7 +203,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                     event.setPending(false);
                                     event.setAccepted(false);
                                     event.saveInBackground();
-                                    mFragment.queryEvents();
+                                    mFragment.eventQuery();
                                 }
                             });
                         }
@@ -235,7 +235,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 try {
                                     event.delete();
-                                    mFragment.queryEvents();
+                                    mFragment.eventQuery();
                                     alertDialog.hide();
                                 } catch (ParseException e) {
                                     Log.e("Event Adapter", "Unable to delete the event");

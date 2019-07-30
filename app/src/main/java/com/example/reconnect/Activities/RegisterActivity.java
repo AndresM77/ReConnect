@@ -37,12 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        mUsers = new ArrayList<>();
-
-        etPhone = findViewById(R.id.etPhone);
-        etUser = findViewById(R.id.etUser);
-        etPass = findViewById(R.id.etPass);
-        btnSignUp = findViewById(R.id.btnCreate);
+        createRegisterDisplay();
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +49,15 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void createRegisterDisplay() {
+        mUsers = new ArrayList<>();
+
+        etPhone = findViewById(R.id.etPhone);
+        etUser = findViewById(R.id.etUser);
+        etPass = findViewById(R.id.etPass);
+        btnSignUp = findViewById(R.id.btnCreate);
     }
 
     public void queryUsers() {

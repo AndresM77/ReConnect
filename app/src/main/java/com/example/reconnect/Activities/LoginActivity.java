@@ -21,16 +21,15 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordInput;
     private Button loginBtn;
     private Button registerBtn;
+    ParseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // show the signup or login screen
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
+        initObjects();
 
-        //Persistence functionality
-        ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // do stuff with the user
             final Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -38,10 +37,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         } else {
 
-            usernameInput = findViewById(R.id.etPhone);
-            passwordInput = findViewById(R.id.tvPassText);
-            loginBtn = findViewById(R.id.btnLogIn);
-            registerBtn = findViewById(R.id.btnSignUp);
+            setUpLoginPage();
 
             loginBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -62,6 +58,19 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    public void initObjects() {
+        setContentView(R.layout.activity_login);
+        //Persistence functionality
+        currentUser = ParseUser.getCurrentUser();
+    }
+
+    public void setUpLoginPage() {
+        usernameInput = findViewById(R.id.etPhone);
+        passwordInput = findViewById(R.id.tvPassText);
+        loginBtn = findViewById(R.id.btnLogIn);
+        registerBtn = findViewById(R.id.btnSignUp);
     }
 
     private void login (final String username, String password) {

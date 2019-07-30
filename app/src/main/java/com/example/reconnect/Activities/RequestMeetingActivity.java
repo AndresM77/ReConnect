@@ -1,49 +1,35 @@
 package com.example.reconnect.Activities;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
-import com.example.reconnect.MySingleton;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RequestMeetingActivity extends AppCompatActivity {
 
@@ -63,8 +49,10 @@ public class RequestMeetingActivity extends AppCompatActivity {
     ImageView selectDate;
     TextView tv_meetingDate;
     ParseUser requestedUser;
+    ParseFile profileImg = null;
 
     // Notifications
+    //private FirebaseFunctions mFunctions;
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
     final private String serverKey = "key=" + "AAAAImePEvQ:APA91bGBbetvSXQVxAjLHzkm97o14Dam0rpXkOh1aCxVrUSJVYjYELneksrf_YNJdS8B-dLoQH6_-VUatNFX7V3xHFcUsuXqz-SNhEdugthrpfljrwyC8JLcY3vcmIrvMO5W43AM2LCE"
     ;
@@ -79,58 +67,23 @@ public class RequestMeetingActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Set the layout
         setContentView(R.layout.activity_request_meeting);
 
-        //Profile items
-        tvUserName = findViewById(R.id.tvUserName);
-        tvIndustry = findViewById(R.id.tvIndustry);
-        tvDistance = findViewById(R.id.tvDistance);
-        ivProfileImg = findViewById(R.id.ivProfileImg);
-        btnMessage = findViewById(R.id.btnMessage);
-        //Meeting items
-        //request = findViewById(R.id.requestMeetingPrompt);
-        meetingName = findViewById(R.id.meetingName);
-        selectDate = findViewById(R.id.selectDate);
-        tv_meetingDate = findViewById(R.id.tv_meetingDate);
-        startTime = findViewById(R.id.startTime);
-        endTime = findViewById(R.id.endTime);
-        submitRequest = findViewById(R.id.submitRequest);
-        tv_startTime = findViewById(R.id.tv_startTime);
-        tv_endTime = findViewById(R.id.tv_endTime);
+        setProfileItems();
 
-        // Find the toolbar view inside the activity layout
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        // Sets the Toolbar to act as the ActionBar for this Activity window.
-        // Make sure the toolbar exists in the activity and is not null
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setMeetingItems();
+
+        setUpToolbar();
 
         // grab the objectId of the requested User
         final String requestedUserId = getIntent().getStringExtra("requesteeId");
-        ParseFile profileImg = null;
 
         // find the requested User in our Parse database
         ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
-        try {
-            requestedUser = userParseQuery.get(requestedUserId);
-            if (!requestedUser.equals(ParseUser.getCurrentUser())) {
-                tvUserName.setText(requestedUser.fetchIfNeeded().getUsername());
-                tvIndustry.setText((String) requestedUser.fetchIfNeeded().get("industry"));
-                profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
-            }
-            else {
-//                TextView prompt = findViewById(R.id.requestMeetingPrompt);
-//                prompt.setText("Add personal event.");
-                ivProfileImg.setVisibility(View.GONE);
-                tvUserName.setVisibility(View.GONE);
-                tvIndustry.setVisibility(View.GONE);
-                tvDistance.setVisibility(View.GONE);
-            }
-        }
-        catch(ParseException e) {
-            Log.e("RequestMeeting Activity", "Unable to get the name of the requested User!");
-            e.printStackTrace();
-        }
+
+        findAndSetUser(userParseQuery, requestedUserId);
+
         if (profileImg != null) {
             Glide.with(getBaseContext()).load(profileImg.getUrl()).circleCrop().into(ivProfileImg);
         }
@@ -174,14 +127,8 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 // create Event for the requested meeting
                 // Creates event under the user's profile section
                 final Event event = new Event();
-                event.put("startTime", tv_startTime.getText().toString());
-                event.put("endTime", tv_endTime.getText().toString());
-                event.put("name", meetingName.getText().toString());
-                event.put("creator", ParseUser.getCurrentUser());
-                event.put("pending", true);
-                event.put("accepted", false);
-                event.put("reconnect", true);
-                event.put("date", Date.valueOf(tv_meetingDate.getText().toString()));
+
+                createEventUnderProfile(event);
 
                 ParseQuery<ParseUser> userParseQuery = new ParseQuery<>(ParseUser.class);
                 try {
@@ -208,6 +155,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 });
 
                 // THIS MIGHT SEND A MESSAGE
+                //mFunctions = FirebaseFunctions.getInstance();
                 //TODO check
                 RemoteMessage.Builder remBuilder = new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com");
                 remBuilder.setMessageId(String.valueOf(Math.random() * 1000000));
@@ -237,6 +185,70 @@ public class RequestMeetingActivity extends AppCompatActivity {
 
 
         });
+    }
+
+    public void setProfileItems() {
+        //Profile items
+        tvUserName = findViewById(R.id.tvUserName);
+        tvIndustry = findViewById(R.id.tvIndustry);
+        tvDistance = findViewById(R.id.tvDistance);
+        ivProfileImg = findViewById(R.id.ivProfileImg);
+        btnMessage = findViewById(R.id.btnMessage);
+    }
+
+    public void setMeetingItems() {
+        //Meeting items
+        meetingName = findViewById(R.id.meetingName);
+        selectDate = findViewById(R.id.selectDate);
+        tv_meetingDate = findViewById(R.id.tv_meetingDate);
+        startTime = findViewById(R.id.startTime);
+        endTime = findViewById(R.id.endTime);
+        submitRequest = findViewById(R.id.submitRequest);
+        tv_startTime = findViewById(R.id.tv_startTime);
+        tv_endTime = findViewById(R.id.tv_endTime);
+    }
+
+    public void setUpToolbar() {
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void findAndSetUser( ParseQuery<ParseUser> userParseQuery, String requestedUserId ) {
+        try {
+            requestedUser = userParseQuery.get(requestedUserId);
+            if (!requestedUser.equals(ParseUser.getCurrentUser())) {
+                tvUserName.setText(requestedUser.fetchIfNeeded().getUsername());
+                tvIndustry.setText((String) requestedUser.fetchIfNeeded().get("industry"));
+                profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
+            }
+            else {
+//                TextView prompt = findViewById(R.id.requestMeetingPrompt);
+//                prompt.setText("Add personal event.");
+                ivProfileImg.setVisibility(View.GONE);
+                tvUserName.setVisibility(View.GONE);
+                tvIndustry.setVisibility(View.GONE);
+                tvDistance.setVisibility(View.GONE);
+            }
+        }
+        catch(ParseException e) {
+            Log.e("RequestMeeting Activity", "Unable to get the name of the requested User!");
+            e.printStackTrace();
+        }
+    }
+
+    public void createEventUnderProfile(Event event) {
+        event.put("startTime", tv_startTime.getText().toString());
+        event.put("endTime", tv_endTime.getText().toString());
+        event.put("name", meetingName.getText().toString());
+        event.put("creator", ParseUser.getCurrentUser());
+        event.put("pending", true);
+        event.put("accepted", false);
+        event.put("reconnect", true);
+        event.put("date", Date.valueOf(tv_meetingDate.getText().toString()));
     }
 
 //    private void sendNotification(JSONObject notification) {

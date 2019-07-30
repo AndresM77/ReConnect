@@ -134,26 +134,14 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 // meeting date assignment
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime((Date) event.get("date"));
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                String displayDate = month + "/" + day + "/" + year;
-                date.setText(displayDate);
+                setUpDate(calendar, event);
 
                 // meeting time assignment
                 String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
                 time.setText(timeSpan);
 
                 if (isPersonalEvent) {
-                    meetingName.setVisibility(View.GONE);
-                    accept.setVisibility(View.GONE);
-                    deny.setVisibility(View.GONE);
-                    pending.setVisibility(View.GONE);
-                    industry.setVisibility(View.INVISIBLE);
-                    // (1) set meeting title
-                    attendee.setText(meetingTitle);
-
+                    setUpPersonalEvent(meetingTitle);
                 } else {
 
                     String currentUserName = ParseUser.getCurrentUser().fetchIfNeeded().getUsername();
@@ -166,18 +154,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     meetingName.setText(meetingTitle + " with");
 
                     // (2) set the attendee
+                    setUpAttendee(isAttendee, event);
 
-                    if (isAttendee) {
-                        attendee.setText(event.getCreator().fetchIfNeeded().getUsername());
-                    } else {
-                        attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
-                    }
-
-                    // (3) set the industry of the attendee
-                    String attendeeIndustry = event.getAttendee().fetchIfNeeded().get("industry").toString();
-                    industry.setText(attendeeIndustry);
-
-                    // (4) show other views depending on status of the event
+                    // (3) show other views depending on status of the event
                     if (stillPending) {
                         if (!isAttendee) {
                             accept.setVisibility(View.GONE);
@@ -264,6 +243,36 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 Log.e("Event Adapter", "There was a problem fetching information to bind events together for calendar");
                 e.printStackTrace();
             }
+        }
+
+        public void setUpDate(Calendar calendar, Event event) {
+            calendar.setTime((Date) event.get("date"));
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            String displayDate = month + "/" + day + "/" + year;
+            date.setText(displayDate);
+        }
+
+        public void setUpPersonalEvent(String meetingTitle) {
+            meetingName.setVisibility(View.GONE);
+            accept.setVisibility(View.GONE);
+            deny.setVisibility(View.GONE);
+            pending.setVisibility(View.GONE);
+            industry.setVisibility(View.INVISIBLE);
+            // (1) set meeting title
+            attendee.setText(meetingTitle);
+
+        }
+
+        public void setUpAttendee(Boolean isAttendee, Event event) throws ParseException {
+            if (isAttendee) {
+                attendee.setText(event.getCreator().fetchIfNeeded().getUsername());
+            } else {
+                attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
+            }
+            String attendeeIndustry = event.getAttendee().fetchIfNeeded().get("industry").toString();
+            industry.setText(attendeeIndustry);
         }
     }
 }

@@ -28,6 +28,7 @@ import java.util.Map;
 public class NotificationActivity extends AppCompatActivity {
     EditText edtTitle;
     EditText edtMessage;
+    Button btnSend;
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
     final private String serverKey = "key=" + "Your Firebase server key";
     final private String contentType = "application/json";
@@ -41,9 +42,8 @@ public class NotificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
-        edtTitle = findViewById(R.id.et_title);
-        edtMessage = findViewById(R.id.et_message);
-        Button btnSend = findViewById(R.id.btn_sendNotif);
+
+        setUpNotifDisplay();
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +66,12 @@ public class NotificationActivity extends AppCompatActivity {
                 sendNotification(notification);
             }
         });
+    }
+
+    public void setUpNotifDisplay() {
+        edtTitle = findViewById(R.id.et_title);
+        edtMessage = findViewById(R.id.et_message);
+        btnSend = findViewById(R.id.btn_sendNotif);
     }
 
     private void sendNotification(JSONObject notification) {

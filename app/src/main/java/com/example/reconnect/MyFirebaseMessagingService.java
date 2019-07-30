@@ -16,7 +16,6 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.WorkerThread;
 import androidx.core.app.NotificationCompat;
 
-import com.example.reconnect.Activities.MapActivity;
 import com.example.reconnect.Activities.NotificationActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;

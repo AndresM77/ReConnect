@@ -1,6 +1,5 @@
 package com.example.reconnect.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.reconnect.Activities.MapActivity;
 import com.example.reconnect.Adapters.ConnectionsAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
@@ -41,7 +39,7 @@ public class ReconnectFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        return inflater.inflate(R.layout.fragment_reconnect, container, false);
     }
 
     public static ReconnectFragment newInstance() {
@@ -69,8 +67,8 @@ public class ReconnectFragment extends Fragment {
         switchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getContext(), MapActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(getContext(), MapActivity.class);
+//                startActivity(i);
             }
         });
 

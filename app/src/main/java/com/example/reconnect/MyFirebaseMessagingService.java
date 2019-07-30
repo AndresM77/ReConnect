@@ -53,8 +53,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             //TODO more customization here
             NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
                     .setSmallIcon(R.drawable.reconnect_icon)
-                    .setContentTitle(remoteMessage.getData().get("title"))
-                    .setContentText(remoteMessage.getData().get("message"))
+                    .setContentTitle(remoteMessage.getNotification().getTitle())
+                    .setContentText(remoteMessage.getNotification().getBody())
                     .setContentIntent(pendingIntent);
 
             // notify manager that the notification has been built

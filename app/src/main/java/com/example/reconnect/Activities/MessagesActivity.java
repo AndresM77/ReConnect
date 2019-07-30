@@ -3,14 +3,16 @@ package com.example.reconnect.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -45,7 +47,6 @@ public class MessagesActivity extends AppCompatActivity {
     private ImageView ivProfileImage;
     private EditText etMessage;
     private Button btnSubmit;
-    private Button btnReturn;
     private Conversation conversation;
 
     @Override
@@ -69,7 +70,6 @@ public class MessagesActivity extends AppCompatActivity {
         tvContactName = findViewById(R.id.tvContactName);
         etMessage = findViewById(R.id.etMessage);
         btnSubmit = findViewById(R.id.btnMessage);
-        btnReturn = findViewById(R.id.btnReturn);
         tvDistanceAway = findViewById(R.id.tvDistanceAway);
         tvIndustry = findViewById(R.id.tvIndustry);
         ivProfileImage = findViewById(R.id.ivProfileImg);
@@ -90,19 +90,8 @@ public class MessagesActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (etMessage.getText().equals("")) {
-                    Toast.makeText(getApplicationContext(),"Invalid Message", Toast.LENGTH_LONG).show();
-                } else {
-                    saveMessage();
-                }
-            }
-        });
-
-        btnReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MessagesActivity.this, HomeActivity.class);
-                startActivity(i);
+                etMessage.setText("");
+                saveMessage();
             }
         });
 
@@ -119,6 +108,13 @@ public class MessagesActivity extends AppCompatActivity {
                 view.getContext().startActivity(intent);
             }
         });
+
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = findViewById(R.id.messageToolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -169,32 +165,41 @@ public class MessagesActivity extends AppCompatActivity {
                         Log.d(TAG, "Success");
                     }
                 });
-                etMessage.setText("");
                 queryMessages(conversation);
             }
         });
     }
 
+    // for toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_message, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     public void queryMessages(Conversation conversation) {
-        ParseQuery<Message> query1 = new ParseQuery<Message>(Message.class);
-        query1.whereEqualTo(Message.KEY_SENDER, ParseUser.getCurrentUser());
-        query1.whereEqualTo(Message.KEY_RECIPIENT, conversation.getOtherUser());
+        ParseQuery<Message> postQuery = new ParseQuery<Message>(Message.class);
+        postQuery.include(Message.KEY_SENDER);
+        postQuery.setLimit(20);
+        postQuery.whereEqualTo(Message.KEY_SENDER, ParseUser.getCurrentUser());
+        postQuery.whereEqualTo(Message.KEY_RECIPIENT, conversation.getOtherUser());
+        postQuery.addDescendingOrder(Message.KEY_CREATED_AT);
 
-        ParseQuery<Message> query2 = new ParseQuery<Message>(Message.class);
-        query2.whereEqualTo(Message.KEY_SENDER, conversation.getOtherUser());
-        query2.whereEqualTo(Message.KEY_RECIPIENT, ParseUser.getCurrentUser());
-
-        List<ParseQuery<Message>> queries = new ArrayList<>();
-        queries.add(query1);
-        queries.add(query2);
-
-        ParseQuery<Message> mainQuery = ParseQuery.or(queries);
-        mainQuery.include(Message.KEY_SENDER);
-        mainQuery.addDescendingOrder(Message.KEY_CREATED_AT);
-        mainQuery.setLimit(20);
-
-        mainQuery.findInBackground(new FindCallback<Message>() {
+        postQuery.findInBackground(new FindCallback<Message>() {
             @Override
             public void done(List<Message> messages, ParseException e) {
                 if (e != null) {
@@ -205,6 +210,10 @@ public class MessagesActivity extends AppCompatActivity {
                 mMessage.clear();
                 mMessage.addAll(messages);
                 adapter.notifyDataSetChanged();
+                for (int i = 0; i < mMessage.size(); i++) {
+                    Message message = mMessage.get(i);
+                    Log.d(TAG, "Sender: " + message.getSender().getUsername());
+                }
             }
         });
     }

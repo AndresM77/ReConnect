@@ -29,6 +29,8 @@ import com.example.reconnect.Dialogs.TimePickerFragment;
 import com.example.reconnect.MySingleton;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 import com.parse.ParseException;
@@ -66,6 +68,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
     ParseFile profileImg = null;
 
     // Notifications
+    private FirebaseFunctions mFunctions;
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
     final private String serverKey = "key=" + "AAAAImePEvQ:APA91bGBbetvSXQVxAjLHzkm97o14Dam0rpXkOh1aCxVrUSJVYjYELneksrf_YNJdS8B-dLoQH6_-VUatNFX7V3xHFcUsuXqz-SNhEdugthrpfljrwyC8JLcY3vcmIrvMO5W43AM2LCE"
     ;
@@ -168,6 +171,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 });
 
                 // THIS MIGHT SEND A MESSAGE
+                mFunctions = FirebaseFunctions.getInstance();
                 //TODO check
                 RemoteMessage.Builder remBuilder = new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com");
                 remBuilder.setMessageId(String.valueOf(Math.random() * 1000000));

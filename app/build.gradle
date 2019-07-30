@@ -66,6 +66,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:19.0.1'
     // Importing volley
     implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.google.firebase:firebase-functions:17.0.0'
+
 
 }
 

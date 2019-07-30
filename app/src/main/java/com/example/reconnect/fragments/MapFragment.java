@@ -82,7 +82,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     public final static String TAG = "MapFragment";
 
     //From MapActivity
-    private static final double ESTIMATION_CONSTANT = 0.99999;
+    private double ESTIMATION_CONSTANT = 0.99999;
     //private final String TAG = "MapActivity";
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -129,6 +129,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //Randomness applied
+        ESTIMATION_CONSTANT *= Math.random();
 
         centered = false;
 

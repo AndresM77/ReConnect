@@ -402,8 +402,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         try {
             String msg = "Updated Location: " +
                     Double.toString(location.getLatitude()) + "," +
-                    Double.toString(location.getLongitude());
-            //Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                    Double.toString(location.getLongitude());//Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }

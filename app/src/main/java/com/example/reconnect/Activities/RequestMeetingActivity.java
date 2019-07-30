@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
 import com.example.reconnect.R;
+import com.example.reconnect.fragments.ReconnectFragment;
 import com.example.reconnect.model.Event;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
@@ -148,7 +149,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
                             e.printStackTrace();
                             return;
                         }
-                        Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
+                        Intent i = new Intent(RequestMeetingActivity.this, ReconnectFragment.class);
                         i.putExtra("meetingId", event.getObjectId());
                         startActivity(i);
                     }

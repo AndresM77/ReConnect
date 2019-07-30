@@ -47,7 +47,11 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                queryUsers();
+                if (etPhone.getText().length() > 10) {
+                    Toast.makeText(RegisterActivity.this, "Phone Number is Invalid", Toast.LENGTH_LONG).show();
+                } else {
+                    queryUsers();
+                }
             }
         });
     }
@@ -65,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 mUsers.clear();
-                mUsers = users;
+                mUsers.addAll(users);
                 if (mUsers.size() > 0) {
                     Toast.makeText(getApplicationContext(), "UserName exists", Toast.LENGTH_LONG).show();
                 } else {

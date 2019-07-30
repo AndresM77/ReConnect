@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ParseClassName("Conversation")
-public class Conversation extends ParseObject {
+public class
+Conversation extends ParseObject {
     public static final String KEY_CONVERSER = "converser";
     public static final String KEY_CONVERSEE = "conversee";
     public static final String KEY_LAST_MESSAGE = "lastMessage";

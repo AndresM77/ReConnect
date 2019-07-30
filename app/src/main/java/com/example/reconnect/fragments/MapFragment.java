@@ -2,8 +2,8 @@ package com.example.reconnect.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,18 +24,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
-import com.example.reconnect.Activities.HomeActivity;
 import com.example.reconnect.Activities.MessagesActivity;
 import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.Adapters.CustomWindowAdapter;
@@ -100,6 +96,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     private List<Connection> mConnections;
     private List<Conversation> mConversations;
     private Connection contact;
+    private Context context;
 
     //Permission variables
     private static final int REQUEST_GETMYLOCATION = 0;
@@ -135,6 +132,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
 
         centered = false;
 
+        context = getActivity().getApplicationContext();
+
         //Instantiating connections list
         mConnections = new ArrayList<>();
         mConversations = new ArrayList<>();
@@ -164,8 +163,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         } else {
             //Toast.makeText(getActivity(), "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
         }
-
-        query();
     }
 
     protected void loadMap(final GoogleMap googleMap) {
@@ -518,9 +515,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     }
 
     private void goToConversation(Conversation conversation) {
-        //Intent i = new Intent(getContext(), MessagesActivity.class);
-        //i.putExtra("conversation", conversation);
-        //startActivity(i);
+        Intent i = new Intent(context, MessagesActivity.class);
+        i.putExtra("conversation", conversation);
+        startActivity(i);
     }
 
     private void query() {

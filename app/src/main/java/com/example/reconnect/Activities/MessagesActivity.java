@@ -49,31 +49,15 @@ public class MessagesActivity extends AppCompatActivity {
     private EditText etMessage;
     private Button btnSubmit;
     private Conversation conversation;
+    LinearLayoutManager linearLayoutManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
-        conversation = getIntent().getParcelableExtra("conversation");
 
-        //Setup view objects
-        rvMessages = findViewById(R.id.rvMessages);
-        //Instantiating connections list
-        mMessage = new ArrayList<>();
-        //Set up adapter
-        adapter = new MessagesAdapter(this, mMessage);
-        //Set adapter on recycler view
-        rvMessages.setAdapter(adapter);
-        //Set up linear layout manager
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        //Set layout manager on recycler view
-        rvMessages.setLayoutManager(linearLayoutManager);
-        tvContactName = findViewById(R.id.tvContactName);
-        etMessage = findViewById(R.id.etMessage);
-        btnSubmit = findViewById(R.id.btnMessage);
-        tvDistanceAway = findViewById(R.id.tvDistanceAway);
-        tvIndustry = findViewById(R.id.tvIndustry);
-        ivProfileImage = findViewById(R.id.ivProfileImg);
+        initViewComp();
+
 
         ParseFile profileImg = null;
 
@@ -140,6 +124,29 @@ public class MessagesActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
         //query posts
         queryMessages(conversation);
+    }
+
+    private void initViewComp() {
+        conversation = getIntent().getParcelableExtra("conversation");
+
+        //Setup view objects
+        rvMessages = findViewById(R.id.rvMessages);
+        //Instantiating connections list
+        mMessage = new ArrayList<>();
+        //Set up adapter
+        adapter = new MessagesAdapter(this, mMessage);
+        //Set adapter on recycler view
+        rvMessages.setAdapter(adapter);
+        //Set up linear layout manager
+        linearLayoutManager = new LinearLayoutManager(this);
+        //Set layout manager on recycler view
+        rvMessages.setLayoutManager(linearLayoutManager);
+        tvContactName = findViewById(R.id.tvContactName);
+        etMessage = findViewById(R.id.etMessage);
+        btnSubmit = findViewById(R.id.btnMessage);
+        tvDistanceAway = findViewById(R.id.tvDistanceAway);
+        tvIndustry = findViewById(R.id.tvIndustry);
+        ivProfileImage = findViewById(R.id.ivProfileImg);
     }
 
     private void saveMessage() {

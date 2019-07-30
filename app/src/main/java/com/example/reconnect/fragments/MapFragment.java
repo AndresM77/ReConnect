@@ -348,7 +348,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             //Toast.makeText(getActivity(), "GPS location was found!", Toast.LENGTH_SHORT).show();
             LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-            map.animateCamera(cameraUpdate);
+            map.moveCamera(cameraUpdate);
         } else {
             //Toast.makeText(getActivity(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }

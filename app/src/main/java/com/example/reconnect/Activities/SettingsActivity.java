@@ -63,7 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Unleash the best and get the contacts
                 getContactList();
-                Toast.makeText(getApplicationContext(), "Check logs", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Importing Contacts from phone", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -177,15 +177,18 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void checkForConnections() {
+        int uploadCount = 0;
         for (int i = 0; i < mUsers.size(); i++) {
             try {
                 if (mPhones.contains(mUsers.get(i).fetchIfNeeded().get("phoneNumber"))) {
                     addConnection(mUsers.get(i));
+                    uploadCount++;
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
+        Toast.makeText(getApplicationContext(), uploadCount + " contacts imported", Toast.LENGTH_LONG).show();
     }
 
     private void addConnection(final ParseUser user) {

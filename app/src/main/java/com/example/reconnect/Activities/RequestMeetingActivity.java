@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,7 +30,10 @@ import com.example.reconnect.Dialogs.TimePickerFragment;
 import com.example.reconnect.MySingleton;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Event;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
@@ -172,12 +176,13 @@ public class RequestMeetingActivity extends AppCompatActivity {
 
                 // THIS MIGHT SEND A MESSAGE
                 mFunctions = FirebaseFunctions.getInstance();
+                Task<String> result = sendNotifications("hello");
                 //TODO check
-                RemoteMessage.Builder remBuilder = new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com");
-                remBuilder.setMessageId(String.valueOf(Math.random() * 1000000));
-                remBuilder.addData("message","hello");
-                remBuilder.addData("recipientId",event.getAttendee().getObjectId());
-                FirebaseMessaging.getInstance().send(remBuilder.build());
+//                RemoteMessage.Builder remBuilder = new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com");
+//                remBuilder.setMessageId(String.valueOf(Math.random() * 1000000));
+//                remBuilder.addData("message","hello");
+//                remBuilder.addData("recipientId",event.getAttendee().getObjectId());
+//                FirebaseMessaging.getInstance().send(remBuilder.build());
 
 
 
@@ -203,6 +208,20 @@ public class RequestMeetingActivity extends AppCompatActivity {
         });
     }
 
+    private Task<String>  sendNotifications(String text) {
+        Map<String,Object> data = new HashMap<>();
+        data.put("text", text);
+        data.put("push", true);
+
+        return mFunctions.getHttpsCallable("sendNotifications")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        return (String) task.getResult().getData();
+                    }
+                });
+    }
     public void setProfileItems() {
         //Profile items
         tvUserName = findViewById(R.id.tvUserName);

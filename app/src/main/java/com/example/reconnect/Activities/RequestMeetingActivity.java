@@ -29,6 +29,7 @@ import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
 import com.example.reconnect.MySingleton;
 import com.example.reconnect.R;
+import com.example.reconnect.fragments.ReconnectFragment;
 import com.example.reconnect.model.Event;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
@@ -168,9 +169,10 @@ public class RequestMeetingActivity extends AppCompatActivity {
                             e.printStackTrace();
                             return;
                         }
-                        Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
-                        i.putExtra("meetingId", event.getObjectId());
-                        startActivity(i);
+                        finish();
+//                        Intent i = new Intent(RequestMeetingActivity.this, ReconnectFragment.class);
+//                        i.putExtra("meetingId", event.getObjectId());
+//                        startActivity(i);
                     }
                 });
 

@@ -1,6 +1,7 @@
 package com.example.reconnect.model;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -70,6 +71,26 @@ Conversation extends ParseObject {
 
         ParseQuery<Conversation> mainQuery = ParseQuery.or(queries);
         mainQuery.addDescendingOrder(Conversation.KEY_CREATED_AT);
+
+        mainQuery.findInBackground(callback);
+    }
+
+    public static void findConversation(ParseUser user1, ParseUser user2, FindCallback<Conversation> callback) {
+        ParseQuery<Conversation> query1 = new ParseQuery<Conversation>(Conversation.class);
+        query1.whereEqualTo(Conversation.KEY_CONVERSER, user1);
+        query1.whereEqualTo(Conversation.KEY_CONVERSEE, user2);
+
+
+        ParseQuery<Conversation> query2 = new ParseQuery<Conversation>(Conversation.class);
+        query2.whereEqualTo(Conversation.KEY_CONVERSEE, user1);
+        query2.whereEqualTo(Conversation.KEY_CONVERSER, user2);
+
+
+        List<ParseQuery<Conversation>> queries = new ArrayList<>();
+        queries.add(query1);
+        queries.add(query2);
+
+        ParseQuery<Conversation> mainQuery = ParseQuery.or(queries);
 
         mainQuery.findInBackground(callback);
     }

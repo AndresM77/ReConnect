@@ -120,6 +120,7 @@ public class HomeActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.action_map:
                                 fragment = fragment1;
+                                //TODO - Make function names better
                                 mapFragmentInteraction(actionMenu);
                                 break;
                             case R.id.action_reconnect:

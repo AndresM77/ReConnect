@@ -82,7 +82,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     public final static String TAG = "MapFragment";
 
     //From MapActivity
-    private double RANDOMIZATION_DISTANCE = 0.0002;
+    private double RANDOMIZATION_DISTANCE = 0.002;
     //private final String TAG = "MapActivity";
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -168,7 +168,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
 
     protected void loadMap(final GoogleMap googleMap) {
         map = googleMap;
-        if (map != null) {
+        if (map != null && isAdded()) {
             // Map is ready
             //Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
             getInitialPermissions();

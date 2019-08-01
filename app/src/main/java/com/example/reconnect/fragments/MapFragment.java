@@ -168,7 +168,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
 
     protected void loadMap(final GoogleMap googleMap) {
         map = googleMap;
-        if (map != null) {
+        if (map != null && isAdded()) {
             // Map is ready
             //Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
             getInitialPermissions();

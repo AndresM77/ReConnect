@@ -48,23 +48,32 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvMessage;
+        private TextView tvTimeStamp;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             tvMessage = itemView.findViewById(R.id.tvMessage);
+            tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
         }
 
         // method that connects information to create item_contact for MapFragment's Recycler View
         public void bind(Message message) {
             tvMessage.setText(message.getMessage());
+            tvTimeStamp.setText(message.getCreatedAt().toString());
 
             try {
                 if (!message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
                     tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
+                    tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                    tvTimeStamp.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
+                    tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
                 }
                 else {
                     tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
+                    tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+                    tvTimeStamp.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
+                    tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                 }
             } catch (ParseException e) {
                 Log.e("Messages Adapter", "Unable to determine the which side to show message on");

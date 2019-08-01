@@ -230,6 +230,8 @@ public class CalendarFragment extends Fragment {
         String stringDay = Integer.toString(day);
         char sigDigit = stringDay.charAt(stringDay.length()-1);
 
+        if (day == 11 || day == 12 || day == 13) { return "th"; }
+
         switch(sigDigit) {
             case '1':
                 return "st";

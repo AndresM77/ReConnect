@@ -7,6 +7,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -102,6 +103,22 @@ public class Event extends ParseObject {
         } else {
             return getCreator();
         }
+    }
+
+    public Boolean currUserIsAttendee() {
+        if (ParseUser.getCurrentUser().getUsername().equals(getCreator().getUsername())) {
+            return false;
+        }
+
+        return true;
+    }
+    public String getDateString() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime((Date) get("date"));
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        return month + "/" + day + "/" + year;
     }
 
     //Querying our Event class

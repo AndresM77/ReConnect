@@ -17,14 +17,24 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.example.reconnect.R;
 import com.example.reconnect.fragments.CalendarFragment;
+import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.DateTitle;
 import com.example.reconnect.model.Event;
+import com.example.reconnect.model.Message;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -109,6 +119,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         ImageView deny;
         ConstraintLayout eventLayout;
         CalendarFragment mFragment;
+        FirebaseFunctions firebaseFunctions;
 
         public ViewHolderEvent(@NonNull View itemView, CalendarFragment fragment) {
             super(itemView);
@@ -165,8 +176,11 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                     event.setAccepted(true);
                                     event.saveInBackground();
                                     mFragment.eventQuery();
+
+                                    alertRequestAccepted(event);
                                 }
                             });
+
                             deny.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -249,12 +263,64 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public void createAttendeeDescription(Event event) throws ParseException {
             if (event.currUserIsAttendee()) {
-                attendee.setText(event.getCurrentUser().getUsername());
+                attendee.setText(event.getCreator().getUsername());
             } else {
                 attendee.setText(event.getOtherUser().getUsername());
             }
             String attendeeIndustry = event.getAttendee().fetchIfNeeded().get("industry").toString();
             industry.setText(attendeeIndustry);
+        }
+
+        public void alertRequestAccepted(Event event) {
+            // Send message to other user
+            final Message approvalMessage = new Message();
+            Conversation.findConversation(event.getCreator(), event.getAttendee(), new FindCallback<Conversation>() {
+                @Override
+                public void done(List<Conversation> objects, ParseException e) {
+                    if (e != null) {
+                        Log.e("Event Adapter", "Unable to find converstaion to send approval/reject message!");
+                        e.printStackTrace();
+                        return;
+                    }
+                    approvalMessage.setConversation(objects.get(0));
+                }
+            });
+
+            approvalMessage.setMessage("****** " + ParseUser.getCurrentUser().getUsername() + " accepted your meeting request! *****");
+            approvalMessage.setRecipient(event.getCreator());
+            approvalMessage.setSender(ParseUser.getCurrentUser());
+
+            approvalMessage.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.d("Event Adapter", "Error sending approval message");
+                        e.printStackTrace();
+                        return;
+                    }
+                    Log.d("Event Adapter", "Success sending approval message");
+                }
+            });
+
+            // Notify the other user that a message sent
+            firebaseFunctions = FirebaseFunctions.getInstance();
+            Task<String> result = notifyAccepted(event.getCreator().get("deviceId").toString(), event.getAttendee().getUsername() + " sent you a new message!");
+        }
+
+        private Task<String> notifyAccepted(String deviceId, String s) {
+            Map<String,Object> data = new HashMap<>();
+            data.put("text", s);
+            data.put("token", deviceId);
+            data.put("push", true);
+
+            return firebaseFunctions.getHttpsCallable("sendMessage")
+                    .call(data)
+                    .continueWith(new Continuation<HttpsCallableResult, String>() {
+                        @Override
+                        public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                            return (String) task.getResult().getData();
+                        }
+                    });
         }
     }
 }

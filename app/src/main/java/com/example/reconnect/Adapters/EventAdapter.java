@@ -249,7 +249,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public void createAttendeeDescription(Event event) throws ParseException {
             if (event.currUserIsAttendee()) {
-                attendee.setText(event.getCurrentUser().getUsername());
+                attendee.setText(event.getCreator().getUsername());
             } else {
                 attendee.setText(event.getOtherUser().getUsername());
             }

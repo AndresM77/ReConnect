@@ -10,7 +10,8 @@
     android:layout_marginRight="16dp"
     android:layout_marginBottom="30dp"
     android:orientation="vertical"
-    android:visibility="visible">
+    android:visibility="visible"
+    android:background="#2CFFFFFF">
 
     <TextView
         android:id="@+id/meetingWith"

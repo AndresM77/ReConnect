@@ -201,8 +201,10 @@ public class HomeActivity extends AppCompatActivity {
                 Intent i2 = new Intent(this, RequestMeetingActivity.class);
                 i2.putExtra("requesteeId", ParseUser.getCurrentUser().getObjectId());
                 startActivity(i2);
+                return true;
             case R.id.newConversation:
                 selectRecipient();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

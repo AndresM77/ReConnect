@@ -133,37 +133,28 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 // set all views with information that does not depend on the status of the event
 
                 // meeting date assignment
-                Calendar calendar = Calendar.getInstance();
-                setUpDate(calendar, event);
+                date.setText(event.getDateString());
 
                 // meeting time assignment
                 String timeSpan = event.get("startTime").toString() + " - " + event.get("endTime").toString();
                 time.setText(timeSpan);
 
                 if (isPersonalEvent) {
-                    setUpPersonalEvent(meetingTitle);
+                    showEventAsPersonal(meetingTitle);
                 } else {
-
-                    String currentUserName = ParseUser.getCurrentUser().fetchIfNeeded().getUsername();
-                    String attendeeUserName = event.getAttendee().fetchIfNeeded().getUsername();
-                    Boolean isAttendee = attendeeUserName.equals(currentUserName);
-                    Boolean stillPending = event.getPending();
-                    Boolean hasBeenAccepted = event.getAccepted();
 
                     // (1) set meeting title
                     meetingName.setText(meetingTitle + " with");
 
                     // (2) set the attendee
-                    setUpAttendee(isAttendee, event);
+                    createAttendeeDescription(event);
 
                     // (3) show other views depending on status of the event
-                    if (stillPending) {
-                        if (!isAttendee) {
+                    if (event.getPending()) {
+                        if (!event.currUserIsAttendee()) {
                             accept.setVisibility(View.GONE);
                             deny.setVisibility(View.GONE);
-                        }
-
-                        else {
+                        } else {
                             pending.setVisibility(View.GONE);
 
                             // implementation of accept or reject event functionality
@@ -187,9 +178,8 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             });
                         }
                     }
-
                     else {
-                        if (hasBeenAccepted) {
+                        if (event.getAccepted()) {
                             accept.setVisibility(View.GONE);
                             deny.setVisibility(View.GONE);
                             pending.setVisibility(View.GONE);
@@ -245,16 +235,8 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
 
-        public void setUpDate(Calendar calendar, Event event) {
-            calendar.setTime((Date) event.get("date"));
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            String displayDate = month + "/" + day + "/" + year;
-            date.setText(displayDate);
-        }
 
-        public void setUpPersonalEvent(String meetingTitle) {
+        public void showEventAsPersonal(String meetingTitle) {
             meetingName.setVisibility(View.GONE);
             accept.setVisibility(View.GONE);
             deny.setVisibility(View.GONE);
@@ -265,11 +247,11 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         }
 
-        public void setUpAttendee(Boolean isAttendee, Event event) throws ParseException {
-            if (isAttendee) {
-                attendee.setText(event.getCreator().fetchIfNeeded().getUsername());
+        public void createAttendeeDescription(Event event) throws ParseException {
+            if (event.currUserIsAttendee()) {
+                attendee.setText(event.getCreator().getUsername());
             } else {
-                attendee.setText(event.getAttendee().fetchIfNeeded().getUsername());
+                attendee.setText(event.getOtherUser().getUsername());
             }
             String attendeeIndustry = event.getAttendee().fetchIfNeeded().get("industry").toString();
             industry.setText(attendeeIndustry);

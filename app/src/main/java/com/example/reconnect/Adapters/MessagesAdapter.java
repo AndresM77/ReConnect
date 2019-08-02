@@ -2,14 +2,15 @@ package com.example.reconnect.Adapters;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.R;
@@ -66,19 +67,21 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             tvMessage.setText(message.getMessage());
             tvTimeStamp.setText(message.getCreatedAt().toString());
             tvTimeStamp.setTextSize(tvMessage.getTextSize()/4);
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(cvMessage.getLayoutParams());
 
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
 
             try {
-                if (!message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
-                    params.addRule(RelativeLayout.ALIGN_RIGHT);
+                if (message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
+                    params.endToEnd = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                     tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                 }
                 else {
-                    params.addRule(RelativeLayout.ALIGN_LEFT);
+                    params.startToStart = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
+                    cvMessage.setForegroundGravity(Gravity.LEFT);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                     tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                 }

@@ -75,6 +75,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             if (message.getIsRequest()) {
                 tvMessage.setVisibility(View.GONE);
                 tvTimeStamp.setVisibility(View.GONE);
+                requestMessage.setText("HEYYY");
+//                requestMessage.setText(message.getOtherUser().getUsername() + "has accepted your meeting request.");
                 messageBubble.setBackgroundColor(Color.rgb(255, 223, 9));
             }
 

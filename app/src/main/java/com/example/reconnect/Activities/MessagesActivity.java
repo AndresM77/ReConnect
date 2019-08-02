@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.example.reconnect.Adapters.MessagesAdapter;
 import com.example.reconnect.R;
+import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.Message;
 import com.parse.FindCallback;
@@ -122,6 +123,7 @@ public class MessagesActivity extends AppCompatActivity {
         try {
             tvContactName.setText(conversation.getOtherUser().fetchIfNeeded().getUsername());
             tvIndustry.setText((String) conversation.getOtherUser().fetchIfNeeded().get("industry"));
+            tvDistanceAway.setText(Connection.getDistanceAway(conversation.getOtherUser().getParseGeoPoint("location"), ParseUser.getCurrentUser().getParseGeoPoint("location")));
             profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");
         } catch (ParseException ee) {
             ee.printStackTrace();

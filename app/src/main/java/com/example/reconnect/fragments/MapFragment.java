@@ -523,7 +523,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         btnMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                query();
+                query(contact);
             }
         });
 
@@ -569,8 +569,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         startActivity(i);
     }
 
-    private void query() {
-        Conversation.queryConversations(new FindCallback<Conversation>() {
+    private void query(final Connection contact) {
+        Conversation.findConversation(contact.getUser1(), contact.getUser2(), new FindCallback<Conversation>() {
             @Override
             public void done(List<Conversation> objects, ParseException e) {
                 if (e != null) {
@@ -578,23 +578,11 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                     e.printStackTrace();
                     return;
                 }
-                mConversations.clear();
-                mConversations.addAll(objects);
-                Conversation conversation;
-                Boolean change = true;
-                for (int f = 0; f < mConversations.size(); f++) {
-                    try {
-                        if (mConversations.get(f).getConversee().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())
-                                || mConversations.get(f).getConverser().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
-                            conversation = mConversations.get(f);
-                            goToConversation(conversation);
-                            change = false;
-                        }
-                    } catch (ParseException ee) {
-                        ee.printStackTrace();
-                    }
+                if (objects.size() == 0) {
+                    createConversation(contact);
+                } else {
+                    goToConversation(objects.get(0));
                 }
-                if (change) { createConversation(contact); }
             }
         });
     }

@@ -2,6 +2,7 @@ package com.example.reconnect.Adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
+import com.example.reconnect.Activities.MessagesActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.fragments.CalendarFragment;
 import com.example.reconnect.model.Conversation;
@@ -138,7 +140,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public void bind(final Event event) {
             try {
 
-                String meetingTitle = event.getName().equals("") ? "Meeting " : event.getName();
+                final String meetingTitle = event.getName().equals("") ? "Meeting " : event.getName();
                 Boolean isPersonalEvent = event.getAttendee().fetchIfNeeded().getUsername().equals(event.getCreator().fetchIfNeeded().getUsername());
 
                 // set all views with information that does not depend on the status of the event
@@ -205,6 +207,16 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                 }
 
+                // show messages on click
+                eventLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(mContext, MessagesActivity.class);
+                        i.putExtra("contact", event.getOtherUser());
+                        mContext.startActivity(i);
+                    }
+                });
+
                 // delete event functionality
                 eventLayout.setOnLongClickListener(new View.OnLongClickListener() {
                     private void showDialogForUserSelection() {
@@ -258,7 +270,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             industry.setVisibility(View.INVISIBLE);
             // (1) set meeting title
             attendee.setText(meetingTitle);
-
         }
 
         public void createAttendeeDescription(Event event) throws ParseException {

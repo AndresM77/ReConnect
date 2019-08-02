@@ -256,7 +256,7 @@ public class MessagesActivity extends AppCompatActivity {
 
         ParseQuery<Message> mainQuery = ParseQuery.or(queries);
         mainQuery.include(Message.KEY_SENDER);
-        mainQuery.addDescendingOrder(Message.KEY_CREATED_AT);
+        mainQuery.addAscendingOrder(Message.KEY_CREATED_AT);
         mainQuery.setLimit(20);
 
         mainQuery.findInBackground(new FindCallback<Message>() {

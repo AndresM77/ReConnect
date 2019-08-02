@@ -64,13 +64,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
             try {
                 if (!message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
-                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
+//                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                     tvTimeStamp.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
                     tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
                 }
                 else {
-                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
+//                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                     tvTimeStamp.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
                     tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);

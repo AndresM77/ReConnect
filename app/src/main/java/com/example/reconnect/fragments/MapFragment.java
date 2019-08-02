@@ -392,17 +392,18 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     @Override
     public void onResume() {
         super.onResume();
-
-        // Display the connection status
-        if (mCurrentLocation != null) {
-            //Toast.makeText(getActivity(), "GPS location was found!", Toast.LENGTH_SHORT).show();
-            LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-            map.moveCamera(cameraUpdate);
-        } else {
-            //Toast.makeText(getActivity(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+        if (map != null && isAdded()) {
+            // Display the connection status
+            if (mCurrentLocation != null) {
+                //Toast.makeText(getActivity(), "GPS location was found!", Toast.LENGTH_SHORT).show();
+                LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+                map.moveCamera(cameraUpdate);
+            } else {
+                //Toast.makeText(getActivity(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+            }
+            getUpdatePermission();
         }
-        getUpdatePermission();
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})

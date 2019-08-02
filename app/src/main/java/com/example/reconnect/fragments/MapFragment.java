@@ -245,7 +245,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
 
         for (int i = 0; i < mConnections.size(); i++) {
             ParseGeoPoint geo = null;
+            ParseFile profileImg = null;
             try {
+                profileImg = (ParseFile) mConnections.get(i).getOtherUser().fetchIfNeeded().get("profileImg");
                 geo = (ParseGeoPoint) mConnections.get(i).getOtherUser().fetchIfNeeded().get("location");
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -259,6 +261,13 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             LatLng pos = new LatLng(geo.getLatitude() + randomizer(), geo.getLongitude() + randomizer());
             // Define custom marker
             BitmapDescriptor customMarker = BitmapDescriptorFactory.fromResource(R.drawable.map_user_marker);
+            if (profileImg != null) {
+                try {
+                    customMarker = BitmapDescriptorFactory.fromPath(profileImg.getFile().getAbsolutePath());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
             Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(pos)
                     .title(conName)
@@ -465,8 +474,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         try {
             userName.setText(contact.getOtherUser().fetchIfNeeded().getUsername());
             industry.setText((String) contact.getOtherUser().fetchIfNeeded().get("industry"));
-            if (contact.get("profileImg") != null) {
-                ParseFile img = (ParseFile) contact.get("profileImg");
+            ParseFile img = (ParseFile) contact.getOtherUser().fetchIfNeeded().get("profileImg");
+            if (img != null) {
                 Glide.with(getContext()).load(img.getUrl()).circleCrop().into(profileImg);
             } else {
                 Glide.with(getContext()).load((R.drawable.baseline_account_circle_black_48)).circleCrop().into(profileImg);

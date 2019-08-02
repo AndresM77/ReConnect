@@ -7,7 +7,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Build;
@@ -245,7 +252,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
 
         for (int i = 0; i < mConnections.size(); i++) {
             ParseGeoPoint geo = null;
+            ParseFile profileImg = null;
             try {
+                profileImg = (ParseFile) mConnections.get(i).getOtherUser().fetchIfNeeded().get("profileImg");
                 geo = (ParseGeoPoint) mConnections.get(i).getOtherUser().fetchIfNeeded().get("location");
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -259,6 +268,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             LatLng pos = new LatLng(geo.getLatitude() + randomizer(), geo.getLongitude() + randomizer());
             // Define custom marker
             BitmapDescriptor customMarker = BitmapDescriptorFactory.fromResource(R.drawable.map_user_marker);
+            if (profileImg != null) {
+                customMarker = BitmapDescriptorFactory.fromBitmap(resizeMapIcons(profileImg, 100, 100));
+            }
             Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(pos)
                     .title(conName)
@@ -266,6 +278,39 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             marker.setTag(mConnections.get(i));
             //Toast.makeText(getActivity(), "Making markers", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public Bitmap resizeMapIcons(ParseFile parseFile, int width, int height){
+        Bitmap imageBitmap = null;
+        try {
+            imageBitmap = BitmapFactory.decodeFile(parseFile.getFile().getAbsolutePath());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+        return getCroppedBitmap(resizedBitmap);
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
     }
 
     private double randomizer() {
@@ -465,8 +510,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         try {
             userName.setText(contact.getOtherUser().fetchIfNeeded().getUsername());
             industry.setText((String) contact.getOtherUser().fetchIfNeeded().get("industry"));
-            if (contact.get("profileImg") != null) {
-                ParseFile img = (ParseFile) contact.get("profileImg");
+            ParseFile img = (ParseFile) contact.getOtherUser().fetchIfNeeded().get("profileImg");
+            if (img != null) {
                 Glide.with(getContext()).load(img.getUrl()).circleCrop().into(profileImg);
             } else {
                 Glide.with(getContext()).load((R.drawable.baseline_account_circle_black_48)).circleCrop().into(profileImg);

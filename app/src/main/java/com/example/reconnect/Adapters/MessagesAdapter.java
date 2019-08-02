@@ -67,13 +67,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 //                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                     tvTimeStamp.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
-                    tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
                 }
                 else {
 //                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                     tvTimeStamp.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
-                    tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                 }
             } catch (ParseException e) {
                 Log.e("Messages Adapter", "Unable to determine the which side to show message on");

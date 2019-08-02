@@ -2,6 +2,7 @@ package com.example.reconnect.Adapters;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,17 +91,20 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
                 e.printStackTrace();
             }
             name.setTag(conversation);
-            if (conversation.getLastMessage() != null){
                 Message message = null;
                 try {
                     message = conversation.getLastMessage().fetchIfNeeded();
+                    if (message.getMessage() != null ){
+                        lastMessage.setText(message.getMessage());
+                    }
+                    else {
+                        lastMessage.setText("");
+                    }
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    lastMessage.setText("");
+
                 }
-                lastMessage.setText(message.getMessage());
-            } else {
-                lastMessage.setText("");
-            }
+
         }
     }
 }

@@ -75,12 +75,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             if (message.getIsRequest()) {
                 tvMessage.setVisibility(View.GONE);
                 tvTimeStamp.setVisibility(View.GONE);
-                messageBubble.setBackgroundColor(Color.YELLOW);
+                messageBubble.setBackgroundColor(Color.rgb(255, 223, 9));
             }
 
             else {
                 requestMessage.setVisibility(View.GONE);
-                messageBubble.setVisibility(View.GONE);
+                ivSmiley.setVisibility(View.GONE);
             }
 
             try {

@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.reconnect.Adapters.ConnectionsAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
+import com.example.reconnect.model.Conversation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
@@ -96,5 +97,10 @@ public class ReconnectFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    // will wort the queried connections based on how far away they are
+    private void sortConnections(List<Connection> mConnections) {
+
     }
 }

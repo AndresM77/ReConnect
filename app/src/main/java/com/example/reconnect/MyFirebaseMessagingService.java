@@ -61,9 +61,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             nManager.notify(notificationId, nBuilder.build());
       //  }
 
-        // When the notification is clicked on
-        //Log.d(TAG, "Notification Click Action: " + remoteMessage.getNotification().getClickAction());
-
     }
 
     @Override

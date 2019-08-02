@@ -134,13 +134,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
             }
         });
 
-        btnMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
         // onClick listener for the submit action
         submitRequest.setOnClickListener(new View.OnClickListener() {
             @Override

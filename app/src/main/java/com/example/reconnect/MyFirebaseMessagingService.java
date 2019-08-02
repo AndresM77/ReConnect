@@ -60,6 +60,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // notify manager that the notification has been built
             nManager.notify(notificationId, nBuilder.build());
       //  }
+
     }
 
     @Override

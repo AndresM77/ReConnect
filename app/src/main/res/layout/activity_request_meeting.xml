@@ -49,7 +49,7 @@
         android:layout_marginStart="32dp"
         android:text="Person Name"
         android:textColor="#E6E8E6"
-        android:textSize="30sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/ivProfileImg"
         app:layout_constraintTop_toTopOf="@+id/ivProfileImg" />
@@ -78,16 +78,17 @@
 
     <EditText
         android:id="@+id/meetingName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="372dp"
+        android:layout_height="56dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="8dp"
         android:hint="Create meeting title (optional)."
+        android:textAlignment="center"
         android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
@@ -96,16 +97,15 @@
         android:layout_width="131dp"
         android:layout_height="52dp"
         android:layout_marginStart="140dp"
-        android:layout_marginTop="52dp"
         android:layout_marginEnd="140dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
         android:text="Submit Request"
         android:textColor="#E6E8E6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_endTime" />
+        tools:layout_editor_absoluteY="508dp" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -120,13 +120,10 @@
 
     <ImageView
         android:id="@+id/selectDate"
-        android:layout_width="64dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="172dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
+        android:layout_width="76dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/meetingName"
         app:srcCompat="@drawable/ic_calendar" />
@@ -135,67 +132,62 @@
         android:id="@+id/tv_meetingDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/orkney"
         android:text="Date"
         android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectDate" />
 
     <ImageView
         android:id="@+id/startTime"
-        android:layout_width="53dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="172dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_meetingDate"
+        android:layout_width="75dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/endTime"
+        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintStart_toEndOf="@+id/selectDate"
+        app:layout_constraintTop_toBottomOf="@+id/meetingName"
         app:srcCompat="@drawable/clock" />
 
     <TextView
         android:id="@+id/tv_startTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="175dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="173dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/orkney"
         android:text="Start Time"
         android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_meetingDate"
         app:layout_constraintTop_toBottomOf="@+id/startTime" />
 
     <ImageView
         android:id="@+id/endTime"
-        android:layout_width="53dp"
-        android:layout_height="62dp"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="172dp"
+        android:layout_width="74dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="52dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_startTime"
+        app:layout_constraintTop_toBottomOf="@+id/meetingName"
         app:srcCompat="@drawable/clock" />
 
     <TextView
         android:id="@+id/tv_endTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="179dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/orkney"
         android:text="End Time"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintStart_toEndOf="@+id/tv_startTime"
         app:layout_constraintTop_toBottomOf="@+id/endTime" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

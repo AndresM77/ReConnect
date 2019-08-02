@@ -70,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParseUser.logOut();
+                ParseUser.getCurrentUser().logOut();
                 Intent i = new Intent(SettingsActivity.this, LoginActivity.class);
                 startActivity(i);
             }

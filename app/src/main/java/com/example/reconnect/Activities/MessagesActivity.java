@@ -59,15 +59,75 @@ public class MessagesActivity extends AppCompatActivity {
         initViewComp();
 
 
+    }
+
+    private void initViewComp() {
+        if (getIntent().getParcelableExtra("conversation") != null){
+            conversation = getIntent().getParcelableExtra("conversation");
+            displayConversation();
+        }
+        else if (getIntent().getParcelableExtra("contact") != null) {
+            Conversation.findConversation(ParseUser.getCurrentUser(), (ParseUser) getIntent().getParcelableExtra("contact"), new FindCallback<Conversation>() {
+                @Override
+                public void done(List<Conversation> objects, ParseException e) {
+                    if (e != null) {
+                        Log.e("Messages Activity", "There was a problem finding the conversation to open");
+                        e.printStackTrace();
+                        return;
+                    }
+                    if (objects.size() > 0) {
+                        conversation = objects.get(0);
+                        displayConversation();
+
+                    }
+                    else {
+                        conversation = new Conversation();
+                        conversation.put("converser", ParseUser.getCurrentUser());
+                        conversation.put("conversee", getIntent().getParcelableExtra("contact"));
+                        conversation.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                displayConversation();
+                            }
+                        });
+                    }
+
+                }
+            });
+        }
+
+    }
+
+    private void displayConversation() {
+        //Setup view objects
+        rvMessages = findViewById(R.id.rvMessages);
+        //Instantiating connections list
+        mMessage = new ArrayList<>();
+        //Set up adapter
+        adapter = new MessagesAdapter(this, mMessage);
+        //Set adapter on recycler view
+        rvMessages.setAdapter(adapter);
+        //Set up linear layout manager
+        linearLayoutManager = new LinearLayoutManager(this);
+        //Set layout manager on recycler view
+        rvMessages.setLayoutManager(linearLayoutManager);
+        tvContactName = findViewById(R.id.tvContactName);
+        etMessage = findViewById(R.id.etMessage);
+        btnSubmit = findViewById(R.id.btnMessage);
+        tvDistanceAway = findViewById(R.id.tvDistanceAway);
+        tvIndustry = findViewById(R.id.tvIndustry);
+        ivProfileImage = findViewById(R.id.ivProfileImg);
         ParseFile profileImg = null;
 
         try {
             tvContactName.setText(conversation.getOtherUser().fetchIfNeeded().getUsername());
             tvIndustry.setText((String) conversation.getOtherUser().fetchIfNeeded().get("industry"));
             profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (ParseException ee) {
+            ee.printStackTrace();
         }
+
+
         if (profileImg != null) {
             Glide.with(getBaseContext()).load(profileImg.getUrl()).circleCrop().into(ivProfileImage);
         }
@@ -96,7 +156,6 @@ public class MessagesActivity extends AppCompatActivity {
                 view.getContext().startActivity(intent);
             }
         });
-
         // Find the toolbar view inside the activity layout
         Toolbar toolbar = findViewById(R.id.messageToolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
@@ -124,29 +183,6 @@ public class MessagesActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
         //query posts
         queryMessages(conversation);
-    }
-
-    private void initViewComp() {
-        conversation = getIntent().getParcelableExtra("conversation");
-
-        //Setup view objects
-        rvMessages = findViewById(R.id.rvMessages);
-        //Instantiating connections list
-        mMessage = new ArrayList<>();
-        //Set up adapter
-        adapter = new MessagesAdapter(this, mMessage);
-        //Set adapter on recycler view
-        rvMessages.setAdapter(adapter);
-        //Set up linear layout manager
-        linearLayoutManager = new LinearLayoutManager(this);
-        //Set layout manager on recycler view
-        rvMessages.setLayoutManager(linearLayoutManager);
-        tvContactName = findViewById(R.id.tvContactName);
-        etMessage = findViewById(R.id.etMessage);
-        btnSubmit = findViewById(R.id.btnMessage);
-        tvDistanceAway = findViewById(R.id.tvDistanceAway);
-        tvIndustry = findViewById(R.id.tvIndustry);
-        ivProfileImage = findViewById(R.id.ivProfileImg);
     }
 
     private void saveMessage() {

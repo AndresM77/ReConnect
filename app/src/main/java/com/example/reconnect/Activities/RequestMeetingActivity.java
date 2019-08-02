@@ -170,40 +170,12 @@ public class RequestMeetingActivity extends AppCompatActivity {
                             return;
                         }
                         finish();
-//                        Intent i = new Intent(RequestMeetingActivity.this, ReconnectFragment.class);
-//                        i.putExtra("meetingId", event.getObjectId());
-//                        startActivity(i);
                     }
                 });
 
-                // THIS MIGHT SEND A MESSAGE
+                // sends notification
                 mFunctions = FirebaseFunctions.getInstance();
                 Task<String> result = sendNotifications(event.getAttendee().get("deviceId").toString(), "You have a new meeting request from " + event.getAttendee().getUsername());
-                //TODO check
-//                RemoteMessage.Builder remBuilder = new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com");
-//                remBuilder.setMessageId(String.valueOf(Math.random() * 1000000));
-//                remBuilder.addData("message","hello");
-//                remBuilder.addData("recipientId",event.getAttendee().getObjectId());
-//                FirebaseMessaging.getInstance().send(remBuilder.build());
-
-
-
-//                TOPIC = "/topics/userABC"; //topic must match with what the receiver subscribed to
-//                NOTIFICATION_TITLE = "From User 123";
-//                NOTIFICATION_MESSAGE = "Hello! This is a test notification!";
-//
-//                JSONObject notification = new JSONObject();
-//                JSONObject notifcationBody = new JSONObject();
-//                try {
-//                    notifcationBody.put("title", NOTIFICATION_TITLE);
-//                    notifcationBody.put("message", NOTIFICATION_MESSAGE);
-//
-//                    notification.put("to", TOPIC);
-//                    notification.put("data", notifcationBody);
-//                } catch (JSONException e) {
-//                    Log.e(TAG, "onCreate: " + e.getMessage() );
-//                }
-//                sendNotification(notification);
             }
 
 
@@ -289,32 +261,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
         event.put("date", Date.valueOf(tv_meetingDate.getText().toString()));
     }
 
-//    private void sendNotification(JSONObject notification) {
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
-//                new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        Log.i(TAG, "onResponse: " + response.toString());
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(RequestMeetingActivity.this, "Request error", Toast.LENGTH_LONG).show();
-//                        Log.i(TAG, "onErrorResponse: Didn't work");
-//                    }
-//                }){
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("Authorization", serverKey);
-//                params.put("Content-Type", contentType);
-//                return params;
-//            }
-//        };
-//        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
-//    }
-
     private RequestMeetingActivity.DatePickerDoneListener getDatePickerDoneListener(final int dialogId) {
         return new RequestMeetingActivity.DatePickerDoneListener() {
             @Override
@@ -353,7 +299,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.ivSettings:

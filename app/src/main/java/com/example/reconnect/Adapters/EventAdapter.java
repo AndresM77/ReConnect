@@ -263,7 +263,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
         public void showEventAsPersonal(String meetingTitle) {
-            meetingName.setVisibility(View.GONE);
+            meetingName.setVisibility(View.INVISIBLE);
             accept.setVisibility(View.GONE);
             deny.setVisibility(View.GONE);
             pending.setVisibility(View.GONE);

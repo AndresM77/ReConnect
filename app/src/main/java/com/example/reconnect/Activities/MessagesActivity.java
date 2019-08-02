@@ -193,6 +193,7 @@ public class MessagesActivity extends AppCompatActivity {
         message.setMessage(etMessage.getText().toString());
         message.setRecipient(conversation.getOtherUser());
         message.setSender(ParseUser.getCurrentUser());
+        message.setIsRequest(false);
         message.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -257,7 +258,7 @@ public class MessagesActivity extends AppCompatActivity {
         ParseQuery<Message> mainQuery = ParseQuery.or(queries);
         mainQuery.include(Message.KEY_SENDER);
         mainQuery.addAscendingOrder(Message.KEY_CREATED_AT);
-        mainQuery.setLimit(20);
+//        mainQuery.setLimit(20);
 
         mainQuery.findInBackground(new FindCallback<Message>() {
             @Override
@@ -270,10 +271,6 @@ public class MessagesActivity extends AppCompatActivity {
                 mMessage.clear();
                 mMessage.addAll(messages);
                 adapter.notifyDataSetChanged();
-                for (int i = 0; i < mMessage.size(); i++) {
-                    Message message = mMessage.get(i);
-                    Log.d(TAG, "Sender: " + message.getSender().getUsername());
-                }
             }
         });
     }

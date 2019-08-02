@@ -475,7 +475,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         currentUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                Log.d(TAG, "Updated user's location in server!");
             }
         });
     }

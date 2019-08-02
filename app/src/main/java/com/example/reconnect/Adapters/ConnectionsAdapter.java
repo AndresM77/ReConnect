@@ -16,9 +16,11 @@ import com.bumptech.glide.Glide;
 import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
+import com.example.reconnect.model.User;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -69,10 +71,8 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                 public void onClick(View view) {
                     // New intent to send User to RequestMeeting Activity after selecting
                     // a contact User name
-                    Intent intent = new Intent(view.getContext(), RequestMeetingActivity.class);
                     Connection selectedConnection = (Connection) name.getTag();
-                    intent.putExtra("requesteeId", selectedConnection.getOtherUser().getObjectId());
-                    view.getContext().startActivity(intent);
+                    User.showContactOptions(view.getContext(), selectedConnection.getOtherUser());
                 }
             });
 

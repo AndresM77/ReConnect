@@ -5,9 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.R;
@@ -49,29 +51,36 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
         private TextView tvMessage;
         private TextView tvTimeStamp;
+        private CardView cvMessage;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             tvMessage = itemView.findViewById(R.id.tvMessage);
             tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
+            cvMessage = itemView.findViewById(R.id.cvMessage);
         }
 
         // method that connects information to create item_contact for MapFragment's Recycler View
         public void bind(Message message) {
             tvMessage.setText(message.getMessage());
             tvTimeStamp.setText(message.getCreatedAt().toString());
+            tvTimeStamp.setTextSize(tvMessage.getTextSize()/4);
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
             try {
                 if (!message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
-                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
-                    tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-                    tvTimeStamp.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
+                    params.addRule(RelativeLayout.ALIGN_RIGHT);
+                    cvMessage.setLayoutParams(params);
+                    tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+                    tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                 }
                 else {
-                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
-                    tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-                    tvTimeStamp.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
+                    params.addRule(RelativeLayout.ALIGN_LEFT);
+                    cvMessage.setLayoutParams(params);
+                    tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                    tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                 }
             } catch (ParseException e) {
                 Log.e("Messages Adapter", "Unable to determine the which side to show message on");

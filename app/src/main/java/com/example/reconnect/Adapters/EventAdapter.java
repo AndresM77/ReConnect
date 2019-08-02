@@ -284,7 +284,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             industry.setText(attendeeIndustry);
         }
 
-        public void alertRequestAccepted(Event event) {
+        public void alertRequestAccepted(final Event event) {
             // Send message to other user
             final Message approvalMessage = new Message();
             Conversation.findConversation(event.getCreator(), event.getAttendee(), new FindCallback<Conversation>() {
@@ -296,22 +296,21 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         return;
                     }
                     approvalMessage.setConversation(objects.get(0));
-                }
-            });
-
-            approvalMessage.setMessage("****** " + ParseUser.getCurrentUser().getUsername() + " accepted your meeting request! *****");
-            approvalMessage.setRecipient(event.getCreator());
-            approvalMessage.setSender(ParseUser.getCurrentUser());
-
-            approvalMessage.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e != null) {
-                        Log.d("Event Adapter", "Error sending approval message");
-                        e.printStackTrace();
-                        return;
-                    }
-                    Log.d("Event Adapter", "Success sending approval message");
+                    approvalMessage.setMessage("****** " + ParseUser.getCurrentUser().getUsername() + " accepted your meeting request! *****");
+                    approvalMessage.setRecipient(event.getCreator());
+                    approvalMessage.setSender(ParseUser.getCurrentUser());
+                    approvalMessage.setIsRequest(true);
+                    approvalMessage.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.d("Event Adapter", "Error sending approval message");
+                                e.printStackTrace();
+                                return;
+                            }
+                            Log.d("Event Adapter", "Success sending approval message");
+                        }
+                    });
                 }
             });
 

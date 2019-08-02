@@ -14,6 +14,7 @@ public class Message extends ParseObject {
     public static final String KEY_SENDER = "sender";
     public static final String KEY_RECIPIENT ="recipient";
     public static final String KEY_CREATED_AT = "createdAt";
+    private static final String KEY_IS_REQUEST = "isRequest";
 
     public String getMessage() { return getString(KEY_MESSAGE); }
 
@@ -36,6 +37,10 @@ public class Message extends ParseObject {
     }
 
     public void setRecipient(ParseUser recipient) {put(KEY_RECIPIENT, recipient);}
+
+    public Boolean getIsRequest() { return getBoolean(KEY_IS_REQUEST); }
+
+    public void setIsRequest(Boolean bool) {put(KEY_IS_REQUEST, bool);}
 
     @Override
     public Date getCreatedAt() {

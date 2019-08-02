@@ -1,13 +1,16 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.R;
@@ -49,12 +52,18 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
         private TextView tvMessage;
         private TextView tvTimeStamp;
+        private TextView requestMessage;
+        private ImageView ivSmiley;
+        private ConstraintLayout messageBubble;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             tvMessage = itemView.findViewById(R.id.tvMessage);
             tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
+            requestMessage = itemView.findViewById(R.id.requestMessage);
+            ivSmiley = itemView.findViewById(R.id.ivSmiley);
+            messageBubble = itemView.findViewById(R.id.messageBubble);
         }
 
         // method that connects information to create item_contact for MapFragment's Recycler View
@@ -62,14 +71,26 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             tvMessage.setText(message.getMessage());
             tvTimeStamp.setText(message.getCreatedAt().toString());
 
+            //TODO fill in logic to show the proper views and make meeting request look special :)
+            if (message.getIsRequest()) {
+                tvMessage.setVisibility(View.GONE);
+                tvTimeStamp.setVisibility(View.GONE);
+                messageBubble.setBackgroundColor(Color.YELLOW);
+            }
+
+            else {
+                requestMessage.setVisibility(View.GONE);
+                messageBubble.setVisibility(View.GONE);
+            }
+
             try {
                 if (!message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
-//                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
+                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                     tvTimeStamp.setGravity(View.TEXT_ALIGNMENT_VIEW_START);
                 }
                 else {
-//                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
+                    tvMessage.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                     tvTimeStamp.setGravity(View.TEXT_ALIGNMENT_VIEW_END);
                 }

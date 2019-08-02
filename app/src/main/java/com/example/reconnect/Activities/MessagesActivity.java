@@ -193,6 +193,7 @@ public class MessagesActivity extends AppCompatActivity {
         message.setMessage(etMessage.getText().toString());
         message.setRecipient(conversation.getOtherUser());
         message.setSender(ParseUser.getCurrentUser());
+        message.setIsRequest(false);
         message.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

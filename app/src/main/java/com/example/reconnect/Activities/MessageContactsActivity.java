@@ -158,4 +158,10 @@ public class MessageContactsActivity extends AppCompatActivity {
     public interface ContactClickListener {
         void onClick(Connection connection);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

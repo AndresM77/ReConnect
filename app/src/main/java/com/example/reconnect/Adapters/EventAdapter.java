@@ -32,6 +32,8 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -117,7 +119,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView date;
         TextView time;
         ImageView accept;
-        ImageView pending;
+        TextView pending;
         ImageView deny;
         ConstraintLayout eventLayout;
         CalendarFragment mFragment;

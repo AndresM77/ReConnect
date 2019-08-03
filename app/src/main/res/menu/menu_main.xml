@@ -13,12 +13,16 @@
     <item
         android:id="@+id/addToCalendar"
         android:icon="@drawable/add_icon"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         android:title="@string/addToCalendar"
         app:showAsAction="ifRoom"></item>
 
     <item
         android:id="@+id/newConversation"
         android:icon="@drawable/ic_new_conversation"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         android:title="New Conversation"
         app:showAsAction="ifRoom"></item>
 </menu>

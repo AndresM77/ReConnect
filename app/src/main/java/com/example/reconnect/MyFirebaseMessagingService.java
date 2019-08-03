@@ -3,23 +3,18 @@ package com.example.reconnect;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
-import android.os.IBinder;
-import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
-import androidx.annotation.WorkerThread;
 import androidx.core.app.NotificationCompat;
 
 import com.example.reconnect.Activities.NotificationActivity;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
+import com.example.reconnect.Util.TokenHolder;
 import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import com.parse.ParseUser;
 
 import java.util.Random;
@@ -77,8 +72,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(String s) {
         Log.d("FCM Service", "Token refreshed to " + s);
         super.onNewToken(s);
-        ParseUser.getCurrentUser().put("deviceId", s);
-        ParseUser.getCurrentUser().saveInBackground();
+        TokenHolder.token = s;
+
+        if (ParseUser.getCurrentUser() != null) {
+            ParseUser.getCurrentUser().put("deviceId", s);
+            ParseUser.getCurrentUser().saveInBackground();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

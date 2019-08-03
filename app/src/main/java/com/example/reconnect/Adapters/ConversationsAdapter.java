@@ -2,7 +2,6 @@ package com.example.reconnect.Adapters;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,17 +92,17 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             name.setTag(conversation);
                 Message message = null;
                 try {
-                    message = conversation.getLastMessage().fetchIfNeeded();
-                    if (message.getMessage() != null ){
+                        message = (Message) conversation.getLastMessage();
+                    if (message != null && message.fetchIfNeeded().get("message") != null ){
                         lastMessage.setText(message.getMessage());
                     }
                     else {
                         lastMessage.setText("");
                     }
                 } catch (ParseException e) {
-                    lastMessage.setText("");
-
+                    e.printStackTrace();
                 }
+
 
         }
     }

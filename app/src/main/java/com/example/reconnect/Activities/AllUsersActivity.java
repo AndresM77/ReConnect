@@ -168,4 +168,10 @@ public class AllUsersActivity extends AppCompatActivity {
     public interface UserClickListener {
         void onClick(ParseUser user);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

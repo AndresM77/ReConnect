@@ -10,6 +10,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.reconnect.R;
+import com.example.reconnect.Util.TokenHolder;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -80,6 +81,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (e == null)
                 {
                     Log.d("LoginActivity", "Login successful");
+                    String s = TokenHolder.token;
+                    if (s != null) {
+                        ParseUser.getCurrentUser().put("deviceId", s);
+                        ParseUser.getCurrentUser().saveInBackground();
+                    }
 
                     final Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(intent);
@@ -90,6 +96,12 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
 

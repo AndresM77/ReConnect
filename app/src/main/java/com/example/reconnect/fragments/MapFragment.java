@@ -287,6 +287,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        if (imageBitmap == null) {
+            return null;
+        }
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
         return getCroppedBitmap(resizedBitmap);
     }

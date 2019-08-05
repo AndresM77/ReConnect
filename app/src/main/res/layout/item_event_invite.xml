@@ -65,10 +65,10 @@
 
     <ImageView
         android:id="@+id/ivReject"
-        android:layout_width="22dp"
-        android:layout_height="21dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,10 +77,10 @@
 
     <ImageView
         android:id="@+id/ivAccept"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="72dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

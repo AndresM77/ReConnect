@@ -83,12 +83,6 @@ public class User extends ParseUser {
         alertDialog.show();
     }
 
-    private void goToConversation(Context context, Conversation conversation) {
-        Intent i = new Intent(context, MessagesActivity.class);
-        i.putExtra("conversation", conversation);
-        context.startActivity(i);
-    }
-
     //Querying our User class
     public static class Query extends ParseQuery<User> {
 

@@ -85,7 +85,7 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
                 Glide.with(context).load(profileImg.getUrl()).circleCrop().into(ibProfileButton);
             }
             try {
-                name.setText(conversation.getOtherUser().fetchIfNeeded().getUsername());
+                name.setText(conversation.getOtherUser().fetchIfNeeded().get("firstName").toString() + " " + conversation.getOtherUser().fetchIfNeeded().get("lastName").toString());
             } catch (ParseException e) {
                 e.printStackTrace();
             }

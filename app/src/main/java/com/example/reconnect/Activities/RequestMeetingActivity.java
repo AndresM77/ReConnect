@@ -153,6 +153,10 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 // sends notification
                 mFunctions = FirebaseFunctions.getInstance();
                 Task<String> result = sendNotifications(event.getAttendee().get("deviceId").toString(), "You have a new meeting request from " + event.getAttendee().getUsername());
+
+                Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
+                i.putExtra("sendToCalendar", "yes");
+                startActivity(i);
             }
 
 

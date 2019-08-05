@@ -29,6 +29,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etPhone;
     private EditText etUser;
     private EditText etPass;
+    private EditText etFirstName;
+    private EditText etLastName;
     private Button btnSignUp;
     private List<ParseUser> mUsers;
 
@@ -57,12 +59,16 @@ public class RegisterActivity extends AppCompatActivity {
         etPhone = findViewById(R.id.etPhone);
         etUser = findViewById(R.id.etUser);
         etPass = findViewById(R.id.etPass);
+        etFirstName = findViewById(R.id.et_firstName);
+        etLastName = findViewById(R.id.et_lastName);
         btnSignUp = findViewById(R.id.btnCreate);
     }
 
     public void queryUsers() {
         ParseQuery<ParseUser> postQuery = new ParseQuery<>(ParseUser.class);
         postQuery.whereEqualTo("username",etUser.getText().toString());
+        postQuery.whereEqualTo("firstName", etFirstName.getText().toString());
+        postQuery.whereEqualTo("lastName", etLastName.getText().toString());
 
         postQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override

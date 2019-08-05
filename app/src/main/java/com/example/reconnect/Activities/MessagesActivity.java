@@ -27,9 +27,11 @@ import com.example.reconnect.model.Message;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseLiveQueryClient;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.SubscriptionHandling;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -185,6 +187,19 @@ public class MessagesActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
         //query posts
         queryMessages(conversation);
+
+        ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
+
+        ParseQuery<Message> parseQuery = ParseQuery.getQuery(Message.class);
+
+        SubscriptionHandling<Message> subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
+
+        subscriptionHandling.handleEvents(new SubscriptionHandling.HandleEventsCallback<Message>() {
+            @Override
+            public void onEvents(ParseQuery<Message> query, SubscriptionHandling.Event event, Message object) {
+                queryMessages(conversation);
+            }
+        });
     }
 
     private void saveMessage() {
@@ -271,6 +286,7 @@ public class MessagesActivity extends AppCompatActivity {
                 mMessage.clear();
                 mMessage.addAll(messages);
                 adapter.notifyDataSetChanged();
+                linearLayoutManager.scrollToPosition(mMessage.size() - 1);
             }
         });
     }

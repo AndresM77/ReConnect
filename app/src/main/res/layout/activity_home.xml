@@ -43,11 +43,10 @@
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="100dp"
+            android:layout_width="70dp"
             android:layout_height="50dp"
             android:layout_gravity="start"
             android:background="@drawable/relink_logo"
-            android:backgroundTint="@color/cardview_dark_background"
             app:showAsAction="ifRoom"
             tools:layout_editor_absoluteX="1dp"
             tools:layout_editor_absoluteY="8dp"></ImageView>

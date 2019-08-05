@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
 import com.example.reconnect.R;
+import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Event;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
@@ -215,6 +216,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 tvUserName.setText(requestedUser.fetchIfNeeded().get("firstName").toString() + " " + requestedUser.fetchIfNeeded().get("lastName").toString());
                 tvIndustry.setText((String) requestedUser.fetchIfNeeded().get("industry"));
                 profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
+                tvDistance.setText(Connection.getDistanceAway(ParseUser.getCurrentUser().getParseGeoPoint("location"),requestedUser.getParseGeoPoint("location")));
             }
             else {
 //                TextView prompt = findViewById(R.id.requestMeetingPrompt);

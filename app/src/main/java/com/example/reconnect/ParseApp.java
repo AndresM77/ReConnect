@@ -8,10 +8,14 @@ import com.example.reconnect.model.Event;
 import com.example.reconnect.model.Message;
 import com.example.reconnect.model.User;
 import com.parse.Parse;
+import com.parse.ParseLiveQueryClient;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SubscriptionHandling;
 
 public class ParseApp extends Application {
+
 
     @Override
     public void onCreate() {
@@ -28,6 +32,9 @@ public class ParseApp extends Application {
                 .clientKey("dreamteam77")
                 .server("http://andresm77-reconnect.herokuapp.com/parse")
                 .build();
+
+
+
 
         /*
         ****Back4App Data*****

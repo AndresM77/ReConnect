@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import com.example.reconnect.R;
 import com.example.reconnect.model.Conversation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class ConversationsFragment extends Fragment {
     public final static int REQUEST_CODE = 20;
     //Initializing variables necessary for recycler view
     private RecyclerView rvConversations;
+    private TextView title;
     private ConversationsAdapter adapter;
     private List<Conversation> mConversations;
     private SwipeRefreshLayout swipeContainer;
@@ -52,6 +55,8 @@ public class ConversationsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
+        title = view.findViewById(R.id.chats_tv);
+        title.setText(ParseUser.getCurrentUser().get("firstName").toString() + "'s Chats");
         rvConversations = view.findViewById(R.id.rvConversations);
         //Instantiating connections list
         mConversations = new ArrayList<>();

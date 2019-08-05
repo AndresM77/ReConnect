@@ -6,23 +6,32 @@
     <item
         android:id="@+id/ivSettings"
         android:icon="@drawable/ic_settings"
+        android:layout_width="2dp"
+        android:layout_height="2dp"
         app:showAsAction="ifRoom"
         android:title="@string/settings">
     </item>
 
     <item
+        android:id="@+id/ivSwitchButton"
+        android:icon="@drawable/ic_switch_map"
+        app:showAsAction="ifRoom"
+        android:title="Switch Map">
+    </item>
+
+    <item
         android:id="@+id/addToCalendar"
-        android:icon="@drawable/add_icon"
-        android:layout_width="5dp"
-        android:layout_height="5dp"
+        android:layout_width="2dp"
+        android:layout_height="2dp"
+        android:icon="@drawable/add_event_hdpi_2"
         android:title="@string/addToCalendar"
         app:showAsAction="ifRoom"></item>
 
     <item
         android:id="@+id/newConversation"
         android:icon="@drawable/ic_new_conversation"
-        android:layout_width="5dp"
-        android:layout_height="5dp"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         android:title="New Conversation"
         app:showAsAction="ifRoom"></item>
 </menu>

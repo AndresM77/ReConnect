@@ -124,7 +124,7 @@ public class MessagesActivity extends AppCompatActivity {
         ParseFile profileImg = null;
 
         try {
-            tvContactName.setText(conversation.getOtherUser().fetchIfNeeded().getUsername());
+            tvContactName.setText(conversation.getOtherUser().fetchIfNeeded().get("firstName").toString() + " " + conversation.getOtherUser().fetchIfNeeded().get("lastName").toString());
             tvIndustry.setText((String) conversation.getOtherUser().fetchIfNeeded().get("industry"));
             tvDistanceAway.setText(Connection.getDistanceAway(conversation.getOtherUser().getParseGeoPoint("location"), ParseUser.getCurrentUser().getParseGeoPoint("location")));
             profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");

@@ -289,14 +289,15 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             final Message approvalMessage = new Message();
             Conversation.findConversation(event.getCreator(), event.getAttendee(), new FindCallback<Conversation>() {
                 @Override
-                public void done(List<Conversation> objects, ParseException e) {
+                public void done(final List<Conversation> objects, ParseException e) {
                     if (e != null) {
                         Log.e("Event Adapter", "Unable to find converstaion to send approval/reject message!");
                         e.printStackTrace();
                         return;
                     }
                     approvalMessage.setConversation(objects.get(0));
-                    approvalMessage.setMessage("****** " + ParseUser.getCurrentUser().get("firstName").toString() + " " + ParseUser.getCurrentUser().get("lastName").toString() + " accepted your meeting request! *****");
+                    approvalMessage.setMessage(ParseUser.getCurrentUser().get("firstName").toString() + " accepted your meeting request!");
+
                     approvalMessage.setRecipient(event.getCreator());
                     approvalMessage.setSender(ParseUser.getCurrentUser());
                     approvalMessage.setIsRequest(true);
@@ -309,6 +310,19 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                 return;
                             }
                             Log.d("Event Adapter", "Success sending approval message");
+                            Conversation convo = objects.get(0);
+                            convo.setLastMessage(approvalMessage);
+                            convo.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e != null) {
+                                        Log.d("Event Adapter", "Error sending approval convo");
+                                        e.printStackTrace();
+                                        return;
+                                    }
+                                    Log.d("Event Adapter", "Success sending approval convo");
+                                }
+                            });
                         }
                     });
                 }

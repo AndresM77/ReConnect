@@ -46,7 +46,7 @@ public class User extends ParseUser {
         Button btnMessage = messageView.findViewById(R.id.btnMessage);
         Button btnMeeting = messageView.findViewById(R.id.btnMeeting);
         try {
-            userName.setText(contact.fetchIfNeeded().getUsername());
+            userName.setText(contact.fetchIfNeeded().get("firstName").toString() + " " + contact.fetchIfNeeded().get("lastName").toString());
             industry.setText((String) contact.fetchIfNeeded().get("industry"));
             if (contact.get("profileImg") != null) {
                 ParseFile img = (ParseFile) contact.get("profileImg");

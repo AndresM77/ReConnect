@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
 import com.example.reconnect.R;
+import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Event;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
@@ -152,7 +153,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
 
                 // sends notification
                 mFunctions = FirebaseFunctions.getInstance();
-                Task<String> result = sendNotifications(event.getAttendee().get("deviceId").toString(), "You have a new meeting request from " + event.getAttendee().getUsername());
+                Task<String> result = sendNotifications(event.getAttendee().get("deviceId").toString(), "You have a new meeting request from " + event.getAttendee().get("firstName").toString() + event.getAttendee().get("lastName").toString());
 
                 Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
                 i.putExtra("sendToCalendar", "yes");
@@ -212,9 +213,10 @@ public class RequestMeetingActivity extends AppCompatActivity {
         try {
             requestedUser = userParseQuery.get(requestedUserId);
             if (!requestedUser.equals(ParseUser.getCurrentUser())) {
-                tvUserName.setText(requestedUser.fetchIfNeeded().getUsername());
+                tvUserName.setText(requestedUser.fetchIfNeeded().get("firstName").toString() + " " + requestedUser.fetchIfNeeded().get("lastName").toString());
                 tvIndustry.setText((String) requestedUser.fetchIfNeeded().get("industry"));
                 profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
+                tvDistance.setText(Connection.getDistanceAway(ParseUser.getCurrentUser().getParseGeoPoint("location"),requestedUser.getParseGeoPoint("location")));
             }
             else {
 //                TextView prompt = findViewById(R.id.requestMeetingPrompt);

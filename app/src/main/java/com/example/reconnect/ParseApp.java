@@ -24,9 +24,9 @@ public class ParseApp extends Application {
         ParseUser.registerSubclass(User.class);
 
         final Parse.Configuration configuration = new Parse.Configuration.Builder(this)
-                .applicationId("3OmO8VKHOH67fUwxjApifThHKMFO9ekctPQinpfb")
-                .clientKey("Hmo5MI87Y9rJiMMzlR0zaJUsZaC6mRKBpWE4NXL0")
-                .server("https://parseapi.back4app.com/")
+                .applicationId("reconnect_id")
+                .clientKey("dreamteam77")
+                .server("http://andresm77-reconnect.herokuapp.com/parse")
                 .build();
 
         /*

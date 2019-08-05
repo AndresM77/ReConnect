@@ -1,14 +1,12 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,13 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.R;
 import com.example.reconnect.model.Message;
-import com.google.android.material.resources.TextAppearance;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
-import java.time.format.TextStyle;
-import java.util.Calendar;
 import java.util.List;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
@@ -95,13 +90,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
             try {
                 if (message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
-//                    params.endToEnd = R.id.clContainer;
+                    params.endToEnd = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                     tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                 }
                 else {
-//                    params.startToStart = R.id.clContainer;
+                    params.startToStart = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
                     cvMessage.setForegroundGravity(Gravity.LEFT);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);

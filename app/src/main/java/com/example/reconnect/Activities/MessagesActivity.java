@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -200,6 +201,10 @@ public class MessagesActivity extends AppCompatActivity {
                 queryMessages(conversation);
             }
         });
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvMessages.getContext(),
+                linearLayoutManager.getOrientation());
+        rvMessages.addItemDecoration(dividerItemDecoration);
     }
 
     private void saveMessage() {

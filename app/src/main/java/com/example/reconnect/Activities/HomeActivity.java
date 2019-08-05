@@ -123,10 +123,6 @@ public class HomeActivity extends AppCompatActivity {
                                 //TODO - Make function names better
                                 mapFragmentInteraction(actionMenu);
                                 break;
-                            case R.id.action_reconnect:
-                                fragment = fragment2;
-                                recFragmentInteraction(actionMenu);
-                                break;
                             case R.id.action_profile:
                                 fragment = fragment3;
                                 calFragmentInteraction(actionMenu);
@@ -153,24 +149,28 @@ public class HomeActivity extends AppCompatActivity {
         menu.findItem(R.id.ivSettings).setVisible(true);
         menu.findItem(R.id.addToCalendar).setVisible(false);
         menu.findItem(R.id.newConversation).setVisible(false);
+        menu.findItem(R.id.ivSwitchButton).setVisible(true);
     }
 
     private void mesFragmentInteraction(Menu menu) {
         menu.findItem(R.id.ivSettings).setVisible(true);
         menu.findItem(R.id.addToCalendar).setVisible(false);
         menu.findItem(R.id.newConversation).setVisible(true);
+        menu.findItem(R.id.ivSwitchButton).setVisible(false);
     }
 
     private void mapFragmentInteraction(Menu menu) {
         menu.findItem(R.id.ivSettings).setVisible(true);
         menu.findItem(R.id.addToCalendar).setVisible(false);
         menu.findItem(R.id.newConversation).setVisible(false);
+        menu.findItem(R.id.ivSwitchButton).setVisible(true);
     }
 
     public void calFragmentInteraction(Menu menu) {
         menu.findItem(R.id.ivSettings).setVisible(true);
         menu.findItem(R.id.addToCalendar).setVisible(true);
         menu.findItem(R.id.newConversation).setVisible(false);
+        menu.findItem(R.id.ivSwitchButton).setVisible(false);
     }
 
 
@@ -207,6 +207,15 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             case R.id.newConversation:
                 selectRecipient();
+                return true;
+            case R.id.ivSwitchButton:
+                if (!findViewById(R.id.ivSwitchButton).isSelected()) {
+                    fragmentManager.beginTransaction().replace(R.id.container, fragment2).commit();
+                    findViewById(R.id.ivSwitchButton).setSelected(true);
+                } else {
+                    fragmentManager.beginTransaction().replace(R.id.container, fragment1).commit();
+                    findViewById(R.id.ivSwitchButton).setSelected(false);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

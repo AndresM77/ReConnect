@@ -13,6 +13,13 @@
     </item>
 
     <item
+        android:id="@+id/ivSwitchButton"
+        android:icon="@drawable/ic_switch_map"
+        app:showAsAction="ifRoom"
+        android:title="Switch Map">
+    </item>
+
+    <item
         android:id="@+id/addToCalendar"
         android:layout_width="2dp"
         android:layout_height="2dp"

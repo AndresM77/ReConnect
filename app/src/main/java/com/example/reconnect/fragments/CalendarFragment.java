@@ -89,7 +89,11 @@ public class CalendarFragment extends Fragment {
         ivProfilePic = view.findViewById(R.id.ivProfilePic);
 
         ParseUser user = ParseUser.getCurrentUser();
-        tvCurrentUsername.setText(user.get("firstName").toString() + "'s Calendar");
+        try {
+            tvCurrentUsername.setText(user.fetchIfNeeded().get("firstName").toString() + "'s Calendar");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         if (user.get("profileImg") != null) {
             ParseFile img = (ParseFile) user.get("profileImg");

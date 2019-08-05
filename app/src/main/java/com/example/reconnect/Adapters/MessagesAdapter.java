@@ -2,6 +2,7 @@ package com.example.reconnect.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,13 +14,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reconnect.R;
 import com.example.reconnect.model.Message;
+import com.google.android.material.resources.TextAppearance;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
+import java.time.format.TextStyle;
+import java.util.Calendar;
 import java.util.List;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
@@ -54,8 +60,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
         private TextView tvMessage;
         private TextView tvTimeStamp;
-        private TextView requestMessage;
-        private ImageView ivSmiley;
         private ConstraintLayout messageBubble;
         private CardView cvMessage;
 
@@ -64,44 +68,40 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
             tvMessage = itemView.findViewById(R.id.tvMessage);
             tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
-            requestMessage = itemView.findViewById(R.id.requestMessage);
-            ivSmiley = itemView.findViewById(R.id.ivSmiley);
             messageBubble = itemView.findViewById(R.id.messageBubble);
             cvMessage = itemView.findViewById(R.id.cvMessage);
         }
 
         // method that connects information to create item_contact for MapFragment's Recycler View
         public void bind(Message message) {
-            tvMessage.setText(message.getMessage());
-            tvTimeStamp.setText(message.getCreatedAt().toString());
+            tvMessage.setText(message.getMessage() + "  ");
+            SimpleDateFormat messageFormat = new SimpleDateFormat("EEEE, MMMM d KK:mm");
+            tvTimeStamp.setText(messageFormat.format(message.getCreatedAt()) + "    ");
             tvTimeStamp.setTextSize(tvMessage.getTextSize()/4);
             ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(cvMessage.getLayoutParams());
 
-
-
-            //TODO fill in logic to show the proper views and make meeting request look special :)
             if (message.getIsRequest()) {
-                tvMessage.setVisibility(View.GONE);
-                tvTimeStamp.setVisibility(View.GONE);
-                requestMessage.setText("HEYYY");
-//                requestMessage.setText(message.getOtherUser().getUsername() + "has accepted your meeting request.");
-                messageBubble.setBackgroundColor(Color.rgb(255, 223, 9));
-            }
-
-            else {
-                requestMessage.setVisibility(View.GONE);
-                ivSmiley.setVisibility(View.GONE);
+                tvTimeStamp.setTextColor(ContextCompat.getColor(context, R.color.colorAccent3));
+                try {
+                    tvMessage.setText(message.getOtherUser().fetchIfNeeded().getUsername() +" has accepted your meeting request.  ");
+                } catch (ParseException e) {
+                    Log.e("Messages Adapter", "Unable to get the username of the attendee");
+                    e.printStackTrace();
+                }
+                tvMessage.setTypeface(null, Typeface.BOLD_ITALIC);
+                tvMessage.setTextColor(ContextCompat.getColor(context, R.color.colorAccent3));
+                messageBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite));
             }
 
             try {
                 if (message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
-                    params.endToEnd = R.id.clContainer;
+//                    params.endToEnd = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                     tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                 }
                 else {
-                    params.startToStart = R.id.clContainer;
+//                    params.startToStart = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
                     cvMessage.setForegroundGravity(Gravity.LEFT);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);

@@ -10,14 +10,15 @@
         android:id="@+id/ivProfileImg"
         android:layout_width="43dp"
         android:layout_height="43dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/circle_shape"
         android:src="@drawable/baseline_account_circle_black_48"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tvUserName"

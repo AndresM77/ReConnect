@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -22,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.example.reconnect.Adapters.MessagesAdapter;
 import com.example.reconnect.R;
+import com.example.reconnect.VerticalSpaceItemDecoration;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.Message;
@@ -202,8 +202,7 @@ public class MessagesActivity extends AppCompatActivity {
             }
         });
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvMessages.getContext(),
-                linearLayoutManager.getOrientation());
+        VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(10);
         rvMessages.addItemDecoration(dividerItemDecoration);
     }
 

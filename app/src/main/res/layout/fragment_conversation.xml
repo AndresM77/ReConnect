@@ -33,7 +33,7 @@
         android:fontFamily="@font/orkney"
         android:text="Chats"
         android:textColor="@color/colorAccent3"
-        android:textSize="20"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -98,7 +98,7 @@ public class HomeActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         //check if the meetingId sent by the intent is true...if not null do things
-        if (getIntent().getStringExtra("meetingId") != null) {
+        if (getIntent().hasExtra("sendToCalendar")) {
             fragmentManager.beginTransaction().replace(R.id.container, new CalendarFragment()).commit();
         }
     }
@@ -144,7 +144,9 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-        bottomNavigationView.setSelectedItemId(R.id.action_map);
+        if (!getIntent().hasExtra("sendToCalendar")) {
+            bottomNavigationView.setSelectedItemId(R.id.action_map);
+        }
     }
 
     private void recFragmentInteraction(Menu menu) {

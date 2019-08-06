@@ -31,26 +31,14 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="455dp"
+        android:layout_height="57dp"
         android:background="#FFFF"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/white">
-
-        <ImageView
-            android:id="@+id/ivLogo"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            android:layout_gravity="start"
-            android:background="@drawable/relink_logo"
-            app:showAsAction="ifRoom"
-            tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="8dp"></ImageView>
-    </androidx.appcompat.widget.Toolbar>
+        app:logo="@drawable/relink_logo"
+        app:titleTextColor="@android:color/white" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

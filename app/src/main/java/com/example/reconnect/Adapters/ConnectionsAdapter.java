@@ -97,7 +97,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                 distanceAwayV.setText(out);
 
                 // set the name of the connection
-                name.setText(connection.getOtherUser().fetchIfNeeded().get("firstName").toString() + " " + connection.getOtherUser().fetchIfNeeded().get("lastName").toString());
+                name.setText(User.getFullName(connection.getOtherUser()));
 
             } catch (ParseException e) {
                 Log.e("Connections Adapter", "Unable to bind the required views together for each contact/connection");

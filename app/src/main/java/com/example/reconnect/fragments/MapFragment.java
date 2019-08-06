@@ -45,6 +45,7 @@ import com.example.reconnect.Adapters.CustomWindowAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Conversation;
+import com.example.reconnect.model.User;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -89,7 +90,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     public final static String TAG = "MapFragment";
 
     //From MapActivity
-    private double RANDOMIZATION_DISTANCE = 0.002;
+    private double RANDOMIZATION_DISTANCE = 0.005;
+    private int PIC_SIZE = 150;
     //private final String TAG = "MapActivity";
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -269,7 +271,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             // Define custom marker
             BitmapDescriptor customMarker = BitmapDescriptorFactory.fromResource(R.drawable.map_user_marker);
             if (profileImg != null) {
-                customMarker = BitmapDescriptorFactory.fromBitmap(resizeMapIcons(profileImg, 100, 100));
+                customMarker = BitmapDescriptorFactory.fromBitmap(resizeMapIcons(profileImg, PIC_SIZE, PIC_SIZE));
             }
             Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(pos)
@@ -511,7 +513,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         Button btnMessage = messageView.findViewById(R.id.btnMessage);
         Button btnMeeting = messageView.findViewById(R.id.btnMeeting);
         try {
-            userName.setText(contact.getOtherUser().fetchIfNeeded().get("firstName").toString() + " " + contact.getOtherUser().fetchIfNeeded().get("lastName").toString());
+            userName.setText(User.getFullName(contact.getOtherUser()));
             industry.setText((String) contact.getOtherUser().fetchIfNeeded().get("industry"));
             ParseFile img = (ParseFile) contact.getOtherUser().fetchIfNeeded().get("profileImg");
             if (img != null) {

@@ -54,7 +54,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvMessage;
-        private TextView tvTimeStamp;
         private ConstraintLayout messageBubble;
         private CardView cvMessage;
 
@@ -62,7 +61,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             super(itemView);
 
             tvMessage = itemView.findViewById(R.id.tvMessage);
-            tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
             messageBubble = itemView.findViewById(R.id.messageBubble);
             cvMessage = itemView.findViewById(R.id.cvMessage);
         }
@@ -70,15 +68,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         // method that connects information to create item_contact for MapFragment's Recycler View
         public void bind(Message message) {
             tvMessage.setText(message.getMessage() + "  ");
-            SimpleDateFormat messageFormat = new SimpleDateFormat("EEEE, MMMM d KK:mm");
-            tvTimeStamp.setText(messageFormat.format(message.getCreatedAt()) + "    ");
-            tvTimeStamp.setTextSize(tvMessage.getTextSize()/4);
+
             ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(cvMessage.getLayoutParams());
 
             if (message.getIsRequest()) {
-                tvTimeStamp.setTextColor(ContextCompat.getColor(context, R.color.colorAccent3));
                 try {
-                    tvMessage.setText(message.getOtherUser().fetchIfNeeded().getUsername() +" has accepted your meeting request.  ");
+                    tvMessage.setText(message.getOtherUser().fetchIfNeeded().get("firstName") +" has accepted your meeting request.  ");
                 } catch (ParseException e) {
                     Log.e("Messages Adapter", "Unable to get the username of the attendee");
                     e.printStackTrace();
@@ -93,14 +88,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                     params.endToEnd = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-                    tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                 }
                 else {
                     params.startToStart = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
                     cvMessage.setForegroundGravity(Gravity.LEFT);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-                    tvTimeStamp.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                 }
             } catch (ParseException e) {
                 Log.e("Messages Adapter", "Unable to determine the which side to show message on");

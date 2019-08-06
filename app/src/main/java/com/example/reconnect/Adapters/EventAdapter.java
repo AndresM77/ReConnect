@@ -23,6 +23,7 @@ import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.DateTitle;
 import com.example.reconnect.model.Event;
 import com.example.reconnect.model.Message;
+import com.example.reconnect.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
@@ -276,9 +277,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public void createAttendeeDescription(Event event) throws ParseException {
             if (event.currUserIsAttendee()) {
-                attendee.setText(event.getCreator().get("firstName").toString() + " " + event.getCreator().get("lastName").toString());
+                attendee.setText(User.getFullName(event.getCreator()));
             } else {
-                attendee.setText(event.getOtherUser().get("firstName").toString() + " " + event.getOtherUser().get("lastName").toString() );
+                attendee.setText(User.getFullName(event.getOtherUser()));
             }
             String attendeeIndustry = event.getAttendee().fetchIfNeeded().get("industry").toString();
             industry.setText(attendeeIndustry);
@@ -296,7 +297,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         return;
                     }
                     approvalMessage.setConversation(objects.get(0));
-                    approvalMessage.setMessage(ParseUser.getCurrentUser().get("firstName").toString() + " accepted your meeting request!");
+                    approvalMessage.setMessage(event.getAttendee().get("firstName") + " accepted your meeting request!");
 
                     approvalMessage.setRecipient(event.getCreator());
                     approvalMessage.setSender(ParseUser.getCurrentUser());
@@ -330,7 +331,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             // Notify the other user that a message sent
             firebaseFunctions = FirebaseFunctions.getInstance();
-            Task<String> result = notifyAccepted(event.getCreator().get("deviceId").toString(), event.getAttendee().get("firstName").toString() + " " + event.getAttendee().get("lastName").toString() + " sent you a new message!");
+            Task<String> result = notifyAccepted(event.getCreator().get("deviceId").toString(), User.getFullName(event.getAttendee()) + " sent you a new message");
         }
 
         private Task<String> notifyAccepted(String deviceId, String s) {

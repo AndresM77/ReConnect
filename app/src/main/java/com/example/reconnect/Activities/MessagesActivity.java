@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,11 +19,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.reconnect.Adapters.MessagesAdapter;
+import com.example.reconnect.NotificationHandler;
 import com.example.reconnect.R;
 import com.example.reconnect.VerticalSpaceItemDecoration;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.Message;
+import com.example.reconnect.model.User;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -41,6 +44,7 @@ public class MessagesActivity extends AppCompatActivity {
 
     //Initializing fragment tag
     public final static String TAG = "MessagesActivity";
+    public FirebaseFunctions mFunctions;
     //Initializing variables necessary for recycler view
     private RecyclerView rvMessages;
     private MessagesAdapter adapter;
@@ -51,7 +55,7 @@ public class MessagesActivity extends AppCompatActivity {
     private TextView tvDistanceAway;
     private ImageView ivProfileImage;
     private EditText etMessage;
-    private Button btnSubmit;
+    private ImageView btnSubmit;
     private Conversation conversation;
     LinearLayoutManager linearLayoutManager;
 
@@ -124,7 +128,7 @@ public class MessagesActivity extends AppCompatActivity {
         ParseFile profileImg = null;
 
         try {
-            tvContactName.setText(conversation.getOtherUser().fetchIfNeeded().get("firstName").toString() + " " + conversation.getOtherUser().fetchIfNeeded().get("lastName").toString());
+            tvContactName.setText(User.getFullName(conversation.getOtherUser()));
             tvIndustry.setText((String) conversation.getOtherUser().fetchIfNeeded().get("industry"));
             tvDistanceAway.setText(Connection.getDistanceAway(conversation.getOtherUser().getParseGeoPoint("location"), ParseUser.getCurrentUser().getParseGeoPoint("location")));
             profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");
@@ -144,6 +148,11 @@ public class MessagesActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Invalid Message", Toast.LENGTH_LONG).show();
                 } else {
                     saveMessage();
+
+                    // send notification
+                    NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
+                    Task<String> result = nHandler.sendNotifications(conversation.getOtherUser().get("deviceId").toString(),
+                            User.getFullName(conversation.getOtherUser()) + " sent you a message");
                 }
             }
         });

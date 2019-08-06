@@ -1,7 +1,6 @@
 package com.example.reconnect.model;
 
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -70,7 +69,7 @@ Conversation extends ParseObject {
         queries.add(postQuery2);
 
         ParseQuery<Conversation> mainQuery = ParseQuery.or(queries);
-        mainQuery.addDescendingOrder(Conversation.KEY_CREATED_AT);
+        mainQuery.addDescendingOrder(Conversation.KEY_LAST_MESSAGE);
 
         mainQuery.findInBackground(callback);
     }

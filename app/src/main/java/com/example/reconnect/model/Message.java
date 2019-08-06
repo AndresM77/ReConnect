@@ -1,9 +1,13 @@
 package com.example.reconnect.model;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.Date;
 
@@ -61,6 +65,29 @@ public class Message extends ParseObject {
         } else {
             return getSender();
         }
+    }
+
+    //Save a message
+    private void saveMessage(final Conversation conversation, String messageText, final String TAG, final SaveCallback callback) {
+        final Message message = new Message();
+        message.setConversation(conversation);
+        message.setMessage(messageText);
+        message.setRecipient(conversation.getOtherUser());
+        message.setSender(ParseUser.getCurrentUser());
+        message.setIsRequest(false);
+        message.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e!=null) {
+                    Log.d(TAG, "Error while saving");
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d(TAG, "Success");
+                conversation.setLastMessage(message);
+                conversation.saveInBackground(callback);
+            }
+        });
     }
 
     //Querying our Message class

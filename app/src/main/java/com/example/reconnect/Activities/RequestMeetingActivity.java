@@ -10,10 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,13 +19,13 @@ import androidx.fragment.app.DialogFragment;
 import com.bumptech.glide.Glide;
 import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
+import com.example.reconnect.NotificationHandler;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Event;
-import com.google.android.gms.tasks.Continuation;
+import com.example.reconnect.model.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -36,11 +33,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 public class RequestMeetingActivity extends AppCompatActivity {
 
@@ -61,10 +53,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
     TextView tv_meetingDate;
     ParseUser requestedUser;
     ParseFile profileImg = null;
-
-    // for setting correct times
-    String startTimeDisplay;
-    String endTimeDisplay;
 
     // Notifications
     private FirebaseFunctions mFunctions;
@@ -161,9 +149,11 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 });
 
                 // sends notification
-                mFunctions = FirebaseFunctions.getInstance();
-                Task<String> result = sendNotifications(event.getAttendee().get("deviceId").toString(), "You have a new meeting request from " + event.getAttendee().get("firstName").toString() + event.getAttendee().get("lastName").toString());
+                NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
+                Task<String> result = nHandler.sendNotifications(event.getAttendee().get("deviceId").toString(),
+                        "You have a new meeting request from " + User.getFullName(event.getAttendee()));
 
+                // send back to the Calendar when done
                 Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
                 i.putExtra("sendToCalendar", "yes");
                 startActivity(i);
@@ -173,21 +163,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
         });
     }
 
-    private Task<String>  sendNotifications(String token, String text) {
-        Map<String,Object> data = new HashMap<>();
-        data.put("text", text);
-        data.put("token", token);
-        data.put("push", true);
-
-        return mFunctions.getHttpsCallable("sendMessage")
-                .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, String>() {
-                    @Override
-                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        return (String) task.getResult().getData();
-                    }
-                });
-    }
     public void setProfileItems() {
         //Profile items
         tvUserName = findViewById(R.id.tvUserName);
@@ -222,7 +197,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         try {
             requestedUser = userParseQuery.get(requestedUserId);
             if (!requestedUser.equals(ParseUser.getCurrentUser())) {
-                tvUserName.setText(requestedUser.fetchIfNeeded().get("firstName").toString() + " " + requestedUser.fetchIfNeeded().get("lastName").toString());
+                tvUserName.setText(User.getFullName(requestedUser));
                 tvIndustry.setText((String) requestedUser.fetchIfNeeded().get("industry"));
                 profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
                 tvDistance.setText(Connection.getDistanceAway(ParseUser.getCurrentUser().getParseGeoPoint("location"),requestedUser.getParseGeoPoint("location")));
@@ -240,26 +215,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
             Log.e("RequestMeeting Activity", "Unable to get the name of the requested User!");
             e.printStackTrace();
         }
-    }
-
-    public String onTimeSet(int hourOfDay, int minute) {
-        String AM_PM = " AM";
-        String mm_precede = "";
-        if (hourOfDay >= 12) {
-            AM_PM = " PM";
-            if (hourOfDay >=13 && hourOfDay < 24) {
-                hourOfDay -= 12;
-            }
-            else {
-                hourOfDay = 12;
-            }
-        } else if (hourOfDay == 0) {
-            hourOfDay = 12;
-        }
-        if (minute < 10) {
-            mm_precede = "0";
-        }
-        return "" + hourOfDay + ":" + mm_precede + minute + AM_PM;
     }
 
     public void createEventUnderProfile(Event event) {

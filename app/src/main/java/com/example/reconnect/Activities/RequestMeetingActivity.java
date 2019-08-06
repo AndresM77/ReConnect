@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +36,10 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class RequestMeetingActivity extends AppCompatActivity {
@@ -56,6 +61,10 @@ public class RequestMeetingActivity extends AppCompatActivity {
     TextView tv_meetingDate;
     ParseUser requestedUser;
     ParseFile profileImg = null;
+
+    // for setting correct times
+    String startTimeDisplay;
+    String endTimeDisplay;
 
     // Notifications
     private FirebaseFunctions mFunctions;
@@ -231,6 +240,26 @@ public class RequestMeetingActivity extends AppCompatActivity {
             Log.e("RequestMeeting Activity", "Unable to get the name of the requested User!");
             e.printStackTrace();
         }
+    }
+
+    public String onTimeSet(int hourOfDay, int minute) {
+        String AM_PM = " AM";
+        String mm_precede = "";
+        if (hourOfDay >= 12) {
+            AM_PM = " PM";
+            if (hourOfDay >=13 && hourOfDay < 24) {
+                hourOfDay -= 12;
+            }
+            else {
+                hourOfDay = 12;
+            }
+        } else if (hourOfDay == 0) {
+            hourOfDay = 12;
+        }
+        if (minute < 10) {
+            mm_precede = "0";
+        }
+        return "" + hourOfDay + ":" + mm_precede + minute + AM_PM;
     }
 
     public void createEventUnderProfile(Event event) {

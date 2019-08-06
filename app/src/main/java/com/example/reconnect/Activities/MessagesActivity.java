@@ -44,6 +44,7 @@ public class MessagesActivity extends AppCompatActivity {
 
     //Initializing fragment tag
     public final static String TAG = "MessagesActivity";
+    public final static int SPACING = 20;
     public FirebaseFunctions mFunctions;
     //Initializing variables necessary for recycler view
     private RecyclerView rvMessages;
@@ -211,7 +212,7 @@ public class MessagesActivity extends AppCompatActivity {
             }
         });
 
-        VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(10);
+        VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(20);
         rvMessages.addItemDecoration(dividerItemDecoration);
     }
 

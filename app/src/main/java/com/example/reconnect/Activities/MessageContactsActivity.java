@@ -100,7 +100,7 @@ public class MessageContactsActivity extends AppCompatActivity {
     }
 
     private void query(final Connection contact) {
-        Conversation.queryConversations(new FindCallback<Conversation>() {
+        Conversation.findConversation(contact.getUser1(), contact.getUser2(), new FindCallback<Conversation>() {
             @Override
             public void done(List<Conversation> objects, ParseException e) {
                 if (e != null) {
@@ -108,23 +108,11 @@ public class MessageContactsActivity extends AppCompatActivity {
                     e.printStackTrace();
                     return;
                 }
-                mConversations.clear();
-                mConversations.addAll(objects);
-                Conversation conversation;
-                Boolean change = true;
-                for (int f = 0; f < mConversations.size(); f++) {
-                    try {
-                        if (mConversations.get(f).getConversee().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())
-                                || mConversations.get(f).getConverser().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
-                            conversation = mConversations.get(f);
-                            goToConversation(conversation);
-                            change = false;
-                        }
-                    } catch (ParseException ee) {
-                        ee.printStackTrace();
-                    }
+                if (objects.size() == 0) {
+                    createConversation(contact);
+                } else {
+                    goToConversation(objects.get(0));
                 }
-                if (change) { createConversation(contact); }
             }
         });
     }

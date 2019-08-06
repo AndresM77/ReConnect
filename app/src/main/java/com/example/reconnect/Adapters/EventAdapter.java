@@ -297,7 +297,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         return;
                     }
                     approvalMessage.setConversation(objects.get(0));
-                    approvalMessage.setMessage(ParseUser.getCurrentUser().get("firstName").toString() + " accepted your meeting request!");
+                    approvalMessage.setMessage(event.getAttendee().get("firstName") + " accepted your meeting request!");
 
                     approvalMessage.setRecipient(event.getCreator());
                     approvalMessage.setSender(ParseUser.getCurrentUser());

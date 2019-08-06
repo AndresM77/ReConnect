@@ -180,11 +180,10 @@ public class MessagesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        etMessage.setOnContextClickListener(new View.OnContextClickListener() {
+        etMessage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onContextClick(View view) {
+            public void onClick(View view) {
                 linearLayoutManager.scrollToPosition(mMessage.size() - 1);
-                return false;
             }
         });
 

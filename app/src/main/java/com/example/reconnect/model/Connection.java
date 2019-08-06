@@ -10,6 +10,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -107,7 +108,9 @@ public class Connection extends ParseObject {
         Double metersToMiles = 1609.344;
         distance /= metersToMiles;
 
-        return distance.intValue() + " miles away";
+        DecimalFormat round = new DecimalFormat("#.#");
+
+        return round.format(distance) + " miles away";
     }
 
     //Querying our Connection class

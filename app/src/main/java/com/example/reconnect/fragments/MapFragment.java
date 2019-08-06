@@ -45,6 +45,7 @@ import com.example.reconnect.Adapters.CustomWindowAdapter;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Conversation;
+import com.example.reconnect.model.User;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -512,7 +513,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         Button btnMessage = messageView.findViewById(R.id.btnMessage);
         Button btnMeeting = messageView.findViewById(R.id.btnMeeting);
         try {
-            userName.setText(contact.getOtherUser().fetchIfNeeded().get("firstName").toString() + " " + contact.getOtherUser().fetchIfNeeded().get("lastName").toString());
+            userName.setText(User.getFullName(contact.getOtherUser()));
             industry.setText((String) contact.getOtherUser().fetchIfNeeded().get("industry"));
             ParseFile img = (ParseFile) contact.getOtherUser().fetchIfNeeded().get("profileImg");
             if (img != null) {

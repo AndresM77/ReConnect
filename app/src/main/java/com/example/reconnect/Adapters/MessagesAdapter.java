@@ -73,7 +73,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
             if (message.getIsRequest()) {
                 try {
-                    tvMessage.setText(message.getOtherUser().fetchIfNeeded().getUsername() +" has accepted your meeting request.  ");
+                    tvMessage.setText(message.getOtherUser().fetchIfNeeded().get("firstName") +" has accepted your meeting request.  ");
                 } catch (ParseException e) {
                     Log.e("Messages Adapter", "Unable to get the username of the attendee");
                     e.printStackTrace();

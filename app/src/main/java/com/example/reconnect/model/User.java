@@ -32,6 +32,13 @@ import java.util.List;
 public class User extends ParseUser {
     public final static String KEY_USER = "username";
 
+    public static String getFullName(ParseUser user) {
+        String first = user.get("firstName").toString();
+        String last = user.get("lastName").toString();
+
+        return first + " " + last;
+    }
+
     public static void showContactOptions(final Context context, final ParseUser contact) {
         View messageView = LayoutInflater.from(context).inflate(R.layout.item_contact_alert, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -46,7 +53,7 @@ public class User extends ParseUser {
         Button btnMessage = messageView.findViewById(R.id.btnMessage);
         Button btnMeeting = messageView.findViewById(R.id.btnMeeting);
         try {
-            userName.setText(contact.fetchIfNeeded().get("firstName").toString() + " " + contact.fetchIfNeeded().get("lastName").toString());
+            userName.setText(User.getFullName(contact));
             industry.setText((String) contact.fetchIfNeeded().get("industry"));
             if (contact.get("profileImg") != null) {
                 ParseFile img = (ParseFile) contact.get("profileImg");

@@ -23,6 +23,7 @@ import com.example.reconnect.NotificationHandler;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Event;
+import com.example.reconnect.model.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.parse.ParseException;
@@ -150,8 +151,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 // sends notification
                 NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
                 Task<String> result = nHandler.sendNotifications(event.getAttendee().get("deviceId").toString(),
-                        "You have a new meeting request from " + event.getAttendee().get("firstName").toString() +
-                                " " + event.getAttendee().get("lastName").toString());
+                        "You have a new meeting request from " + User.getFullName(event.getAttendee()));
 
                 // send back to the Calendar when done
                 Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
@@ -197,7 +197,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         try {
             requestedUser = userParseQuery.get(requestedUserId);
             if (!requestedUser.equals(ParseUser.getCurrentUser())) {
-                tvUserName.setText(requestedUser.fetchIfNeeded().get("firstName").toString() + " " + requestedUser.fetchIfNeeded().get("lastName").toString());
+                tvUserName.setText(User.getFullName(requestedUser));
                 tvIndustry.setText((String) requestedUser.fetchIfNeeded().get("industry"));
                 profileImg = (ParseFile) requestedUser.fetchIfNeeded().get("profileImg");
                 tvDistance.setText(Connection.getDistanceAway(ParseUser.getCurrentUser().getParseGeoPoint("location"),requestedUser.getParseGeoPoint("location")));

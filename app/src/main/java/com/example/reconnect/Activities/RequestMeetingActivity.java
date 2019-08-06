@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,13 +19,12 @@ import androidx.fragment.app.DialogFragment;
 import com.bumptech.glide.Glide;
 import com.example.reconnect.Dialogs.DatePickerFragment;
 import com.example.reconnect.Dialogs.TimePickerFragment;
+import com.example.reconnect.NotificationHandler;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Event;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -34,8 +32,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RequestMeetingActivity extends AppCompatActivity {
 
@@ -152,9 +148,12 @@ public class RequestMeetingActivity extends AppCompatActivity {
                 });
 
                 // sends notification
-                mFunctions = FirebaseFunctions.getInstance();
-                Task<String> result = sendNotifications(event.getAttendee().get("deviceId").toString(), "You have a new meeting request from " + event.getAttendee().get("firstName").toString() + event.getAttendee().get("lastName").toString());
+                NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
+                Task<String> result = nHandler.sendNotifications(event.getAttendee().get("deviceId").toString(),
+                        "You have a new meeting request from " + event.getAttendee().get("firstName").toString() +
+                                " " + event.getAttendee().get("lastName").toString());
 
+                // send back to the Calendar when done
                 Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
                 i.putExtra("sendToCalendar", "yes");
                 startActivity(i);
@@ -164,21 +163,6 @@ public class RequestMeetingActivity extends AppCompatActivity {
         });
     }
 
-    private Task<String>  sendNotifications(String token, String text) {
-        Map<String,Object> data = new HashMap<>();
-        data.put("text", text);
-        data.put("token", token);
-        data.put("push", true);
-
-        return mFunctions.getHttpsCallable("sendMessage")
-                .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, String>() {
-                    @Override
-                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        return (String) task.getResult().getData();
-                    }
-                });
-    }
     public void setProfileItems() {
         //Profile items
         tvUserName = findViewById(R.id.tvUserName);

@@ -16,6 +16,7 @@ import com.example.reconnect.R;
 import com.example.reconnect.fragments.ConversationsFragment;
 import com.example.reconnect.model.Conversation;
 import com.example.reconnect.model.Message;
+import com.example.reconnect.model.User;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
@@ -84,11 +85,8 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             if (profileImg != null) {
                 Glide.with(context).load(profileImg.getUrl()).circleCrop().into(ibProfileButton);
             }
-            try {
-                name.setText(conversation.getOtherUser().fetchIfNeeded().get("firstName").toString() + " " + conversation.getOtherUser().fetchIfNeeded().get("lastName").toString());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+
+            name.setText(User.getFullName(conversation.getOtherUser()));
             name.setTag(conversation);
                 Message message = null;
                 try {

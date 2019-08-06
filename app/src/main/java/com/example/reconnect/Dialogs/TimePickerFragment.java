@@ -36,13 +36,20 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         datetime.set(Calendar.MINUTE, i1);
         String am_pm;
 
-        if (datetime.get(Calendar.AM_PM) == Calendar.AM) {
-            am_pm = "AM";
-        }
-        else {
-            am_pm = "PM";
+        String AM_PM = " AM";
+        String mm_precede = "";
+        if (i >= 12) {
+            AM_PM = " PM";
+            if (i >=13 && i < 24) {
+                i -= 12;
+            }
+            else {
+                i = 12;
+            }
+        } else if (i == 0) {
+            i = 12;
         }
 
-        mListener.done(i + ":" + i1 + " " + am_pm);
+        mListener.done(i + ":" + i1 + " " + AM_PM);
     }
 }

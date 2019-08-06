@@ -90,7 +90,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     public final static String TAG = "MapFragment";
 
     //From MapActivity
-    private double RANDOMIZATION_DISTANCE = 0.002;
+    private double RANDOMIZATION_DISTANCE = 0.005;
+    private int PIC_SIZE = 150;
     //private final String TAG = "MapActivity";
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -270,7 +271,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             // Define custom marker
             BitmapDescriptor customMarker = BitmapDescriptorFactory.fromResource(R.drawable.map_user_marker);
             if (profileImg != null) {
-                customMarker = BitmapDescriptorFactory.fromBitmap(resizeMapIcons(profileImg, 100, 100));
+                customMarker = BitmapDescriptorFactory.fromBitmap(resizeMapIcons(profileImg, PIC_SIZE, PIC_SIZE));
             }
             Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(pos)

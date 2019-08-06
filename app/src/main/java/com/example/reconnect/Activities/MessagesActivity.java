@@ -51,7 +51,7 @@ public class MessagesActivity extends AppCompatActivity {
     private TextView tvDistanceAway;
     private ImageView ivProfileImage;
     private EditText etMessage;
-    private Button btnSubmit;
+    private ImageView btnSubmit;
     private Conversation conversation;
     LinearLayoutManager linearLayoutManager;
 

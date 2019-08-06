@@ -69,13 +69,15 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
                 @Override
                 public void onClick(View view) {
                     listener.onClick((Conversation) name.getTag());
+                    itemView.setBackgroundColor(itemView.getResources().getColor(R.color.colorAccent));
                 }
             });
-
         }
 
         /* method that connects information to create item_conversation for ConversationsFragment's Recycler View */
         public void bind(Conversation conversation) {
+            itemView.setBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
+
             ParseFile profileImg = null;
             try {
                 profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");

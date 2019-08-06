@@ -212,7 +212,7 @@ public class MessagesActivity extends AppCompatActivity {
             }
         });
 
-        VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(20);
+        VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(SPACING);
         rvMessages.addItemDecoration(dividerItemDecoration);
     }
 

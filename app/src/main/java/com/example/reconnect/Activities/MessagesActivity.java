@@ -1,5 +1,6 @@
 package com.example.reconnect.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -107,6 +108,7 @@ public class MessagesActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("NewApi")
     private void displayConversation() {
         //Setup view objects
         rvMessages = findViewById(R.id.rvMessages);
@@ -145,7 +147,7 @@ public class MessagesActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (etMessage.getText().equals("")) {
+                if (etMessage.getText().length() < 1) {
                     Toast.makeText(getApplicationContext(),"Invalid Message", Toast.LENGTH_LONG).show();
                 } else {
                     saveMessage();
@@ -177,6 +179,14 @@ public class MessagesActivity extends AppCompatActivity {
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        etMessage.setOnContextClickListener(new View.OnContextClickListener() {
+            @Override
+            public boolean onContextClick(View view) {
+                linearLayoutManager.scrollToPosition(mMessage.size() - 1);
+                return false;
+            }
+        });
 
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -287,7 +297,7 @@ public class MessagesActivity extends AppCompatActivity {
         ParseQuery<Message> mainQuery = ParseQuery.or(queries);
         mainQuery.include(Message.KEY_SENDER);
         mainQuery.addAscendingOrder(Message.KEY_CREATED_AT);
-//        mainQuery.setLimit(20);
+        mainQuery.setLimit(20);
 
         mainQuery.findInBackground(new FindCallback<Message>() {
             @Override

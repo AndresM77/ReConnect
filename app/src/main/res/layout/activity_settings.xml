@@ -10,20 +10,21 @@
         android:id="@+id/btnLogOut"
         android:layout_width="315dp"
         android:layout_height="51dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
         android:text="Log Out"
         android:textColor="#E6E8E6"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btnGetContacts" />
 
     <Button
         android:id="@+id/btnReturn"
         android:layout_width="315dp"
         android:layout_height="54dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
         android:text="Return"
@@ -36,12 +37,13 @@
         android:id="@+id/btnSendMessage"
         android:layout_width="321dp"
         android:layout_height="54dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
         android:text="Upload"
         android:textColor="#E6E8E6"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnReturn" />
 
@@ -49,12 +51,12 @@
         android:id="@+id/btnGetContacts"
         android:layout_width="321dp"
         android:layout_height="55dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="96dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
         android:text="Find Contacts"
         android:textColor="#E6E8E6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnFindContacts" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,7 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         btnLogOut = findViewById(R.id.btnLogOut);
         btnReturn = findViewById(R.id.btnReturn);
-        btnUpload = findViewById(R.id.btnUpload);
+        btnUpload = findViewById(R.id.btnSendMessage);
         btnGetContacts = findViewById(R.id.btnGetContacts);
         mUsers = new ArrayList<>();
         mPhones = new ArrayList<>();

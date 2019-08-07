@@ -1,16 +1,25 @@
 package com.example.reconnect.Activities;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.reconnect.R;
+import com.example.reconnect.model.Connection;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -83,16 +92,18 @@ public class RegisterActivity extends AppCompatActivity {
                 if (mUsers.size() > 0) {
                     Toast.makeText(getApplicationContext(), "UserName exists", Toast.LENGTH_LONG).show();
                 } else {
-                    saveUser(etPhone.getText().toString(), etUser.getText().toString(), etPass.getText().toString());
+                    saveUser(etPhone.getText().toString(), etUser.getText().toString(), etPass.getText().toString(), etFirstName.getText().toString(), etLastName.getText().toString());
                 }
             }
         });
     }
 
-    private void saveUser(String phoneNumber, String user, String pass) {
+    private void saveUser(String phoneNumber, String user, String pass, String firstName, String lastName) {
         ParseUser newUser = new ParseUser();
         newUser.put("phoneNumber", phoneNumber);
         newUser.put("username", user);
+        newUser.put("firstName", firstName);
+        newUser.put("lastName", lastName);
         newUser.put("password", pass);
         newUser.put("location", new ParseGeoPoint(0,0));
         try {

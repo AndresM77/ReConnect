@@ -169,7 +169,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         tvIndustry = findViewById(R.id.tvIndustry);
         tvDistance = findViewById(R.id.tvDistance);
         ivProfileImg = findViewById(R.id.ivProfileImg);
-        btnMessage = findViewById(R.id.btnMessage);
+        btnMessage = findViewById(R.id.btnFindContacts);
     }
 
     public void setMeetingItems() {

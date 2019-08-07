@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,19 +13,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
-import com.example.reconnect.Activities.HomeActivity;
 import com.example.reconnect.Activities.MessagesActivity;
 import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.R;
-import com.example.reconnect.fragments.ConversationsFragment;
-import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import java.util.List;
 
 @ParseClassName("User")
 public class User extends ParseUser {
@@ -50,8 +44,8 @@ public class User extends ParseUser {
         TextView userName = messageView.findViewById(R.id.tvUserName);
         TextView industry = messageView.findViewById(R.id.tvIndustry);
         ImageView profileImg = messageView.findViewById(R.id.ivProfileImg);
-        Button btnMessage = messageView.findViewById(R.id.btnMessage);
-        Button btnMeeting = messageView.findViewById(R.id.btnMeeting);
+        Button btnMessage = messageView.findViewById(R.id.btnFindContacts);
+        Button btnMeeting = messageView.findViewById(R.id.btnFindContacts);
         try {
             userName.setText(User.getFullName(contact));
             industry.setText((String) contact.fetchIfNeeded().get("industry"));

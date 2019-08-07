@@ -13,6 +13,7 @@
         android:layout_marginStart="184dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="184dp"
+        android:fontFamily="@font/unica_one"
         android:text="username"
         android:textAlignment="center"
         android:textColor="@color/colorAccent3"
@@ -27,7 +28,7 @@
         android:layout_width="63dp"
         android:layout_height="63dp"
         android:layout_marginStart="171dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/circle_shape"
         android:cropToPadding="false"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,12 +57,27 @@
 
     <ImageView
         android:id="@+id/btnChangeProfile"
-        android:layout_width="19dp"
-        android:layout_height="19dp"
+        android:layout_width="29dp"
+        android:layout_height="29dp"
+        android:layout_marginEnd="150dp"
         android:background="@drawable/circle_shape"
         app:layout_constraintBottom_toBottomOf="@+id/ivProfilePic"
-        app:layout_constraintEnd_toEndOf="@+id/ivProfilePic"
+        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_camera" />
+
+
+    <ProgressBar
+        android:id="@+id/progressCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/swipeContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivProfilePic" />
 
     <View
         android:id="@+id/divider2"

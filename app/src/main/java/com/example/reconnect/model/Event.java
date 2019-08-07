@@ -1,11 +1,14 @@
 package com.example.reconnect.model;
 
+import android.os.Build;
+
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -92,6 +95,9 @@ public class Event extends ParseObject {
         mainQuery.addDescendingOrder(Event.KEY_CREATED_AT);
         mainQuery.addAscendingOrder(Event.KEY_DATE);
         mainQuery.setLimit(20);
+
+        mainQuery.include("attendee");
+        mainQuery.include("creator");
 
         mainQuery.findInBackground(callback);
 

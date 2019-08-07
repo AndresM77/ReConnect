@@ -1,8 +1,6 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.User;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -80,29 +75,25 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
         /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(Connection connection) {
-            try {
-                //set tag in order to get correct Connection to display later
-                name.setTag(connection);
+            itemView.setBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
 
-                // set the profile image
-                ParseFile profileImg = profileImg = (ParseFile) connection.getOtherUser().fetchIfNeeded().get("profileImg");
-                if (profileImg != null) {
-                    Glide.with(context).load(profileImg.getUrl()).circleCrop().into(profileBtn);
-                }
+            //set tag in order to get correct Connection to display later
+            name.setTag(connection);
 
-                // set the location away of the user
-                ParseGeoPoint position1 = connection.getCurrentUser().fetchIfNeeded().getParseGeoPoint("location");
-                ParseGeoPoint position2 = connection.getOtherUser().getParseGeoPoint("location");
-                String out = Connection.getDistanceAway(position1, position2);
-                distanceAwayV.setText(out);
-
-                // set the name of the connection
-                name.setText(User.getFullName(connection.getOtherUser()));
-
-            } catch (ParseException e) {
-                Log.e("Connections Adapter", "Unable to bind the required views together for each contact/connection");
-                e.printStackTrace();
+            // set the profile image
+            ParseFile profileImg = profileImg = (ParseFile) connection.getOtherUser().get("profileImg");
+            if (profileImg != null) {
+                Glide.with(context).load(profileImg.getUrl()).circleCrop().into(profileBtn);
             }
+
+            // set the location away of the user
+            ParseGeoPoint position1 = connection.getCurrentUser().getParseGeoPoint("location");
+            ParseGeoPoint position2 = connection.getOtherUser().getParseGeoPoint("location");
+            String out = Connection.getDistanceAway(position1, position2);
+            distanceAwayV.setText(out);
+
+            // set the name of the connection
+            name.setText(User.getFullName(connection.getOtherUser()));
 
         }
 

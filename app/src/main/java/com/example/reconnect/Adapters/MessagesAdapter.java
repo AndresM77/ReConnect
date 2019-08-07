@@ -20,7 +20,6 @@ import com.example.reconnect.model.Message;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
@@ -67,38 +66,36 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
         // method that connects information to create item_contact for MapFragment's Recycler View
         public void bind(Message message) {
-            tvMessage.setText(message.getMessage() + "  ");
+            tvMessage.setText(message.getMessage());
 
             ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(cvMessage.getLayoutParams());
-
-            if (message.getIsRequest()) {
-                try {
-                    tvMessage.setText(message.getOtherUser().fetchIfNeeded().get("firstName") +" has accepted your meeting request.  ");
-                } catch (ParseException e) {
-                    Log.e("Messages Adapter", "Unable to get the username of the attendee");
-                    e.printStackTrace();
-                }
-                tvMessage.setTypeface(null, Typeface.BOLD_ITALIC);
-                tvMessage.setTextColor(ContextCompat.getColor(context, R.color.colorAccent3));
-                messageBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite));
-            }
 
             try {
                 if (message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
                     params.endToEnd = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+                    messageBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent2));
                 }
                 else {
                     params.startToStart = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
                     cvMessage.setForegroundGravity(Gravity.LEFT);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                    messageBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent3));
                 }
             } catch (ParseException e) {
                 Log.e("Messages Adapter", "Unable to determine the which side to show message on");
                 e.printStackTrace();
             }
+
+            if (message.getIsRequest()) {
+                tvMessage.setTypeface(null, Typeface.BOLD_ITALIC);
+                tvMessage.setTextColor(ContextCompat.getColor(context, R.color.colorAccent3));
+                messageBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            }
+
+
         }
 
     }

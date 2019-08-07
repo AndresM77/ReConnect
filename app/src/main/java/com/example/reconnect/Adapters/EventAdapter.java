@@ -144,7 +144,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             try {
 
                 final String meetingTitle = event.getName().equals("") ? "Meeting " : event.getName();
-                Boolean isPersonalEvent = event.getAttendee().fetchIfNeeded().getUsername().equals(event.getCreator().fetchIfNeeded().getUsername());
+                Boolean isPersonalEvent = event.getAttendee().getUsername().equals(event.getCreator().getUsername());
 
                 // set all views with information that does not depend on the status of the event
 
@@ -180,7 +180,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                     event.setPending(false);
                                     event.setAccepted(true);
                                     event.saveInBackground();
-                                    mFragment.eventQuery();
+                                    mFragment.eventQuery(view);
 
                                     alertRequestAccepted(event);
                                 }
@@ -192,7 +192,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                     event.setPending(false);
                                     event.setAccepted(false);
                                     event.saveInBackground();
-                                    mFragment.eventQuery();
+                                    mFragment.eventQuery(view);
                                 }
                             });
                         }
@@ -223,7 +223,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 // delete event functionality
                 eventLayout.setOnLongClickListener(new View.OnLongClickListener() {
                     private void showDialogForUserSelection() {
-                        View view = LayoutInflater.from(mContext).inflate(R.layout.item_alert_delete_event, null);
+                        final View view = LayoutInflater.from(mContext).inflate(R.layout.item_alert_delete_event, null);
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
                         alertDialogBuilder.setView(view);
                         final AlertDialog alertDialog = alertDialogBuilder.create();
@@ -233,7 +233,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 try {
                                     event.delete();
-                                    mFragment.eventQuery();
+                                    mFragment.eventQuery(view);
                                     alertDialog.hide();
                                 } catch (ParseException e) {
                                     Log.e("Event Adapter", "Unable to delete the event");
@@ -281,7 +281,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             } else {
                 attendee.setText(User.getFullName(event.getOtherUser()));
             }
-            String attendeeIndustry = event.getAttendee().fetchIfNeeded().get("industry").toString();
+            String attendeeIndustry = event.getAttendee().get("industry").toString();
             industry.setText(attendeeIndustry);
         }
 

@@ -4,15 +4,6 @@
     tools:context=".Activities.HomeActivity">
 
     <item
-        android:id="@+id/ivSettings"
-        android:icon="@drawable/ic_settings"
-        android:layout_width="2dp"
-        android:layout_height="2dp"
-        app:showAsAction="ifRoom"
-        android:title="@string/settings">
-    </item>
-
-    <item
         android:id="@+id/ivSwitchButton"
         android:icon="@drawable/ic_switch_map"
         app:showAsAction="ifRoom"
@@ -34,4 +25,13 @@
         android:layout_height="10dp"
         android:title="New Conversation"
         app:showAsAction="ifRoom"></item>
+
+    <item
+        android:id="@+id/ivSettings"
+        android:icon="@drawable/ic_settings"
+        android:layout_width="2dp"
+        android:layout_height="2dp"
+        app:showAsAction="ifRoom"
+        android:title="@string/settings">
+    </item>
 </menu>

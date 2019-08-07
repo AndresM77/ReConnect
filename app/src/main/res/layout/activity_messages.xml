@@ -8,15 +8,17 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
-        android:layout_width="386dp"
-        android:layout_height="510dp"
+        android:layout_width="357dp"
+        android:layout_height="425dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout1"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintHorizontal_bias="0.424"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout1">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMessages"
@@ -50,9 +52,8 @@
 
     <FrameLayout
         android:id="@+id/frameLayout2"
-        android:layout_width="408dp"
+        android:layout_width="416dp"
         android:layout_height="86dp"
-        android:layout_marginStart="8dp"
         android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

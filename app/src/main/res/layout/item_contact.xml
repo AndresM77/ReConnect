@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
-    android:background="#2CFFFFFF"
-    android:orientation="vertical">
+    android:background="#2CFFFFFF">
 
     <ImageView
         android:id="@+id/ivProfileImg"

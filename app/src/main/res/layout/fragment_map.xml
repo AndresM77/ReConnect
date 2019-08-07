@@ -9,9 +9,37 @@
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="410dp"
         android:layout_height="667dp"
-        android:layout_below="@+id/btnSwitch"
         android:layout_alignParentStart="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="163dp"
+        android:background="@color/colorPrimaryLight"
+        android:fontFamily="@font/unica_one"
+        android:text="Your Connections"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorAccent2"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="80dp" />
+        app:layout_constraintTop_toTopOf="@+id/map" />
+
+    <ProgressBar
+        android:id="@+id/progressMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/map" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

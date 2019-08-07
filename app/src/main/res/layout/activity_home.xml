@@ -31,14 +31,14 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="455dp"
-        android:layout_height="57dp"
+        android:layout_width="453dp"
+        android:layout_height="54dp"
         android:background="#FFFF"
         android:elevation="10dp"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:logo="@drawable/relink_logo"
+        app:logo="@drawable/updated_logo"
         app:titleTextColor="@android:color/white" />
 
 

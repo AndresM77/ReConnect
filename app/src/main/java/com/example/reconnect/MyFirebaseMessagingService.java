@@ -26,10 +26,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     /* This method decides what to do when a notification is received */
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
-        //TODO check
-       // if(remoteMessage.getData().get("recipient").equals(ParseUser.getCurrentUser().getObjectId())) {
-
             Log.d("FCM", "message received");
 
             Intent i = new Intent(this, NotificationActivity.class);
@@ -45,17 +41,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_ONE_SHOT);
 
             //create a notification
-            //TODO more customization here
             NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-                    .setSmallIcon(R.drawable.relink_logo)
+                    .setSmallIcon(R.drawable.updated_logo)
                     .setContentTitle(remoteMessage.getNotification().getTitle())
                     .setContentText(remoteMessage.getNotification().getBody())
                     .setContentIntent(pendingIntent);
 
-            // notify manager that the notification has been built
             nManager.notify(notificationId, nBuilder.build());
-      //  }
-
     }
 
     @Override
@@ -88,7 +80,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             NotificationChannel adminChannel = new NotificationChannel(ADMIN_CHANNEL_ID, adminChannelName, NotificationManager.IMPORTANCE_HIGH);
             adminChannel.setDescription(adminChannelDescription);
-            //TODO more customization here
 
             nManager.createNotificationChannel(adminChannel);
         }

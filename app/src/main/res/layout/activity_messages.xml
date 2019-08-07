@@ -8,8 +8,8 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
-        android:layout_width="366dp"
-        android:layout_height="485dp"
+        android:layout_width="357dp"
+        android:layout_height="406dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"

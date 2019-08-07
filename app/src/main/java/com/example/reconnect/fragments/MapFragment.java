@@ -136,7 +136,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
 
@@ -168,6 +168,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                 @Override
                 public void onMapReady(GoogleMap map) {
                     loadMap(map);
+                    view.findViewById(R.id.progressMap).setVisibility(View.GONE);
                 }
             });
         } else {
@@ -203,7 +204,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                         e.printStackTrace();
                         return;
                     }
-                    Log.d("Connection", "got here");
                     mConnections.clear();
                     mConnections.addAll(connections);
                     loadMarkers(googleMap);

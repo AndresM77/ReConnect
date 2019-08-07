@@ -72,11 +72,7 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     private void initViewComp() {
-        if (getIntent().getParcelableExtra("conversation") != null){
-            conversation = getIntent().getParcelableExtra("conversation");
-            displayConversation();
-        }
-        else if (getIntent().getParcelableExtra("contact") != null) {
+        if (getIntent().getParcelableExtra("contact") != null) {
             Conversation.findConversation(ParseUser.getCurrentUser(), (ParseUser) getIntent().getParcelableExtra("contact"), new FindCallback<Conversation>() {
                 @Override
                 public void done(List<Conversation> objects, ParseException e) {
@@ -124,20 +120,16 @@ public class MessagesActivity extends AppCompatActivity {
         rvMessages.setLayoutManager(linearLayoutManager);
         tvContactName = findViewById(R.id.tvContactName);
         etMessage = findViewById(R.id.etMessage);
-        btnSubmit = findViewById(R.id.btnMessage);
+        btnSubmit = findViewById(R.id.btnSendMessage);
         tvDistanceAway = findViewById(R.id.tvDistanceAway);
         tvIndustry = findViewById(R.id.tvIndustry);
         ivProfileImage = findViewById(R.id.ivProfileImg);
         ParseFile profileImg = null;
 
-        try {
-            tvContactName.setText(User.getFullName(conversation.getOtherUser()));
-            tvIndustry.setText((String) conversation.getOtherUser().fetchIfNeeded().get("industry"));
-            tvDistanceAway.setText(Connection.getDistanceAway(conversation.getOtherUser().getParseGeoPoint("location"), ParseUser.getCurrentUser().getParseGeoPoint("location")));
-            profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");
-        } catch (ParseException ee) {
-            ee.printStackTrace();
-        }
+        tvContactName.setText(User.getFullName(conversation.getOtherUser()));
+        tvIndustry.setText((String) conversation.getOtherUser().get("industry"));
+        tvDistanceAway.setText(Connection.getDistanceAway(conversation.getOtherUser().getParseGeoPoint("location"), ParseUser.getCurrentUser().getParseGeoPoint("location")));
+        profileImg = (ParseFile) conversation.getOtherUser().get("profileImg");
 
 
         if (profileImg != null) {
@@ -294,9 +286,14 @@ public class MessagesActivity extends AppCompatActivity {
         queries.add(query2);
 
         ParseQuery<Message> mainQuery = ParseQuery.or(queries);
-        mainQuery.include(Message.KEY_SENDER);
+        mainQuery.include("sender");
+        mainQuery.include("recipient");
+        mainQuery.include("conversation");
+        mainQuery.include("message");
         mainQuery.addAscendingOrder(Message.KEY_CREATED_AT);
         mainQuery.setLimit(20);
+
+
 
         mainQuery.findInBackground(new FindCallback<Message>() {
             @Override
@@ -310,6 +307,7 @@ public class MessagesActivity extends AppCompatActivity {
                 mMessage.addAll(messages);
                 adapter.notifyDataSetChanged();
                 linearLayoutManager.scrollToPosition(mMessage.size() - 1);
+                findViewById(R.id.progressMessages).setVisibility(View.GONE);
             }
         });
     }

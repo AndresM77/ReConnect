@@ -44,7 +44,7 @@ public class User extends ParseUser {
         TextView userName = messageView.findViewById(R.id.tvUserName);
         TextView industry = messageView.findViewById(R.id.tvIndustry);
         ImageView profileImg = messageView.findViewById(R.id.ivProfileImg);
-        Button btnMessage = messageView.findViewById(R.id.btnFindContacts);
+        Button btnMessage = messageView.findViewById(R.id.btnSendMessage);
         Button btnMeeting = messageView.findViewById(R.id.btnFindContacts);
         try {
             userName.setText(User.getFullName(contact));

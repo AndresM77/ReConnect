@@ -1,8 +1,6 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.User;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -80,6 +75,8 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
         /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(Connection connection) {
+            itemView.setBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
+
             //set tag in order to get correct Connection to display later
             name.setTag(connection);
 

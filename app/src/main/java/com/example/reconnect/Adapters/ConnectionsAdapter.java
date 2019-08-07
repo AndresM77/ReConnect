@@ -80,29 +80,23 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
         /* method that connects information to create item_contact for MapFragment's Recycler View */
         public void bind(Connection connection) {
-            try {
-                //set tag in order to get correct Connection to display later
-                name.setTag(connection);
+            //set tag in order to get correct Connection to display later
+            name.setTag(connection);
 
-                // set the profile image
-                ParseFile profileImg = profileImg = (ParseFile) connection.getOtherUser().fetchIfNeeded().get("profileImg");
-                if (profileImg != null) {
-                    Glide.with(context).load(profileImg.getUrl()).circleCrop().into(profileBtn);
-                }
-
-                // set the location away of the user
-                ParseGeoPoint position1 = connection.getCurrentUser().fetchIfNeeded().getParseGeoPoint("location");
-                ParseGeoPoint position2 = connection.getOtherUser().getParseGeoPoint("location");
-                String out = Connection.getDistanceAway(position1, position2);
-                distanceAwayV.setText(out);
-
-                // set the name of the connection
-                name.setText(User.getFullName(connection.getOtherUser()));
-
-            } catch (ParseException e) {
-                Log.e("Connections Adapter", "Unable to bind the required views together for each contact/connection");
-                e.printStackTrace();
+            // set the profile image
+            ParseFile profileImg = profileImg = (ParseFile) connection.getOtherUser().get("profileImg");
+            if (profileImg != null) {
+                Glide.with(context).load(profileImg.getUrl()).circleCrop().into(profileBtn);
             }
+
+            // set the location away of the user
+            ParseGeoPoint position1 = connection.getCurrentUser().getParseGeoPoint("location");
+            ParseGeoPoint position2 = connection.getOtherUser().getParseGeoPoint("location");
+            String out = Connection.getDistanceAway(position1, position2);
+            distanceAwayV.setText(out);
+
+            // set the name of the connection
+            name.setText(User.getFullName(connection.getOtherUser()));
 
         }
 

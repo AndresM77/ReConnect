@@ -66,7 +66,7 @@ public class CalendarFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
         rvEvents = view.findViewById(R.id.rvEvents);
@@ -123,7 +123,7 @@ public class CalendarFragment extends Fragment {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 swipeContainer.setRefreshing(false);
-                eventQuery();
+                eventQuery(view);
             }
         });
 
@@ -134,7 +134,7 @@ public class CalendarFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         //query posts
-        eventQuery();
+        eventQuery(view);
     }
 
     public void launchCamera() {
@@ -175,7 +175,7 @@ public class CalendarFragment extends Fragment {
     }
 
 
-    public void eventQuery() {
+    public void eventQuery(final View view) {
         Event.queryEvents(new FindCallback<Event>() {
             @Override
             public void done(List<Event> objects, ParseException e) {
@@ -187,6 +187,7 @@ public class CalendarFragment extends Fragment {
                 mEvents.clear();
                 mEvents.addAll(createViewOrderArray(objects));
                 adapter.notifyDataSetChanged();
+                view.findViewById(R.id.progressCalendar).setVisibility(View.GONE);
             }
         });
     }

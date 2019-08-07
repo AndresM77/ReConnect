@@ -130,14 +130,10 @@ public class MessagesActivity extends AppCompatActivity {
         ivProfileImage = findViewById(R.id.ivProfileImg);
         ParseFile profileImg = null;
 
-        try {
-            tvContactName.setText(User.getFullName(conversation.getOtherUser()));
-            tvIndustry.setText((String) conversation.getOtherUser().fetchIfNeeded().get("industry"));
-            tvDistanceAway.setText(Connection.getDistanceAway(conversation.getOtherUser().getParseGeoPoint("location"), ParseUser.getCurrentUser().getParseGeoPoint("location")));
-            profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");
-        } catch (ParseException ee) {
-            ee.printStackTrace();
-        }
+        tvContactName.setText(User.getFullName(conversation.getOtherUser()));
+        tvIndustry.setText((String) conversation.getOtherUser().get("industry"));
+        tvDistanceAway.setText(Connection.getDistanceAway(conversation.getOtherUser().getParseGeoPoint("location"), ParseUser.getCurrentUser().getParseGeoPoint("location")));
+        profileImg = (ParseFile) conversation.getOtherUser().get("profileImg");
 
 
         if (profileImg != null) {
@@ -294,9 +290,13 @@ public class MessagesActivity extends AppCompatActivity {
         queries.add(query2);
 
         ParseQuery<Message> mainQuery = ParseQuery.or(queries);
-        mainQuery.include(Message.KEY_SENDER);
+        mainQuery.include("sender");
+        mainQuery.include("recipient");
+        mainQuery.include("conversation");
         mainQuery.addAscendingOrder(Message.KEY_CREATED_AT);
         mainQuery.setLimit(20);
+
+
 
         mainQuery.findInBackground(new FindCallback<Message>() {
             @Override
@@ -310,6 +310,7 @@ public class MessagesActivity extends AppCompatActivity {
                 mMessage.addAll(messages);
                 adapter.notifyDataSetChanged();
                 linearLayoutManager.scrollToPosition(mMessage.size() - 1);
+                findViewById(R.id.progressMessages).setVisibility(View.GONE);
             }
         });
     }

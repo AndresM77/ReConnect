@@ -79,11 +79,9 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             itemView.setBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
 
             ParseFile profileImg = null;
-            try {
-                profileImg = (ParseFile) conversation.getOtherUser().fetchIfNeeded().get("profileImg");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+
+            profileImg = (ParseFile) conversation.getOtherUser().get("profileImg");
+
             if (profileImg != null) {
                 Glide.with(context).load(profileImg.getUrl()).circleCrop().into(ibProfileButton);
             }

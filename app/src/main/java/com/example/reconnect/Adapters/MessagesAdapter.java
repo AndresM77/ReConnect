@@ -77,7 +77,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             }
 
             try {
-                if (message.getSender().fetchIfNeeded().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
+                if (message.getSender().getUsername().equals(ParseUser.getCurrentUser().fetchIfNeeded().getUsername())) {
                     params.endToEnd = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);

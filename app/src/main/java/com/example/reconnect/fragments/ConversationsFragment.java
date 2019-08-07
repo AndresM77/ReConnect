@@ -52,7 +52,7 @@ public class ConversationsFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
         title = view.findViewById(R.id.chats_tv);
@@ -86,7 +86,7 @@ public class ConversationsFragment extends Fragment {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 swipeContainer.setRefreshing(false);
-                query();
+                query(view);
             }
         });
         // Configure the refreshing colors
@@ -95,7 +95,7 @@ public class ConversationsFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         //query posts
-        query();
+        query(view);
     }
 
     private void goToConversation(Conversation conversation) {
@@ -104,7 +104,7 @@ public class ConversationsFragment extends Fragment {
         startActivity(i);
     }
 
-    private void query() {
+    private void query(final View view) {
         Conversation.queryConversations(new FindCallback<Conversation>() {
             @Override
             public void done(List<Conversation> objects, ParseException e) {
@@ -116,6 +116,7 @@ public class ConversationsFragment extends Fragment {
                 mConversations.clear();
                 mConversations.addAll(objects);
                 adapter.notifyDataSetChanged();
+                view.findViewById(R.id.progressConversation).setVisibility(View.GONE);
             }
         });
     }

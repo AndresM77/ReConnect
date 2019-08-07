@@ -32,7 +32,7 @@ Conversation extends ParseObject {
 
     public ParseUser getCurrentUser() {
         try {
-            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getConversee().fetchIfNeeded().getUsername())){
+            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getConversee().getUsername())){
                 return getConversee();
             } else {
                 return getConverser();
@@ -45,7 +45,7 @@ Conversation extends ParseObject {
 
     public ParseUser getOtherUser() {
         try {
-            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getConversee().fetchIfNeeded().getUsername())){
+            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getConversee().getUsername())){
                 return getConverser();
             } else {
                 return getConversee();
@@ -69,6 +69,10 @@ Conversation extends ParseObject {
         queries.add(postQuery2);
 
         ParseQuery<Conversation> mainQuery = ParseQuery.or(queries);
+
+        mainQuery.include("converser");
+        mainQuery.include("conversee");
+        mainQuery.include("lastConversation");
         mainQuery.addDescendingOrder(Conversation.KEY_LAST_MESSAGE);
 
         mainQuery.findInBackground(callback);
@@ -91,6 +95,9 @@ Conversation extends ParseObject {
 
         ParseQuery<Conversation> mainQuery = ParseQuery.or(queries);
 
+        mainQuery.include("converser");
+        mainQuery.include("conversee");
+
         mainQuery.findInBackground(callback);
     }
 
@@ -108,6 +115,7 @@ Conversation extends ParseObject {
 
         public Conversation.Query withUser() {
             include("converser");
+            include("conversee");
             return this;
         }
     }

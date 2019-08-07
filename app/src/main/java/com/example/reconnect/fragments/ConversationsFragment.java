@@ -100,7 +100,7 @@ public class ConversationsFragment extends Fragment {
 
     private void goToConversation(Conversation conversation) {
         Intent i = new Intent(getContext(), MessagesActivity.class);
-        i.putExtra("conversation", conversation);
+        i.putExtra("contact", conversation.getOtherUser());
         startActivity(i);
     }
 

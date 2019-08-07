@@ -72,7 +72,7 @@ Conversation extends ParseObject {
 
         mainQuery.include("converser");
         mainQuery.include("conversee");
-        mainQuery.include("lastConversation");
+        mainQuery.include("lastMessage");
         mainQuery.addDescendingOrder(Conversation.KEY_LAST_MESSAGE);
 
         mainQuery.findInBackground(callback);
@@ -97,6 +97,7 @@ Conversation extends ParseObject {
 
         mainQuery.include("converser");
         mainQuery.include("conversee");
+        mainQuery.include("lastMessage");
 
         mainQuery.findInBackground(callback);
     }

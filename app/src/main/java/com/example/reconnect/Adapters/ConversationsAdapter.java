@@ -89,16 +89,12 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             name.setText(User.getFullName(conversation.getOtherUser()));
             name.setTag(conversation);
                 Message message = null;
-                try {
-                        message = (Message) conversation.getLastMessage();
-                    if (message != null && message.fetchIfNeeded().get("message") != null ){
-                        lastMessage.setText(message.getMessage());
-                    }
-                    else {
-                        lastMessage.setText("");
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                message = (Message) conversation.getLastMessage();
+                if (message != null && message.get("message") != null ){
+                    lastMessage.setText(message.getMessage());
+                }
+                else {
+                    lastMessage.setText("");
                 }
 
 

@@ -72,11 +72,7 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     private void initViewComp() {
-        if (getIntent().getParcelableExtra("conversation") != null){
-            conversation = getIntent().getParcelableExtra("conversation");
-            displayConversation();
-        }
-        else if (getIntent().getParcelableExtra("contact") != null) {
+        if (getIntent().getParcelableExtra("contact") != null) {
             Conversation.findConversation(ParseUser.getCurrentUser(), (ParseUser) getIntent().getParcelableExtra("contact"), new FindCallback<Conversation>() {
                 @Override
                 public void done(List<Conversation> objects, ParseException e) {
@@ -293,6 +289,7 @@ public class MessagesActivity extends AppCompatActivity {
         mainQuery.include("sender");
         mainQuery.include("recipient");
         mainQuery.include("conversation");
+        mainQuery.include("message");
         mainQuery.addAscendingOrder(Message.KEY_CREATED_AT);
         mainQuery.setLimit(20);
 

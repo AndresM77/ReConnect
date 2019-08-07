@@ -167,8 +167,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             mapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap map) {
-                    loadMap(map);
-                    view.findViewById(R.id.progressMap).setVisibility(View.GONE);
+                    loadMap(map, view);
                 }
             });
         } else {
@@ -176,7 +175,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         }
     }
 
-    protected void loadMap(final GoogleMap googleMap) {
+    protected void loadMap(final GoogleMap googleMap, final View view) {
         map = googleMap;
         if (map != null && isAdded()) {
             // Map is ready
@@ -207,6 +206,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                     mConnections.clear();
                     mConnections.addAll(connections);
                     loadMarkers(googleMap);
+                    view.findViewById(R.id.progressMap).setVisibility(View.GONE);
                 }
             });
         } else {
@@ -255,18 +255,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         for (int i = 0; i < mConnections.size(); i++) {
             ParseGeoPoint geo = null;
             ParseFile profileImg = null;
-            try {
-                profileImg = (ParseFile) mConnections.get(i).getOtherUser().fetchIfNeeded().get("profileImg");
-                geo = (ParseGeoPoint) mConnections.get(i).getOtherUser().fetchIfNeeded().get("location");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+
+            profileImg = (ParseFile) mConnections.get(i).getOtherUser().get("profileImg");
+            geo = (ParseGeoPoint) mConnections.get(i).getOtherUser().get("location");
+
             String conName = "";
-            try {
-                conName = mConnections.get(i).getOtherUser().fetchIfNeeded().getUsername();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+
+            conName = mConnections.get(i).getOtherUser().getUsername();
+
             LatLng pos = new LatLng(geo.getLatitude() + randomizer(), geo.getLongitude() + randomizer());
             // Define custom marker
             BitmapDescriptor customMarker = BitmapDescriptorFactory.fromResource(R.drawable.map_user_marker);
@@ -512,17 +508,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         ImageView profileImg = messageView.findViewById(R.id.ivProfileImg);
         Button btnMessage = messageView.findViewById(R.id.btnMessage);
         Button btnMeeting = messageView.findViewById(R.id.btnMeeting);
-        try {
-            userName.setText(User.getFullName(contact.getOtherUser()));
-            industry.setText((String) contact.getOtherUser().fetchIfNeeded().get("industry"));
-            ParseFile img = (ParseFile) contact.getOtherUser().fetchIfNeeded().get("profileImg");
-            if (img != null) {
-                Glide.with(getContext()).load(img.getUrl()).circleCrop().into(profileImg);
-            } else {
-                Glide.with(getContext()).load((R.drawable.baseline_account_circle_black_48)).circleCrop().into(profileImg);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+
+        userName.setText(User.getFullName(contact.getOtherUser()));
+        industry.setText((String) contact.getOtherUser().get("industry"));
+        ParseFile img = (ParseFile) contact.getOtherUser().get("profileImg");
+        if (img != null) {
+            Glide.with(getContext()).load(img.getUrl()).circleCrop().into(profileImg);
+        } else {
+            Glide.with(getContext()).load((R.drawable.baseline_account_circle_black_48)).circleCrop().into(profileImg);
         }
 
         btnMessage.setOnClickListener(new View.OnClickListener() {

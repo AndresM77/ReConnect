@@ -26,27 +26,29 @@
         android:id="@+id/btnSendMessage"
         android:layout_width="119dp"
         android:layout_height="48dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="56dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
         android:padding="0dp"
         android:text="Upload from phone"
         android:textColor="@color/colorPrimaryLight"
-        app:layout_constraintStart_toStartOf="@+id/flBody"
-        tools:layout_editor_absoluteY="105dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/flBody"
+        app:layout_constraintStart_toStartOf="@+id/flBody" />
 
     <Button
         android:id="@+id/btnFindContacts"
         android:layout_width="119dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="56dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
         android:padding="0dp"
         android:text="Find on app"
         android:textColor="@color/colorPrimaryLight"
-        app:layout_constraintEnd_toEndOf="@+id/flBody"
-        tools:layout_editor_absoluteY="105dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/flBody"
+        app:layout_constraintEnd_toEndOf="@+id/flBody" />
 
     <TextView
         android:id="@+id/tvQuestion"

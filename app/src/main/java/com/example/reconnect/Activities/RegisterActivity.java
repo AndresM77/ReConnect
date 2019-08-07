@@ -92,16 +92,18 @@ public class RegisterActivity extends AppCompatActivity {
                 if (mUsers.size() > 0) {
                     Toast.makeText(getApplicationContext(), "UserName exists", Toast.LENGTH_LONG).show();
                 } else {
-                    saveUser(etPhone.getText().toString(), etUser.getText().toString(), etPass.getText().toString());
+                    saveUser(etPhone.getText().toString(), etUser.getText().toString(), etPass.getText().toString(), etFirstName.getText().toString(), etLastName.getText().toString());
                 }
             }
         });
     }
 
-    private void saveUser(String phoneNumber, String user, String pass) {
+    private void saveUser(String phoneNumber, String user, String pass, String firstName, String lastName) {
         ParseUser newUser = new ParseUser();
         newUser.put("phoneNumber", phoneNumber);
         newUser.put("username", user);
+        newUser.put("firstName", firstName);
+        newUser.put("lastName", lastName);
         newUser.put("password", pass);
         newUser.put("location", new ParseGeoPoint(0,0));
         try {

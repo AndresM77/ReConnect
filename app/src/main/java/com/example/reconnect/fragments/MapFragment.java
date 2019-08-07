@@ -263,13 +263,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             }
         });
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent i = new Intent(context, MapFragment.class);
-//                startActivity(i);
-            }
-        });
 
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 

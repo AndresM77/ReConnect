@@ -150,7 +150,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
 
@@ -181,7 +181,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             mapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap map) {
-                    loadMap(map);
+                    loadMap(map, view);
                 }
             });
         } else {
@@ -189,7 +189,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         }
     }
 
-    protected void loadMap(final GoogleMap googleMap) {
+    protected void loadMap(final GoogleMap googleMap, final View view) {
         map = googleMap;
         if (map != null && isAdded()) {
             // Map is ready
@@ -224,6 +224,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                     mConnections.clear();
                     mConnections.addAll(connections);
                     loadMarkers(googleMap);
+                    view.findViewById(R.id.progressMap).setVisibility(View.GONE);
                 }
             });
         } else {
@@ -242,7 +243,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         tvQuestion = messageView.findViewById(R.id.tvQuestion);
         btnUpload = messageView.findViewById(R.id.btnSendMessage);
         btnFindContacts = messageView.findViewById(R.id.btnFindContacts);
-        btnCancel = messageView.findViewById(R.id.btnCancel);
 
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override

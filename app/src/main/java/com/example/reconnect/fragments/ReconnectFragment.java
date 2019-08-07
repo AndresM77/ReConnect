@@ -46,7 +46,7 @@ public class ReconnectFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
         rvConnections = view.findViewById(R.id.rvConnections);
@@ -71,7 +71,7 @@ public class ReconnectFragment extends Fragment {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 swipeContainer.setRefreshing(false);
-                query();
+                query(view);
             }
         });
         // Configure the refreshing colors
@@ -80,10 +80,10 @@ public class ReconnectFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         //query posts
-        query();
+        query(view);
     }
 
-    private void query() {
+    private void query(final View view) {
         Connection.queryConnections(new FindCallback<Connection>() {
             @Override
             public void done(List<Connection> objects, ParseException e) {
@@ -95,6 +95,7 @@ public class ReconnectFragment extends Fragment {
                 mConnections.clear();
                 mConnections.addAll(objects);
                 adapter.notifyDataSetChanged();
+                view.findViewById(R.id.progressContacts).setVisibility(View.GONE);
             }
         });
     }

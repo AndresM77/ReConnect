@@ -46,7 +46,7 @@ public class Connection extends ParseObject {
 
     public ParseUser getCurrentUser() {
         try {
-            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getUser1().fetchIfNeeded().getUsername())){
+            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getUser1().getUsername())){
                 return getUser1();
             } else {
                 return getUser2();
@@ -59,7 +59,7 @@ public class Connection extends ParseObject {
 
     public ParseUser getOtherUser() {
         try {
-            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getUser1().fetchIfNeeded().getUsername())){
+            if (ParseUser.getCurrentUser().fetchIfNeeded().getUsername().equals(getUser1().getUsername())){
                 return getUser2();
             } else {
                 return getUser1();
@@ -85,6 +85,9 @@ public class Connection extends ParseObject {
         ParseQuery<Connection> mainQuery = ParseQuery.or(queries);
         mainQuery.addDescendingOrder(Connection.KEY_CREATED_AT);
         mainQuery.setLimit(20);
+
+        mainQuery.include("user1");
+        mainQuery.include("user2");
 
         mainQuery.findInBackground(callback);
     }

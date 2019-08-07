@@ -39,6 +39,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         // Display the chosen date to app interface
         //TODO fix to be normal
-        mDatePickerDoneListener.done(day + "/" + (monthIndex+1) + "/" + year);
+        mDatePickerDoneListener.done((monthIndex+1) + "/" + day + "/" + year);
     }
 }

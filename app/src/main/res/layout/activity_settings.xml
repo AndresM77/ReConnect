@@ -33,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnLogOut" />
 
     <Button
-        android:id="@+id/btnUpload"
+        android:id="@+id/btnSendMessage"
         android:layout_width="321dp"
         android:layout_height="54dp"
         android:layout_marginTop="56dp"
@@ -56,5 +56,5 @@
         android:textColor="#E6E8E6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnUpload" />
+        app:layout_constraintTop_toBottomOf="@+id/btnFindContacts" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -121,7 +121,7 @@ public class MessagesActivity extends AppCompatActivity {
         rvMessages.setLayoutManager(linearLayoutManager);
         tvContactName = findViewById(R.id.tvContactName);
         etMessage = findViewById(R.id.etMessage);
-        btnSubmit = findViewById(R.id.btnMessage);
+        btnSubmit = findViewById(R.id.btnFindContacts);
         tvDistanceAway = findViewById(R.id.tvDistanceAway);
         tvIndustry = findViewById(R.id.tvIndustry);
         ivProfileImage = findViewById(R.id.ivProfileImg);

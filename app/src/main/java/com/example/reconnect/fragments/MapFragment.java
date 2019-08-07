@@ -3,10 +3,12 @@ package com.example.reconnect.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -21,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +34,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +43,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.example.reconnect.Activities.AllUsersActivity;
+import com.example.reconnect.Activities.HomeActivity;
 import com.example.reconnect.Activities.MessagesActivity;
 import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.Adapters.CustomWindowAdapter;
@@ -71,6 +77,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -81,7 +88,6 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.PermissionUtils;
 
 import static androidx.core.content.PermissionChecker.checkSelfPermission;
-import static com.example.reconnect.model.Connection.queryConnections;
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickListener{
@@ -106,6 +112,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     private List<Conversation> mConversations;
     private Connection contact;
     private Context context;
+    // For contact popup
+    TextView tvQuestion;
+    Button btnUpload;
+    Button btnFindContacts;
+    Button btnCancel;
+    private List<String> cUserNames;
+    private List<ParseUser> mUsers;
+    private List<String> mPhones = new ArrayList<>();;
 
     //Permission variables
     private static final int REQUEST_GETMYLOCATION = 0;
@@ -142,7 +156,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
 
         centered = false;
 
-        context = getActivity().getApplicationContext();
+        context = getActivity();
 
         //Instantiating connections list
         mConnections = new ArrayList<>();
@@ -194,7 +208,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             });
             //Load markers of peoples positions on the map
             //mQueryConnections(googleMap);
-            queryConnections(new FindCallback<Connection>() {
+            Connection.queryConnections(new FindCallback<Connection>() {
 
                 @Override
                 public void done(List<Connection> connections, ParseException e) {
@@ -202,6 +216,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                         Log.e("Connection", "Error with Query");
                         e.printStackTrace();
                         return;
+                    }
+                    if (ParseUser.getCurrentUser() != null && connections.size() == 0) {
+                        showDialogForUploadingContacts();
                     }
                     Log.d("Connection", "got here");
                     mConnections.clear();
@@ -214,9 +231,179 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         }
     }
 
+    private void showDialogForUploadingContacts() {
+        View messageView = LayoutInflater.from(context).inflate(R.layout.item_upload_contacts, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(messageView);
+
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+
+        //Configure Text
+        tvQuestion = messageView.findViewById(R.id.tvQuestion);
+        btnUpload = messageView.findViewById(R.id.btnSendMessage);
+        btnFindContacts = messageView.findViewById(R.id.btnFindContacts);
+        btnCancel = messageView.findViewById(R.id.btnCancel);
+
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Unleash the best and get the contacts
+                getContactList();
+                Intent i = new Intent(context, HomeActivity.class);
+                startActivity(i);
+                Toast.makeText(getActivity(), "Contacts uploaded.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnFindContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, AllUsersActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent i = new Intent(context, MapFragment.class);
+//                startActivity(i);
+            }
+        });
+
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // Display the dialog
+        alertDialog.show();
+    }
+
+    private void getContactList() {
+        mPhones.clear();
+        ContentResolver cr = context.getContentResolver();
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                null, null, null, null);
+
+        if ((cur != null ? cur.getCount() : 0) > 0) {
+            while (cur != null && cur.moveToNext()) {
+                String id = cur.getString(
+                        cur.getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cur.getString(cur.getColumnIndex(
+                        ContactsContract.Contacts.DISPLAY_NAME));
+
+                if (cur.getInt(cur.getColumnIndex(
+                        ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                    Cursor pCur = cr.query(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                            new String[]{id}, null);
+                    while (pCur.moveToNext()) {
+                        String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        Log.i(TAG, "Name: " + name);
+                        Log.i(TAG, "Phone Number: " + phoneNo);
+                        String placeholder = phoneNo.substring(0,3) + phoneNo.substring(4,7) + phoneNo.substring(8);
+                        Log.i(TAG, "Phone Number without dashes: " + placeholder);
+                        mPhones.add(placeholder);
+                    }
+                    checkForConnections();
+                    pCur.close();
+                }
+            }
+        }
+        if(cur!=null){
+            cur.close();
+        }
+    }
+
+    private void queryConnections() {
+        Connection.queryConnections(new FindCallback<Connection>() {
+            @Override
+            public void done(List<Connection> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with Query");
+                    e.printStackTrace();
+                    return;
+                }
+                mConnections.clear();
+                mConnections.addAll(objects);
+                cUserNames.clear();
+                for (int i = 0; i < objects.size(); i++) {
+                    try {
+                        cUserNames.add(objects.get(i).getOtherUser().fetchIfNeeded().getUsername());
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                queryUsers();
+            }
+        });
+    }
+
+    private void checkForConnections() {
+        int uploadCount = 0;
+        for (int i = 0; i < mUsers.size(); i++) {
+            try {
+                if (mPhones.contains(mUsers.get(i).fetchIfNeeded().get("phoneNumber"))) {
+                    addConnection(mUsers.get(i));
+                    uploadCount++;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        Toast.makeText(context, "Contacts imported from phone and LinkedIn: " + uploadCount, Toast.LENGTH_LONG).show();
+    }
+
+    private void queryUsers() {
+        ParseQuery<ParseUser> query1 = new ParseQuery<ParseUser>(ParseUser.class);
+        try {
+            query1.whereNotEqualTo("username", ParseUser.getCurrentUser().fetchIfNeeded().getUsername());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        query1.whereNotContainedIn("username", cUserNames);
+
+        query1.addDescendingOrder("createdAt");
+        query1.setLimit(20);
+
+        query1.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                mUsers.clear();
+                mUsers.addAll(objects);
+            }
+        });
+    }
+
+    private void addConnection(final ParseUser user) {
+        Connection connection = new Connection();
+        connection.put("user1", ParseUser.getCurrentUser());
+        connection.put("user2", user);
+
+        connection.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.d(TAG, "Error while saving");
+                    e.printStackTrace();
+                    return;
+                }
+                try {
+                    Log.d(TAG, "Success, Added user:" + user.fetchIfNeeded().getUsername());
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+
+
+
     private void getInitialPermissions() {
         //Location Permission
-        if (PermissionUtils.hasSelfPermissions(getContext(), PERMISSION_GETMYLOCATION)) {
+        if (PermissionUtils.hasSelfPermissions(context, PERMISSION_GETMYLOCATION)) {
             getMyLocation();
         } else {
             requestPermissions(PERMISSION_GETMYLOCATION, REQUEST_GETMYLOCATION);
@@ -225,7 +412,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
 
     private void getUpdatePermission() {
         //Location Updates Permission
-        if (PermissionUtils.hasSelfPermissions(getContext(), PERMISSION_STARTLOCATIONUPDATES)) {
+        if (PermissionUtils.hasSelfPermissions(context, PERMISSION_STARTLOCATIONUPDATES)) {
             startLocationUpdates();
         } else {
             requestPermissions(PERMISSION_STARTLOCATIONUPDATES, REQUEST_STARTLOCATIONUPDATES);
@@ -334,7 +521,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     public void getMyLocation() {
         map.setMyLocationEnabled(true);
 
-        FusedLocationProviderClient locationClient = getFusedLocationProviderClient(this.getContext());
+        FusedLocationProviderClient locationClient = getFusedLocationProviderClient(context);
         locationClient.getLastLocation()
                 .addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
@@ -372,7 +559,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
 
     private boolean isGooglePlayServicesAvailable() {
         // Check that Google Play services is available
-        int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
+        int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
         // If Google Play services is available
         if (ConnectionResult.SUCCESS == resultCode) {
             // In debug mode, log the status
@@ -422,11 +609,11 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         builder.addLocationRequest(mLocationRequest);
         LocationSettingsRequest locationSettingsRequest = builder.build();
 
-        SettingsClient settingsClient = LocationServices.getSettingsClient(getContext());
+        SettingsClient settingsClient = LocationServices.getSettingsClient(context);
         settingsClient.checkLocationSettings(locationSettingsRequest);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //noinspection MissingPermission
-            if (checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    Activity#requestPermissions
                 // here to request the missing permissions, and then overriding
@@ -437,7 +624,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                 return;
             }
         }
-        getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+        getFusedLocationProviderClient(context).requestLocationUpdates(mLocationRequest, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
                         onLocationChanged(locationResult.getLastLocation());
@@ -498,8 +685,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     }
 
     private void showDialogForUserSelection(final Marker userMarker) {
-        View messageView = LayoutInflater.from(getContext()).inflate(R.layout.item_contact_alert, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        View messageView = LayoutInflater.from(context).inflate(R.layout.item_contact_alert, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(messageView);
 
         final AlertDialog alertDialog = alertDialogBuilder.create();
@@ -510,32 +697,32 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         TextView userName = messageView.findViewById(R.id.tvUserName);
         TextView industry = messageView.findViewById(R.id.tvIndustry);
         ImageView profileImg = messageView.findViewById(R.id.ivProfileImg);
-        Button btnMessage = messageView.findViewById(R.id.btnMessage);
-        Button btnMeeting = messageView.findViewById(R.id.btnMeeting);
+        Button btnSendMessage = messageView.findViewById(R.id.btnSendMessage);
+        Button btnSetMeeting = messageView.findViewById(R.id.btnSetMeeting);
         try {
             userName.setText(User.getFullName(contact.getOtherUser()));
             industry.setText((String) contact.getOtherUser().fetchIfNeeded().get("industry"));
             ParseFile img = (ParseFile) contact.getOtherUser().fetchIfNeeded().get("profileImg");
             if (img != null) {
-                Glide.with(getContext()).load(img.getUrl()).circleCrop().into(profileImg);
+                Glide.with(context).load(img.getUrl()).circleCrop().into(profileImg);
             } else {
-                Glide.with(getContext()).load((R.drawable.baseline_account_circle_black_48)).circleCrop().into(profileImg);
+                Glide.with(context).load((R.drawable.baseline_account_circle_black_48)).circleCrop().into(profileImg);
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        btnMessage.setOnClickListener(new View.OnClickListener() {
+        btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 query(contact);
             }
         });
 
-        btnMeeting.setOnClickListener(new View.OnClickListener() {
+        btnSetMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getContext(), RequestMeetingActivity.class);
+                Intent i = new Intent(context, RequestMeetingActivity.class);
                 i.putExtra("requesteeId", contact.getOtherUser().getObjectId());
                 startActivity(i);
             }
@@ -561,7 +748,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                     return;
                 }
                 Log.d(TAG, "Success");
-                Intent i = new Intent(getContext(), MessagesActivity.class);
+                Intent i = new Intent(context, MessagesActivity.class);
                 i.putExtra("conversation", conversation);
                 startActivity(i);
             }
@@ -595,10 +782,10 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     // Display the alert that adds the marker
     private void showAlertDialogForPoint(final LatLng point) {
         // inflate message_item.xml view
-        View messageView = LayoutInflater.from(getContext()).
+        View messageView = LayoutInflater.from(context).
                 inflate(R.layout.item_alert_message, null);
         // Create alert dialog builder
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         // set message_item.xml to AlertDialog builder
         alertDialogBuilder.setView(messageView);
 

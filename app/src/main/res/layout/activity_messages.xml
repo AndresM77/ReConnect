@@ -59,7 +59,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/btnMessage"
+            android:id="@+id/btnSendMessage"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginStart="347dp"

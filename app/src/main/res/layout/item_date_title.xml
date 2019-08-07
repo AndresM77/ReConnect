@@ -17,6 +17,7 @@
         android:layout_marginBottom="2dp"
         android:fontFamily="@font/orkney_bold"
         android:hint="Date"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

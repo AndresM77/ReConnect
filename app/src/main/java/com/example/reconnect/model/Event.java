@@ -96,6 +96,9 @@ public class Event extends ParseObject {
         mainQuery.addAscendingOrder(Event.KEY_DATE);
         mainQuery.setLimit(20);
 
+        mainQuery.include("attendee");
+        mainQuery.include("creator");
+
         mainQuery.findInBackground(callback);
 
     }

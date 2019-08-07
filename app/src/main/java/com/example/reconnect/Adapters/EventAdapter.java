@@ -144,7 +144,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             try {
 
                 final String meetingTitle = event.getName().equals("") ? "Meeting " : event.getName();
-                Boolean isPersonalEvent = event.getAttendee().fetchIfNeeded().getUsername().equals(event.getCreator().fetchIfNeeded().getUsername());
+                Boolean isPersonalEvent = event.getAttendee().getUsername().equals(event.getCreator().getUsername());
 
                 // set all views with information that does not depend on the status of the event
 
@@ -281,7 +281,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             } else {
                 attendee.setText(User.getFullName(event.getOtherUser()));
             }
-            String attendeeIndustry = event.getAttendee().fetchIfNeeded().get("industry").toString();
+            String attendeeIndustry = event.getAttendee().get("industry").toString();
             industry.setText(attendeeIndustry);
         }
 

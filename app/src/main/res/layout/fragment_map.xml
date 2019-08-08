@@ -24,7 +24,7 @@
         android:fontFamily="@font/unica_one"
         android:text="Your Connections"
         android:textAlignment="textStart"
-        android:textColor="@color/colorAccent2"
+        android:textColor="@color/colorAccent3"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

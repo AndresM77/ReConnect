@@ -1,12 +1,12 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +15,11 @@ import com.bumptech.glide.Glide;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.User;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -55,6 +58,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
         private ImageView streakIcon;
         private ImageView profileBtn;
         private TextView streakNum;
+        private ImageView followIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -63,6 +67,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             profileBtn = itemView.findViewById(R.id.ivProfileImg);
             streakIcon = itemView.findViewById(R.id.streakIcon);
             streakNum = itemView.findViewById(R.id.streakNum);
+            followIcon = itemView.findViewById(R.id.followingIcon);
 
             // onClick listener to request a meeting
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -75,19 +80,69 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
                 }
             });
 
+
+
         }
 
         /* method that connects information to create item_contact for MapFragment's Recycler View */
-        public void bind(Connection connection) {
+        public void bind(final Connection connection) {
             itemView.setBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
 
             //set tag in order to get correct Connection to display later
             name.setTag(connection);
 
+
+            followIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (ParseUser.getCurrentUser().equals(connection.getUser1())) {
+                        if(!connection.getStarred12()) {
+                            connection.put(Connection.KEY_STARRED_12, true);
+
+                            Glide.with(context).load(R.drawable.baseline_star_black_48dp).into(followIcon);
+                        } else {
+                            connection.put(Connection.KEY_STARRED_12, false);
+
+                            Glide.with(context).load(R.drawable.baseline_star_border_black_48dp).into(followIcon);
+                        }
+                    } else {
+                        if(!connection.getStarred21()) {
+                            connection.put(Connection.KEY_STARRED_21, true);
+
+                            Glide.with(context).load(R.drawable.baseline_star_black_48dp).into(followIcon);
+                        } else {
+                            connection.put(Connection.KEY_STARRED_21, false);
+
+                            Glide.with(context).load(R.drawable.baseline_star_border_black_48dp).into(followIcon);
+                        }
+                    }
+                    connection.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Toast.makeText(context, "Changed Following Status", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+
             // set the profile image
             ParseFile profileImg = profileImg = (ParseFile) connection.getOtherUser().get("profileImg");
             if (profileImg != null) {
                 Glide.with(context).load(profileImg.getUrl()).circleCrop().into(profileBtn);
+            }
+
+            if (ParseUser.getCurrentUser().equals(connection.getUser1())) {
+                if(connection.getStarred12()) {
+                    Glide.with(context).load(R.drawable.baseline_star_black_48dp).into(followIcon);
+                } else {
+                    Glide.with(context).load(R.drawable.baseline_star_border_black_48dp).into(followIcon);
+                }
+            } else {
+                if(connection.getStarred21()) {
+                    Glide.with(context).load(R.drawable.baseline_star_black_48dp).into(followIcon);
+                } else {
+                    Glide.with(context).load(R.drawable.baseline_star_border_black_48dp).into(followIcon);
+                }
             }
 
             // set the location away of the user

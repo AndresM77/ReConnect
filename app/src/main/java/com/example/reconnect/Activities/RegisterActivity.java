@@ -40,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etPass;
     private EditText etFirstName;
     private EditText etLastName;
+    private EditText etIndustry;
     private Button btnSignUp;
     private List<ParseUser> mUsers;
 
@@ -70,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
         etPass = findViewById(R.id.etPass);
         etFirstName = findViewById(R.id.et_firstName);
         etLastName = findViewById(R.id.et_lastName);
+        etIndustry = findViewById(R.id.et_industry);
         btnSignUp = findViewById(R.id.btnCreate);
     }
 
@@ -78,6 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
         postQuery.whereEqualTo("username",etUser.getText().toString());
         postQuery.whereEqualTo("firstName", etFirstName.getText().toString());
         postQuery.whereEqualTo("lastName", etLastName.getText().toString());
+        postQuery.whereEqualTo("industry", etIndustry.getText().toString());
 
         postQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
@@ -92,19 +95,20 @@ public class RegisterActivity extends AppCompatActivity {
                 if (mUsers.size() > 0) {
                     Toast.makeText(getApplicationContext(), "UserName exists", Toast.LENGTH_LONG).show();
                 } else {
-                    saveUser(etPhone.getText().toString(), etUser.getText().toString(), etPass.getText().toString(), etFirstName.getText().toString(), etLastName.getText().toString());
+                    saveUser(etPhone.getText().toString(), etUser.getText().toString(), etPass.getText().toString(), etFirstName.getText().toString(), etLastName.getText().toString(), etIndustry.getText().toString());
                 }
             }
         });
     }
 
-    private void saveUser(String phoneNumber, String user, String pass, String firstName, String lastName) {
+    private void saveUser(String phoneNumber, String user, String pass, String firstName, String lastName, String industry) {
         ParseUser newUser = new ParseUser();
         newUser.put("phoneNumber", phoneNumber);
         newUser.put("username", user);
         newUser.put("firstName", firstName);
         newUser.put("lastName", lastName);
         newUser.put("password", pass);
+        newUser.put("industry", industry);
         newUser.put("location", new ParseGeoPoint(0,0));
         try {
             newUser.signUp();

@@ -1,6 +1,7 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,14 +52,17 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
 
         private TextView name;
         private TextView distanceAwayV;
+        private ImageView streakIcon;
         private ImageView profileBtn;
+        private TextView streakNum;
 
         public ViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.contactName);
             distanceAwayV = itemView.findViewById(R.id.distanceAway);
             profileBtn = itemView.findViewById(R.id.ivProfileImg);
-
+            streakIcon = itemView.findViewById(R.id.streakIcon);
+            streakNum = itemView.findViewById(R.id.streakNum);
 
             // onClick listener to request a meeting
             itemView.setOnClickListener(new View.OnClickListener() {

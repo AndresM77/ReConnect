@@ -183,6 +183,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                     mFragment.eventQuery(view);
 
                                     alertRequestAccepted(event);
+                                    updateStreaks(event.getAttendee(), event.getCreator());
                                 }
                             });
 
@@ -262,6 +263,17 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 Log.e("Event Adapter", "There was a problem fetching information to bind events together for calendar");
                 e.printStackTrace();
             }
+        }
+
+        private void updateStreaks(ParseUser attendee, ParseUser creator) {
+            int attendeeStreaks = (Integer) attendee.get("streaks");
+            int creatorStreaks = (Integer) creator.get("streaks");
+
+            attendee.put("streaks", attendeeStreaks++);
+            creator.put("streaks", creatorStreaks++);
+
+            attendee.saveInBackground();
+            creator.saveInBackground();
         }
 
 

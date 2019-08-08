@@ -164,6 +164,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         //Instantiating connections list
         mConnections = new ArrayList<>();
         mConversations = new ArrayList<>();
+        mUsers = new ArrayList<>();
+        cUserNames = new ArrayList<>();
 
         if (TextUtils.isEmpty(getResources().getString(R.string.google_maps_api_key))) {
             throw new IllegalStateException("You forgot to supply a Google Maps API key");
@@ -250,11 +252,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alertDialog.hide();
                 //Unleash the best and get the contacts
                 getContactList();
-                Intent i = new Intent(context, HomeActivity.class);
-                startActivity(i);
-                Toast.makeText(getActivity(), "Contacts uploaded.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -301,7 +301,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                         Log.i(TAG, "Phone Number without dashes: " + placeholder);
                         mPhones.add(placeholder);
                     }
-                    checkForConnections();
+                    queryConnections();
                     pCur.close();
                 }
             }
@@ -348,6 +348,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             }
         }
         Toast.makeText(context, "Contacts imported from phone and LinkedIn: " + uploadCount, Toast.LENGTH_LONG).show();
+        Intent i = new Intent(context, HomeActivity.class);
+        startActivity(i);
+        Toast.makeText(getActivity(), "Contacts uploaded.", Toast.LENGTH_SHORT).show();
     }
 
     private void queryUsers() {
@@ -367,6 +370,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             public void done(List<ParseUser> objects, ParseException e) {
                 mUsers.clear();
                 mUsers.addAll(objects);
+                checkForConnections();
             }
         });
     }

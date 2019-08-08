@@ -187,7 +187,7 @@ public class CalendarFragment extends Fragment {
                 mEvents.clear();
                 mEvents.addAll(createViewOrderArray(objects));
                 adapter.notifyDataSetChanged();
-                view.findViewById(R.id.progressCalendar).setVisibility(View.GONE);
+                getView().findViewById(R.id.progressCalendar).setVisibility(View.GONE);
             }
         });
     }

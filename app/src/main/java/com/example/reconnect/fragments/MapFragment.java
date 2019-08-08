@@ -114,6 +114,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     private Context context;
     // For contact popup
     TextView tvQuestion;
+    TextView title;
     Button btnUpload;
     Button btnFindContacts;
     Button btnCancel;
@@ -153,6 +154,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        title = view.findViewById(R.id.tvMapTitle);
+        title.setText(ParseUser.getCurrentUser().get("firstName").toString() + "'s Connections");
 
         centered = false;
 

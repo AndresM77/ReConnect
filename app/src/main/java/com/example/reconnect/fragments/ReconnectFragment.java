@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +21,9 @@ import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Conversation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,7 @@ public class ReconnectFragment extends Fragment {
     private ConnectionsAdapter adapter;
     private List<Connection> mConnections;
     private SwipeRefreshLayout swipeContainer;
+    private TextView title;
 
 
     @Nullable
@@ -49,6 +53,8 @@ public class ReconnectFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
+        title = view.findViewById(R.id.tv_titleConnections);
+        title.setText(ParseUser.getCurrentUser().get("firstName").toString() + "'s Connections");
         rvConnections = view.findViewById(R.id.rvConnections);
         //Instantiating connections list
         mConnections = new ArrayList<>();

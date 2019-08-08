@@ -20,9 +20,9 @@
 
     <item
         android:id="@+id/newConversation"
-        android:icon="@drawable/ic_new_conversation"
         android:layout_width="10dp"
         android:layout_height="10dp"
+        android:icon="@drawable/newmessage"
         android:title="New Conversation"
         app:showAsAction="ifRoom"></item>
 

@@ -252,6 +252,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alertDialog.hide();
                 //Unleash the best and get the contacts
                 getContactList();
             }

@@ -75,7 +75,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                     params.endToEnd = R.id.clContainer;
                     cvMessage.setLayoutParams(params);
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-                    messageBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent2));
+                    messageBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
                 }
                 else {
                     params.startToStart = R.id.clContainer;

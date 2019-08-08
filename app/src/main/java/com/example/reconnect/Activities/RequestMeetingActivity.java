@@ -32,7 +32,9 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.sql.Array;
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class RequestMeetingActivity extends AppCompatActivity {
 
@@ -217,6 +219,23 @@ public class RequestMeetingActivity extends AppCompatActivity {
         }
     }
 
+    public String correctDate(String wrongDate) {
+        wrongDate = wrongDate.replaceFirst("/", " ");
+        wrongDate = wrongDate.replaceFirst("/", " ");
+        wrongDate += " ";
+        String currNumber = "";
+        ArrayList<String> dateJumbled = new ArrayList<String>();
+        for (int i = 0; i < wrongDate.length(); i++) {
+            if (wrongDate.charAt(i) != ' ') {
+                currNumber += wrongDate.charAt(i);
+            } else {
+                dateJumbled.add(currNumber);
+                currNumber = "";
+            }
+        }
+
+        return dateJumbled.get(2) + "-" + dateJumbled.get(0) + "-" + dateJumbled.get(1);
+    }
     public void createEventUnderProfile(Event event) {
         event.put("startTime", tv_startTime.getText().toString());
         event.put("endTime", tv_endTime.getText().toString());
@@ -225,7 +244,10 @@ public class RequestMeetingActivity extends AppCompatActivity {
         event.put("pending", true);
         event.put("accepted", false);
         event.put("reconnect", true);
-        event.put("date", Date.valueOf(tv_meetingDate.getText().toString()));
+
+
+        String wrongDate = tv_meetingDate.getText().toString();
+        event.put("date", Date.valueOf(correctDate(wrongDate)));
     }
 
     private RequestMeetingActivity.DatePickerDoneListener getDatePickerDoneListener(final int dialogId) {

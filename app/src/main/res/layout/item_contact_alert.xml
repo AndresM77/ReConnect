@@ -26,19 +26,16 @@
 
     <TextView
         android:id="@+id/tvUserName"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_width="215dp"
+        android:layout_height="39dp"
         android:layout_alignLeft="@+id/etSnippet"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="85dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="108dp"
         android:hint="Username:"
         android:paddingTop="20dp"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></TextView>
 
@@ -97,6 +94,31 @@
         android:textColor="@color/colorPrimaryLight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvIndustry" />
+
+    <ImageView
+        android:id="@+id/streakIcon"
+        android:layout_width="29dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvUserName"
+        app:layout_constraintEnd_toEndOf="@+id/flBody"
+        app:srcCompat="@drawable/streak_icon" />
+
+    <TextView
+        android:id="@+id/streakNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/unica_one"
+        android:text="0"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tvUserName"
+        app:layout_constraintEnd_toStartOf="@+id/streakIcon"
+        app:layout_constraintStart_toEndOf="@+id/tvUserName" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

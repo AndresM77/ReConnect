@@ -9,12 +9,12 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
-        android:layout_width="405dp"
+        android:layout_width="383dp"
         android:layout_height="564dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_titleConnections">
 
@@ -22,6 +22,7 @@
             android:id="@+id/rvConnections"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

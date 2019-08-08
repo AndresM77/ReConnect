@@ -75,7 +75,6 @@
         android:layout_marginTop="4dp"
         android:text="How would you like to import your contacts?"
         android:textColor="@android:color/black"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/tvQuestion"
         app:layout_constraintStart_toStartOf="@+id/tvQuestion"
         app:layout_constraintTop_toBottomOf="@+id/tvQuestion" />

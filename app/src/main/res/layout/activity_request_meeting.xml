@@ -7,8 +7,8 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="408dp"
-        android:layout_height="92dp"
+        android:layout_width="416dp"
+        android:layout_height="78dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="#9FB8AD"
@@ -33,12 +33,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="42dp"
         android:text="Person Name"
         android:textColor="#E6E8E6"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/ivProfileImg"
-        app:layout_constraintTop_toTopOf="@+id/ivProfileImg" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/tvIndustry"

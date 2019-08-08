@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/eventLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="70dp"
     android:orientation="horizontal">
 
     <TextView
@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:hint="Meeting Name"
         android:textColor="@android:color/black"
         android:textSize="12sp"
@@ -35,11 +35,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
         android:hint="Industry"
         android:textColor="@android:color/black"
         android:textSize="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/divider4"
+        android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/attendeeInvite" />
 
@@ -59,7 +58,7 @@
         android:id="@+id/timeInvite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="18dp"
         android:hint="Time"
         android:textColor="@android:color/black"
@@ -71,10 +70,8 @@
         android:id="@+id/ivReject"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_no" />
@@ -83,10 +80,8 @@
         android:id="@+id/ivAccept"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="72dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_yes" />
@@ -104,7 +99,7 @@
         android:id="@+id/ivPending"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="18dp"
         android:text="PENDING"
         android:textAllCaps="false"

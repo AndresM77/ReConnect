@@ -10,23 +10,25 @@
 
     <FrameLayout
         android:id="@+id/flBody"
-        android:layout_width="307dp"
-        android:layout_height="170dp"
+        android:layout_width="284dp"
+        android:layout_height="191dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/round_shape"
-        android:backgroundTint="@color/colorWhite"
+        android:backgroundTint="@color/colorPrimaryLight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
     <Button
         android:id="@+id/btnSendMessage"
         android:layout_width="119dp"
         android:layout_height="48dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="56dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
@@ -34,13 +36,14 @@
         android:text="Upload from phone"
         android:textColor="@color/colorPrimaryLight"
         app:layout_constraintBottom_toBottomOf="@+id/flBody"
-        app:layout_constraintStart_toStartOf="@+id/flBody" />
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Button
         android:id="@+id/btnFindContacts"
         android:layout_width="119dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="56dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
@@ -48,7 +51,8 @@
         android:text="Find on app"
         android:textColor="@color/colorPrimaryLight"
         app:layout_constraintBottom_toBottomOf="@+id/flBody"
-        app:layout_constraintEnd_toEndOf="@+id/flBody" />
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/tvQuestion"
@@ -56,13 +60,25 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/unica_one"
-        android:text="Find your contacts?"
-        android:textSize="18sp"
+        android:text="Welcome to ReLink!"
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/flBody"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="@+id/flBody"
         app:layout_constraintTop_toTopOf="@+id/flBody" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="How would you like to import your LinkedIn contacts?"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/tvQuestion"
+        app:layout_constraintStart_toStartOf="@+id/tvQuestion"
+        app:layout_constraintTop_toBottomOf="@+id/tvQuestion" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

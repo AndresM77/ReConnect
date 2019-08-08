@@ -699,10 +699,13 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         ImageView profileImg = messageView.findViewById(R.id.ivProfileImg);
         Button btnSendMessage = messageView.findViewById(R.id.btnSendMessage);
         Button btnSetMeeting = messageView.findViewById(R.id.btnSetMeeting);
+        ImageView  streakIcon = messageView.findViewById(R.id.streakIcon);
+        TextView streakNum = messageView.findViewById(R.id.streakNum);
         try {
             userName.setText(User.getFullName(contact.getOtherUser()));
             industry.setText((String) contact.getOtherUser().fetchIfNeeded().get("industry"));
             ParseFile img = (ParseFile) contact.getOtherUser().fetchIfNeeded().get("profileImg");
+            streakNum.setText(contact.get("streak").toString());
             if (img != null) {
                 Glide.with(context).load(img.getUrl()).circleCrop().into(profileImg);
             } else {

@@ -18,7 +18,7 @@
         android:text="username"
         android:textAlignment="center"
         android:textColor="@color/colorAccent3"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

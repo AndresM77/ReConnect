@@ -116,6 +116,22 @@ public class Connection extends ParseObject {
         return round.format(distance) + " miles away";
     }
 
+    public static Double getDistanceAwayInteger(ParseGeoPoint position1, ParseGeoPoint position2) {
+        Location loc = new Location("");
+        loc.setLatitude(position1.getLatitude());
+        loc.setLongitude(position1.getLongitude());
+
+        Location loc2 = new Location("");
+        loc2.setLatitude(position2.getLatitude());
+        loc2.setLongitude(position2.getLongitude());
+
+        Double distance = new Float(loc.distanceTo(loc2)).doubleValue();
+        Double metersToMiles = 1609.344;
+        distance /= metersToMiles;
+
+        return distance;
+    }
+
     //Querying our Connection class
     public static class Query extends ParseQuery<Connection> {
 

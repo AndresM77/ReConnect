@@ -123,7 +123,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     Button btnCancel;
     private List<String> cUserNames;
     private List<ParseUser> mUsers;
-    private List<String> mPhones = new ArrayList<>();;
+    private List<String> mPhones = new ArrayList<>();
+    private boolean queried = false;
 
     //Permission variables
     private static final int REQUEST_GETMYLOCATION = 0;
@@ -231,7 +232,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                     Log.d("Connection", "got here");
                     mConnections.clear();
                     mConnections.addAll(connections);
-                    checkForNearby();
+                    if (!queried) {checkForNearby();}
                     loadMarkers(googleMap);
                     view.findViewById(R.id.progressMap).setVisibility(View.GONE);
                 }
@@ -243,24 +244,22 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
 
     private void checkForNearby() {
         for (int i = 0; i < mConnections.size(); i++) {
-            if(mConnections.get(i).getUser1().equals(ParseUser.getCurrentUser())) {
-                if (mConnections.get(i).getStarred21()) {
-                    //Send notification to current user
-                    // sends notification
-                    NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
-                    Task<String> result = nHandler.sendNotifications(mConnections.get(i).getUser2().get("deviceId").toString(),
-                            "Your connection " + User.getFullName(mConnections.get(i).getUser1()) + " is in the area!");
-                }
-            } else {
-                if (mConnections.get(i).getStarred12()) {
-                    //Send notification to current user
-                    NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
-                    Task<String> result = nHandler.sendNotifications(mConnections.get(i).getUser1().get("deviceId").toString(),
-                            "Your connection " + User.getFullName(mConnections.get(i).getUser2()) + " is in the area!");
-                }
+            if (((mConnections.get(i).getStarred21() && Connection.getDistanceAwayInteger(mConnections.get(i).getOtherUser().getParseGeoPoint("location"), ParseUser.getCurrentUser().getParseGeoPoint("location")) < 20))) {
+                //Send notification to current user
+                NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
+                Task<String> result = nHandler.sendNotifications(mConnections.get(i).getOtherUser().get("deviceId").toString(),
+                        "Your connection " + User.getFullName(mConnections.get(i).getCurrentUser()) + " is in the area!");
+
+                NotificationHandler dHandler = new NotificationHandler(FirebaseFunctions.getInstance());
+                Task<String> resultd = dHandler.sendNotifications(mConnections.get(i).getCurrentUser().get("deviceId").toString(),
+                        "Your connection " + User.getFullName(mConnections.get(i).getOtherUser()) + " is in the area!");
+                queried = true;
             }
         }
     }
+
+//((mConnections.get(i).getStarred21() && mConnections.get(i).getOtherUser().getUsername().equals(mConnections.get(i).getUser1().getUsername()) || (mConnections.get(i).getStarred12() && mConnections.get(i).getOtherUser().getUsername().equals(mConnections.get(i).getUser2().getUsername())))
+//                    && Connection.getDistanceAwayInteger(mConnections.get(i).getOtherUser().getParseGeoPoint("location"), ParseUser.getCurrentUser().getParseGeoPoint("location")) < 20))
 
     private void showDialogForUploadingContacts() {
         View messageView = LayoutInflater.from(context).inflate(R.layout.item_upload_contacts, null);

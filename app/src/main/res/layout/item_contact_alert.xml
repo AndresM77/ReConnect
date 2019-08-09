@@ -10,8 +10,8 @@
 
     <FrameLayout
         android:id="@+id/flBody"
-        android:layout_width="300dp"
-        android:layout_height="170dp"
+        android:layout_width="260dp"
+        android:layout_height="180dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="52dp"
         android:layout_marginEnd="8dp"
@@ -29,30 +29,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/etSnippet"
-        android:layout_marginStart="22dp"
         android:layout_marginTop="85dp"
         android:paddingTop="20dp"
-        android:text=" "
+        android:text="user"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/flBody"
         app:layout_constraintStart_toStartOf="@+id/flBody"
         app:layout_constraintTop_toTopOf="@+id/ivProfileImg"></TextView>
 
     <TextView
         android:id="@+id/tvIndustry"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="14dp"
         android:layout_below="@id/tvUserName"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="4dp"
         android:hint="Industry: "
         android:textColor="@android:color/black"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.475"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/flBody"
         app:layout_constraintTop_toBottomOf="@+id/tvUserName"></TextView>
 
     <ImageView
@@ -68,10 +66,10 @@
 
     <Button
         android:id="@+id/btnSendMessage"
-        android:layout_width="119dp"
+        android:layout_width="90dp"
         android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
         android:padding="0dp"
@@ -82,10 +80,10 @@
 
     <Button
         android:id="@+id/btnSetMeeting"
-        android:layout_width="119dp"
+        android:layout_width="90dp"
         android:layout_height="48dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/colorPrimary"
         android:padding="0dp"
@@ -96,22 +94,21 @@
 
     <ImageView
         android:id="@+id/streakIcon"
-        android:layout_width="18dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvUserName"
-        app:layout_constraintStart_toEndOf="@+id/tvUserName"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        app:layout_constraintStart_toEndOf="@+id/tvIndustry"
+        app:layout_constraintTop_toTopOf="@+id/tvIndustry"
         app:srcCompat="@drawable/streak_icon" />
 
     <TextView
         android:id="@+id/streakNum"
         android:layout_width="18dp"
-        android:layout_height="23dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:fontFamily="@font/unica_one"
         android:text="0"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/streakIcon"
         app:layout_constraintTop_toTopOf="@+id/streakIcon" />

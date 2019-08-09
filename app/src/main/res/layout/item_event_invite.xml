@@ -5,6 +5,7 @@
     android:id="@+id/eventLayout"
     android:layout_width="match_parent"
     android:layout_height="70dp"
+    android:background="@color/colorWhite"
     android:orientation="horizontal">
 
     <TextView
@@ -72,7 +73,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:padding="10dp"
+        android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_no" />
@@ -83,19 +84,10 @@
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="76dp"
-        android:padding="10dp"
+        android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_yes" />
-
-    <View
-        android:id="@+id/divider4"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/ivPending"

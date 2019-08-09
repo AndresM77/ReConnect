@@ -145,19 +145,21 @@ public class RequestMeetingActivity extends AppCompatActivity {
                             e.printStackTrace();
                             return;
                         }
+
+                        // sends notification
+                        NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
+                        Task<String> result = nHandler.sendNotifications(event.getOtherUser().get("deviceId").toString(),
+                                "You have a new meeting request from " + User.getFullName(event.getOtherUser()));
+
+                        // send back to the Calendar when done
+                        Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
+                        i.putExtra("sendToCalendar", "yes");
+                        startActivity(i);
+                        finish();
                     }
                 });
 
-                // sends notification
-                NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
-                Task<String> result = nHandler.sendNotifications(event.getOtherUser().get("deviceId").toString(),
-                        "You have a new meeting request from " + User.getFullName(event.getOtherUser()));
 
-                // send back to the Calendar when done
-                Intent i = new Intent(RequestMeetingActivity.this, HomeActivity.class);
-                i.putExtra("sendToCalendar", "yes");
-                startActivity(i);
-                finish();
             }
 
 

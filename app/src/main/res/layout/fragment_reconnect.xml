@@ -35,7 +35,7 @@
         android:fontFamily="@font/unica_one"
         android:text="Your connections"
         android:textAlignment="textStart"
-        android:textColor="#8FAD88"
+        android:textColor="@color/colorPrimary"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

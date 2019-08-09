@@ -45,14 +45,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvUserName"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
         android:layout_marginEnd="8dp"
         android:hint="Industry: "
         android:textColor="@android:color/black"
         android:textSize="10sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.565"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvUserName"></TextView>
 
@@ -99,25 +98,22 @@
         android:id="@+id/streakIcon"
         android:layout_width="29dp"
         android:layout_height="37dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/tvUserName"
         app:layout_constraintEnd_toEndOf="@+id/flBody"
         app:srcCompat="@drawable/streak_icon" />
 
     <TextView
         android:id="@+id/streakNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="12dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="24dp"
         android:fontFamily="@font/unica_one"
         android:text="0"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/tvUserName"
-        app:layout_constraintEnd_toStartOf="@+id/streakIcon"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toEndOf="@+id/tvUserName" />
+        app:layout_constraintEnd_toEndOf="@+id/streakIcon"
+        tools:layout_editor_absoluteY="131dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

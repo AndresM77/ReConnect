@@ -91,6 +91,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
             //set tag in order to get correct Connection to display later
             name.setTag(connection);
 
+            streakNum.setText(connection.getOtherUser().get("streaks").toString());
 
             followIcon.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -359,6 +359,30 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         });
     }
 
+    private void queryOnlyConnections() {
+        Connection.queryConnections(new FindCallback<Connection>() {
+            @Override
+            public void done(List<Connection> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with Query");
+                    e.printStackTrace();
+                    return;
+                }
+                mConnections.clear();
+                mConnections.addAll(objects);
+                cUserNames.clear();
+                for (int i = 0; i < objects.size(); i++) {
+                    try {
+                        cUserNames.add(objects.get(i).getOtherUser().fetchIfNeeded().getUsername());
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+
     private void checkForConnections() {
         int uploadCount = 0;
         for (int i = 0; i < mUsers.size(); i++) {
@@ -370,7 +394,10 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                             addBoolean = false;
                         }
                     }
-                    if (addBoolean) {addConnection(mUsers.get(i));}
+                    if (addBoolean) {
+                        addConnection(mUsers.get(i));
+                        queryOnlyConnections();
+                    }
                     uploadCount++;
                 }
             } catch (ParseException e) {

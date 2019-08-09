@@ -49,6 +49,7 @@ public class CalendarFragment extends Fragment {
     private EventAdapter adapter;
     private List<Object> mEvents;
     private TextView tvCurrentUsername;
+    private TextView personalStreaks;
     private SwipeRefreshLayout swipeContainer;
 
     // for changing profile picture
@@ -70,6 +71,8 @@ public class CalendarFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
         rvEvents = view.findViewById(R.id.rvEvents);
+        personalStreaks = view.findViewById(R.id.personalStreaks);
+        personalStreaks.setText(ParseUser.getCurrentUser().get("streaks").toString());
         //Display username of current user
         tvCurrentUsername = view.findViewById(R.id.tvCurrentUsername);
         //Instantiating connections list

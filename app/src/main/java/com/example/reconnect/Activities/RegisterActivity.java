@@ -25,6 +25,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     //Initializing fragment tag
     public final static String TAG = "RegisterActivity";
+    private static final String PHONE_STRING = "0000000000";
+    private static final String USER_STRING = "jerry25";
+    private static final String PASS_STRING = "password123";
+    private static final String FIRST_NAME_STRING = "Jerry";
+    private static final String LAST_NAME_STRING = "Williams";
+    private static final String INDUSTRY_STRING = "Technology";
     //Initializing View objects
     private EditText etPhone;
     private EditText etUser;
@@ -33,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etLastName;
     private EditText etIndustry;
     private Button btnSignUp;
+    private Button btnPopulate;
     private List<ParseUser> mUsers;
 
     @Override
@@ -52,6 +59,18 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btnPopulate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etPhone.setText(PHONE_STRING);
+                etUser.setText(USER_STRING);
+                etPass.setText(PASS_STRING);
+                etFirstName.setText(FIRST_NAME_STRING);
+                etLastName.setText(LAST_NAME_STRING);
+                etIndustry.setText(INDUSTRY_STRING);
+            }
+        });
     }
 
     public void createRegisterDisplay() {
@@ -64,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
         etLastName = findViewById(R.id.et_lastName);
         etIndustry = findViewById(R.id.et_industry);
         btnSignUp = findViewById(R.id.btnCreate);
+        btnPopulate = findViewById(R.id.btnPopulate);
     }
 
     public void queryUsers() {

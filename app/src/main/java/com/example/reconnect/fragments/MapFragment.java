@@ -729,7 +729,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             userName.setText(User.getFullName(contact.getOtherUser()));
             industry.setText((String) contact.getOtherUser().fetchIfNeeded().get("industry"));
             ParseFile img = (ParseFile) contact.getOtherUser().fetchIfNeeded().get("profileImg");
-            streakNum.setText(contact.get("streak").toString());
+            streakNum.setText(contact.getOtherUser().get("streaks").toString());
             if (img != null) {
                 Glide.with(context).load(img.getUrl()).circleCrop().into(profileImg);
             } else {

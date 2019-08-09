@@ -24,12 +24,11 @@
 
     <TextView
         android:id="@+id/contactName"
-        android:layout_width="245dp"
-        android:layout_height="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/orkney"
-        android:hint="Contact Name"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -53,26 +52,22 @@
 
     <ImageView
         android:id="@+id/streakIcon"
-        android:layout_width="28dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="16dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/streakNum"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833"
         app:srcCompat="@drawable/streak_icon" />
 
     <ImageView
         android:id="@+id/followingIcon"
-        android:layout_width="26dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/contactName"
         app:layout_constraintStart_toEndOf="@+id/contactName"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/baseline_star_border_black_48dp" />
 
     <TextView
@@ -80,7 +75,7 @@
         android:layout_width="16dp"
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/unica_one"
         android:text="0"
         android:textSize="18sp"

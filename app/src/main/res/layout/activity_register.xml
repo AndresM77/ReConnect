@@ -67,6 +67,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_industry" />
 
+    <Button
+        android:id="@+id/btnPopulate"
+        android:layout_width="83dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.085"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_signupLabel"
         android:layout_width="318dp"

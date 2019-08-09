@@ -33,10 +33,6 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.w3c.dom.Text;
-
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -308,36 +304,79 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         e.printStackTrace();
                         return;
                     }
-                    approvalMessage.setConversation(objects.get(0));
-                    approvalMessage.setMessage(event.getAttendee().get("firstName") + " accepted your meeting request!");
+                    if (objects.size() == 0) {
+                        final Conversation conversation = new Conversation();
+                        conversation.setConverser(event.getCurrentUser());
+                        conversation.setConversee(event.getOtherUser());
+                        conversation.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                approvalMessage.setConversation(conversation);
+                                approvalMessage.setMessage(event.getAttendee().get("firstName") + " accepted your meeting request!");
 
-                    approvalMessage.setRecipient(event.getCreator());
-                    approvalMessage.setSender(ParseUser.getCurrentUser());
-                    approvalMessage.setIsRequest(true);
-                    approvalMessage.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null) {
-                                Log.d("Event Adapter", "Error sending approval message");
-                                e.printStackTrace();
-                                return;
-                            }
-                            Log.d("Event Adapter", "Success sending approval message");
-                            Conversation convo = objects.get(0);
-                            convo.setLastMessage(approvalMessage);
-                            convo.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if (e != null) {
-                                        Log.d("Event Adapter", "Error sending approval convo");
-                                        e.printStackTrace();
-                                        return;
+                                approvalMessage.setRecipient(event.getCreator());
+                                approvalMessage.setSender(ParseUser.getCurrentUser());
+                                approvalMessage.setIsRequest(true);
+
+                                approvalMessage.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            Log.d("Event Adapter", "Error sending approval message");
+                                            e.printStackTrace();
+                                            return;
+                                        }
+                                        Log.d("Event Adapter", "Success sending approval message");
+                                        Conversation convo = conversation;
+                                        convo.setLastMessage(approvalMessage);
+                                        convo.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                if (e != null) {
+                                                    Log.d("Event Adapter", "Error sending approval convo");
+                                                    e.printStackTrace();
+                                                    return;
+                                                }
+                                                Log.d("Event Adapter", "Success sending approval convo");
+                                            }
+                                        });
                                     }
-                                    Log.d("Event Adapter", "Success sending approval convo");
+                                });
+                            }
+                        });
+
+                    } else {
+                        approvalMessage.setConversation(objects.get(0));
+                        approvalMessage.setMessage(event.getAttendee().get("firstName") + " accepted your meeting request!");
+
+                        approvalMessage.setRecipient(event.getCreator());
+                        approvalMessage.setSender(ParseUser.getCurrentUser());
+                        approvalMessage.setIsRequest(true);
+                        approvalMessage.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e != null) {
+                                    Log.d("Event Adapter", "Error sending approval message");
+                                    e.printStackTrace();
+                                    return;
                                 }
-                            });
-                        }
-                    });
+                                Log.d("Event Adapter", "Success sending approval message");
+                                Conversation convo = objects.get(0);
+                                convo.setLastMessage(approvalMessage);
+                                convo.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            Log.d("Event Adapter", "Error sending approval convo");
+                                            e.printStackTrace();
+                                            return;
+                                        }
+                                        Log.d("Event Adapter", "Success sending approval convo");
+                                    }
+                                });
+                            }
+                        });
+                    }
                 }
             });
 

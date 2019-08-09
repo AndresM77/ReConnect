@@ -48,6 +48,7 @@ import com.example.reconnect.Activities.HomeActivity;
 import com.example.reconnect.Activities.MessagesActivity;
 import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.Adapters.CustomWindowAdapter;
+import com.example.reconnect.NotificationHandler;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Conversation;
@@ -73,6 +74,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -228,12 +231,34 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                     Log.d("Connection", "got here");
                     mConnections.clear();
                     mConnections.addAll(connections);
+                    checkForNearby();
                     loadMarkers(googleMap);
                     view.findViewById(R.id.progressMap).setVisibility(View.GONE);
                 }
             });
         } else {
             //Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void checkForNearby() {
+        for (int i = 0; i < mConnections.size(); i++) {
+            if(mConnections.get(i).getUser1().equals(ParseUser.getCurrentUser())) {
+                if (mConnections.get(i).getStarred21()) {
+                    //Send notification to current user
+                    // sends notification
+                    NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
+                    Task<String> result = nHandler.sendNotifications(mConnections.get(i).getUser2().get("deviceId").toString(),
+                            "Your connection " + User.getFullName(mConnections.get(i).getUser1()) + " is in the area!");
+                }
+            } else {
+                if (mConnections.get(i).getStarred12()) {
+                    //Send notification to current user
+                    NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
+                    Task<String> result = nHandler.sendNotifications(mConnections.get(i).getUser1().get("deviceId").toString(),
+                            "Your connection " + User.getFullName(mConnections.get(i).getUser2()) + " is in the area!");
+                }
+            }
         }
     }
 

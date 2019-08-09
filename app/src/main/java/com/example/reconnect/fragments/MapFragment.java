@@ -364,7 +364,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         for (int i = 0; i < mUsers.size(); i++) {
             try {
                 if (mPhones.contains(mUsers.get(i).fetchIfNeeded().get("phoneNumber"))) {
-                    boolean addBoolean = false;
+                    boolean addBoolean = true;
                     for (int k = 0; k < mConnections.size(); k++) {
                         if (mConnections.get(k).getOtherUser().getUsername().equals(mUsers.get(i).getUsername()));
                     }

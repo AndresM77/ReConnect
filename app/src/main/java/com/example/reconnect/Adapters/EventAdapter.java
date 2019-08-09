@@ -166,8 +166,12 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         if (!event.currUserIsAttendee()) {
                             accept.setVisibility(View.GONE);
                             deny.setVisibility(View.GONE);
+                            pending.setVisibility(View.VISIBLE);
                         } else {
                             pending.setVisibility(View.GONE);
+                            accept.setVisibility(View.VISIBLE);
+                            deny.setVisibility(View.VISIBLE);
+
 
                             // implementation of accept or reject event functionality
                             accept.setOnClickListener(new View.OnClickListener() {
@@ -175,11 +179,14 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                 public void onClick(View view) {
                                     event.setPending(false);
                                     event.setAccepted(true);
-                                    event.saveInBackground();
+                                    event.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            alertRequestAccepted(event);
+                                        }
+                                    });
                                     mFragment.eventQuery(view);
 
-                                    alertRequestAccepted(event);
-                                    updateStreaks(event.getAttendee(), event.getCreator());
                                 }
                             });
 
@@ -193,8 +200,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                 }
                             });
                         }
-                    }
-                    else {
+                    } else {
                         if (event.getAccepted()) {
                             accept.setVisibility(View.GONE);
                             deny.setVisibility(View.GONE);
@@ -261,15 +267,12 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
 
-        private void updateStreaks(ParseUser attendee, ParseUser creator) {
+        private void updateStreaks(ParseUser attendee) {
             int attendeeStreaks = (Integer) attendee.get("streaks");
-            int creatorStreaks = (Integer) creator.get("streaks");
 
             attendee.put("streaks", attendeeStreaks++);
-            creator.put("streaks", creatorStreaks++);
 
             attendee.saveInBackground();
-            creator.saveInBackground();
         }
 
 
@@ -306,8 +309,8 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                     if (objects.size() == 0) {
                         final Conversation conversation = new Conversation();
-                        conversation.setConverser(event.getCurrentUser());
-                        conversation.setConversee(event.getOtherUser());
+                        conversation.put("converser", ParseUser.getCurrentUser());
+                        conversation.put("conversee", event.getOtherUser());
                         conversation.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
@@ -338,6 +341,10 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                                     return;
                                                 }
                                                 Log.d("Event Adapter", "Success sending approval convo");
+                                                //Update the streaks
+                                                updateStreaks(event.getAttendee());
+                                                accept.setVisibility(View.GONE);
+                                                deny.setVisibility(View.GONE);
                                             }
                                         });
                                     }

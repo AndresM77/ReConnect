@@ -325,12 +325,12 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                         Log.i(TAG, "Phone Number without dashes: " + placeholder);
                         mPhones.add(placeholder);
                     }
-                    queryConnections();
                     pCur.close();
                 }
             }
         }
-        if(cur!=null){
+        if(cur != null) {
+            queryConnections();
             cur.close();
         }
     }
@@ -809,7 +809,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                 }
                 Log.d(TAG, "Success");
                 Intent i = new Intent(context, MessagesActivity.class);
-                i.putExtra("conversation", conversation);
+                i.putExtra("contact", conversation.getOtherUser());
                 startActivity(i);
             }
         });
@@ -817,7 +817,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
 
     private void goToConversation(Conversation conversation) {
         Intent i = new Intent(context, MessagesActivity.class);
-        i.putExtra("conversation", conversation);
+        i.putExtra("contact", conversation.getOtherUser());
         startActivity(i);
     }
 

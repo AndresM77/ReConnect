@@ -1,6 +1,7 @@
 package com.example.reconnect.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Gravity;
@@ -84,6 +85,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                     tvMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                     messageBubble.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent3));
                 }
+                tvMessage.setTextColor(Color.WHITE);
+                tvMessage.setTypeface(null, Typeface.NORMAL);
             } catch (ParseException e) {
                 Log.e("Messages Adapter", "Unable to determine the which side to show message on");
                 e.printStackTrace();

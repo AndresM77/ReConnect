@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,6 +47,8 @@ public class MessagesActivity extends AppCompatActivity {
     //Initializing fragment tag
     public final static String TAG = "MessagesActivity";
     public final static int SPACING = 20;
+    private static final String MESSAGE_1 = "Can't wait to meet you!";
+    private static final String MESSAGE_2 = "Looking forward to Relinking!";
     public FirebaseFunctions mFunctions;
     //Initializing variables necessary for recycler view
     private RecyclerView rvMessages;
@@ -59,6 +62,8 @@ public class MessagesActivity extends AppCompatActivity {
     private EditText etMessage;
     private ImageView btnSubmit;
     private Conversation conversation;
+    private Button btnPopulate;
+    private Button btnPopulate2;
     LinearLayoutManager linearLayoutManager;
 
     @Override
@@ -124,6 +129,9 @@ public class MessagesActivity extends AppCompatActivity {
         tvDistanceAway = findViewById(R.id.tvDistanceAway);
         tvIndustry = findViewById(R.id.tvIndustry);
         ivProfileImage = findViewById(R.id.ivProfileImg);
+        btnPopulate = findViewById(R.id.btnPopulate);
+        btnPopulate2 = findViewById(R.id.btnPopulate2);
+
         ParseFile profileImg = null;
 
         tvContactName.setText(User.getFullName(conversation.getOtherUser()));
@@ -135,6 +143,20 @@ public class MessagesActivity extends AppCompatActivity {
         if (profileImg != null) {
             Glide.with(getBaseContext()).load(profileImg.getUrl()).circleCrop().into(ivProfileImage);
         }
+
+        btnPopulate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etMessage.setText(MESSAGE_1);
+            }
+        });
+
+        btnPopulate2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etMessage.setText(MESSAGE_2);
+            }
+        });
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override

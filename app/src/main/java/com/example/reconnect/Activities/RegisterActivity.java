@@ -26,10 +26,10 @@ public class RegisterActivity extends AppCompatActivity {
     //Initializing fragment tag
     public final static String TAG = "RegisterActivity";
     private static final String PHONE_STRING = "0000000000";
-    private static final String USER_STRING = "jerry25";
+    private static final String USER_STRING = "ssandberg";
     private static final String PASS_STRING = "password123";
-    private static final String FIRST_NAME_STRING = "Jerry";
-    private static final String LAST_NAME_STRING = "Williams";
+    private static final String FIRST_NAME_STRING = "Sheryl";
+    private static final String LAST_NAME_STRING = "Sandberg";
     private static final String INDUSTRY_STRING = "Technology";
     //Initializing View objects
     private EditText etPhone;

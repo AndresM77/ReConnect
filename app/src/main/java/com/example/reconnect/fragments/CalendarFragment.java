@@ -29,7 +29,10 @@ import com.example.reconnect.model.Event;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseLiveQueryClient;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SubscriptionHandling;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,6 +52,7 @@ public class CalendarFragment extends Fragment {
     private EventAdapter adapter;
     private List<Object> mEvents;
     private TextView tvCurrentUsername;
+    private TextView personalStreaks;
     private SwipeRefreshLayout swipeContainer;
 
     // for changing profile picture
@@ -70,6 +74,8 @@ public class CalendarFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Setup view objects
         rvEvents = view.findViewById(R.id.rvEvents);
+        personalStreaks = view.findViewById(R.id.personalStreaks);
+        personalStreaks.setText(ParseUser.getCurrentUser().get("streaks").toString());
         //Display username of current user
         tvCurrentUsername = view.findViewById(R.id.tvCurrentUsername);
         //Instantiating connections list
@@ -133,8 +139,22 @@ public class CalendarFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        //query posts
+
+        ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
+
+        ParseQuery<Event> parseQuery = ParseQuery.getQuery(Event.class);
+
+        SubscriptionHandling<Event> subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
+
+        subscriptionHandling.handleEvents(new SubscriptionHandling.HandleEventsCallback<Event>() {
+            @Override
+            public void onEvents(ParseQuery<Event> query, SubscriptionHandling.Event event, Event object) {
+                //query posts
+                eventQuery(view);
+            }
+        });
         eventQuery(view);
+
     }
 
     public void launchCamera() {

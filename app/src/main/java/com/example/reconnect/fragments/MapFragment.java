@@ -48,6 +48,7 @@ import com.example.reconnect.Activities.HomeActivity;
 import com.example.reconnect.Activities.MessagesActivity;
 import com.example.reconnect.Activities.RequestMeetingActivity;
 import com.example.reconnect.Adapters.CustomWindowAdapter;
+import com.example.reconnect.NotificationHandler;
 import com.example.reconnect.R;
 import com.example.reconnect.model.Connection;
 import com.example.reconnect.model.Conversation;
@@ -73,6 +74,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -120,7 +123,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
     Button btnCancel;
     private List<String> cUserNames;
     private List<ParseUser> mUsers;
-    private List<String> mPhones = new ArrayList<>();;
+    private List<String> mPhones = new ArrayList<>();
+    private boolean queried = false;
 
     //Permission variables
     private static final int REQUEST_GETMYLOCATION = 0;
@@ -228,6 +232,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                     Log.d("Connection", "got here");
                     mConnections.clear();
                     mConnections.addAll(connections);
+                    if (!queried) {checkForNearby();}
                     loadMarkers(googleMap);
                     view.findViewById(R.id.progressMap).setVisibility(View.GONE);
                 }
@@ -236,6 +241,25 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
             //Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void checkForNearby() {
+        for (int i = 0; i < mConnections.size(); i++) {
+            if (((mConnections.get(i).getStarred21() && Connection.getDistanceAwayInteger(mConnections.get(i).getOtherUser().getParseGeoPoint("location"), ParseUser.getCurrentUser().getParseGeoPoint("location")) < 20))) {
+                //Send notification to current user
+                NotificationHandler nHandler = new NotificationHandler(FirebaseFunctions.getInstance());
+                Task<String> result = nHandler.sendNotifications(mConnections.get(i).getOtherUser().get("deviceId").toString(),
+                        "Your connection " + User.getFullName(mConnections.get(i).getCurrentUser()) + " is in the area!");
+
+                NotificationHandler dHandler = new NotificationHandler(FirebaseFunctions.getInstance());
+                Task<String> resultd = dHandler.sendNotifications(mConnections.get(i).getCurrentUser().get("deviceId").toString(),
+                        "Your connection " + User.getFullName(mConnections.get(i).getOtherUser()) + " is in the area!");
+                queried = true;
+            }
+        }
+    }
+
+//((mConnections.get(i).getStarred21() && mConnections.get(i).getOtherUser().getUsername().equals(mConnections.get(i).getUser1().getUsername()) || (mConnections.get(i).getStarred12() && mConnections.get(i).getOtherUser().getUsername().equals(mConnections.get(i).getUser2().getUsername())))
+//                    && Connection.getDistanceAwayInteger(mConnections.get(i).getOtherUser().getParseGeoPoint("location"), ParseUser.getCurrentUser().getParseGeoPoint("location")) < 20))
 
     private void showDialogForUploadingContacts() {
         View messageView = LayoutInflater.from(context).inflate(R.layout.item_upload_contacts, null);

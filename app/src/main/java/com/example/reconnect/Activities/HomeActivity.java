@@ -164,7 +164,6 @@ public class HomeActivity extends AppCompatActivity {
         menu.findItem(R.id.addToCalendar).setVisible(false);
         menu.findItem(R.id.newConversation).setVisible(false);
         menu.findItem(R.id.ivSwitchButton).setVisible(true);
-        findViewById(R.id.ivSwitchButton).setSelected(false);
     }
 
     public void calFragmentInteraction(Menu menu) {

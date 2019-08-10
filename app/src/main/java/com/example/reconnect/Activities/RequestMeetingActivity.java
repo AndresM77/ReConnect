@@ -37,6 +37,7 @@ import java.util.ArrayList;
 
 public class RequestMeetingActivity extends AppCompatActivity {
 
+    private static final String MEETING_TITLE = "Discuss Moving HQ (SEA > MPK)";
     //Profile Items
     TextView tvUserName;
     TextView tvIndustry;
@@ -52,6 +53,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
     Button submitRequest;
     ImageView selectDate;
     TextView tv_meetingDate;
+    Button btnPopulate;
     ParseUser requestedUser;
     ParseFile profileImg = null;
 
@@ -92,6 +94,12 @@ public class RequestMeetingActivity extends AppCompatActivity {
             Glide.with(getBaseContext()).load(profileImg.getUrl()).circleCrop().into(ivProfileImg);
         }
 
+        btnPopulate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                meetingName.setText(MEETING_TITLE);
+            }
+        });
 
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,6 +181,7 @@ public class RequestMeetingActivity extends AppCompatActivity {
         tvDistance = findViewById(R.id.tvDistance);
         ivProfileImg = findViewById(R.id.ivProfileImg);
         btnMessage = findViewById(R.id.btnFindContacts);
+        btnPopulate = findViewById(R.id.btnPopulate);
     }
 
     public void setMeetingItems() {

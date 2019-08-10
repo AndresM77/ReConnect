@@ -145,12 +145,14 @@ public class AllUsersActivity extends AppCompatActivity {
 
     private void queryUsers() {
         ParseQuery <ParseUser> query1 = new ParseQuery<ParseUser>(ParseUser.class);
+
         try {
             query1.whereNotEqualTo("username", ParseUser.getCurrentUser().fetchIfNeeded().getUsername());
         } catch (ParseException e) {
             e.printStackTrace();
         }
         query1.whereNotContainedIn("username", cUserNames);
+
 
         query1.addDescendingOrder("createdAt");
         query1.setLimit(20);

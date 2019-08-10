@@ -391,7 +391,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
                     boolean addBoolean = true;
                     for (int k = 0; k < mConnections.size(); k++) {
                         if (mConnections.get(k).getOtherUser().getUsername().equals(mUsers.get(i).getUsername())) {
-                            addBoolean = false;
+                            //addBoolean = false;
                         }
                     }
                     if (addBoolean) {
@@ -417,10 +417,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMapLongClickLis
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        query1.whereNotContainedIn("username", cUserNames);
+        //query1.whereNotContainedIn("username", cUserNames);
 
-        query1.addDescendingOrder("createdAt");
-        query1.setLimit(20);
 
         query1.findInBackground(new FindCallback<ParseUser>() {
             @Override
